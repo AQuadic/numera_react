@@ -1,9 +1,11 @@
 
 const Header = () => {
     return (
-        <div>
-            <h2 className="text-red-500">header</h2>
-        </div>
+        <header className="container py-3">
+            <img
+                src="/images/header/numra_logo.png"
+            />
+        </header>
     )
 }
 
