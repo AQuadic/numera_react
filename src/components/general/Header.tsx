@@ -20,7 +20,7 @@ const Header = () => {
                 <Link
                 key={link.title}
                 to={link.href}
-                className="text-red-500 hover:text-[#EBAF29] transition"
+                className="text-[#192540] text-lg font-medium hover:text-[#EBAF29] transition"
                 >
                 {link.title}
                 </Link>
@@ -30,10 +30,10 @@ const Header = () => {
             <div className="hidden md:flex items-center gap-6">
             <Chat />
             <Notifications />
-            <button className="bg-[#EBAF29] w-[180px] h-14 rounded-[20px] text-[#192540] text-lg font-semibold flex items-center justify-center gap-2 ">
+            <Link to='/signin' className="bg-[#EBAF29] w-[180px] h-14 rounded-[20px] text-[#192540] text-lg font-semibold flex items-center justify-center gap-2 ">
                 <Profile />
                 Log In
-            </button>
+            </Link>
             </div>
 
             <button
