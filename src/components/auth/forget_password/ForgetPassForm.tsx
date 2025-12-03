@@ -8,7 +8,7 @@ const ForgetPassForm = () => {
     });
 
     return (
-        <div className="w-full">
+        <div className="md:w-1/2 w-full px-8 md:px-0">
         <h2 className="text-[#192540] text-[40px] font-medium text-center">Forget Password</h2>
         <p className="text-[#717171] text-base font-medium mt-3 leading-[150%] text-center">
             Enter your email and we’ll help you recover your account in just a  <br />few steps.
