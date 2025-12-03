@@ -12,7 +12,7 @@ const Header = () => {
 
     return (
         <>
-        <header className="py-3 flex items-center justify-between px-4 md:px-10">
+        <header className="container py-3 flex items-center justify-between px-4 md:px-10">
             <img src="/images/header/numra_logo.png" className="w-32" />
 
             <div className="hidden md:flex items-center gap-6">
