@@ -18,6 +18,6 @@ export const navLinks =[
     },
     {
         title: "Contact Us",
-        href: "/"
+        href: "/contact_us"
     },
 ]
