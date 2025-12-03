@@ -1,18 +1,29 @@
-import ForgetPassForm from "./ForgetPassForm"
+import ForgetPassForm from "./ForgetPassForm";
 
 const ForgetPassPage = () => {
-    return (
-        <div className="flex items-center gap-6">
-            <img
-                src="/images/auth/auth_image.png"
-                alt="numera"
-                className="w-1/2 h-full md:block hidden"
-            />
+  return (
+    <div className="min-h-screen w-full flex bg-white">
+      <div className="hidden md:block md:w-1/2 h-screen">
+        <img
+          src="/images/auth/auth_image.png"
+          alt="numera"
+          className="w-full h-full object-cover"
+        />
+      </div>
 
-            <ForgetPassForm />
+      <div className="flex-1 flex items-center justify-center px-6 md:px-12 lg:px-24">
+        <div className="w-full max-w-[684px]">
+          <img
+            src="/images/header/numra_logo.png"
+            alt="numera logo"
+            className="block md:hidden mx-auto mb-6 w-40"
+          />
+
+          <ForgetPassForm />
         </div>
-    )
-}
+      </div>
+    </div>
+  );
+};
 
-export default ForgetPassPage
-
+export default ForgetPassPage;

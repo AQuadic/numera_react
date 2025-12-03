@@ -135,5 +135,9 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Use Google Poppins as the global font with sensible fallbacks */
+    font-family: "Poppins", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+      Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol";
   }
 }
