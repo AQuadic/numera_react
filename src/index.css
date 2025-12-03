@@ -60,3 +60,18 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.container {
+  @apply max-w-7xl mx-auto px-4;
+}
+
+.slick-dots li button:before {
+  font-size: 20px !important;
+  color: #e5e5e5 !important;
+  opacity: 1 !important;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #ebaf29 !important;
+  opacity: 1 !important;
+}
