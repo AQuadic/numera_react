@@ -152,7 +152,7 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
     };
 
     // Translations for placeholders
-    const resolvedPlaceholder = placeholder ?? "586144848";
+    const resolvedPlaceholder = placeholder ?? "Enter your phone number";
     const resolvedSearchPlaceholder =
       searchPlaceholder ?? ("search country or code");
 
