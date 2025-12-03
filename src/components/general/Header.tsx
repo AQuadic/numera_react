@@ -1,5 +1,8 @@
 import { Link } from "react-router"
 import { navLinks } from "../../constants/navLinks"
+import Chat from "../icons/header/Chat"
+import Notifications from "../icons/header/Notifications"
+import Profile from "../icons/header/Profile"
 
 const Header = () => {
     return (
@@ -18,6 +21,15 @@ const Header = () => {
                         {link.title}
                     </Link>
                 ))}
+            </div>
+
+            <div className="flex items-center gap-6">
+                <Chat />
+                <Notifications />
+                <button className="bg-[#EBAF29] w-[180px] h-14 rounded-[20px] text-[#192540] text-lg font-semibold flex items-center justify-center gap-2 ">
+                    <Profile />
+                    Log In
+                </button>
             </div>
         </header>
     )
