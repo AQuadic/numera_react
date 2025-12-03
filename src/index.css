@@ -1,1 +1,20 @@
 @import "tailwindcss";
+
+.container {
+  @apply max-w-7xl mx-auto px-4;
+}
+
+.slick-dots li button:before {
+  font-size: 20px !important;
+  color: #e5e5e5 !important;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #ebaf29 !important;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: #192540 !important;
+  font-size: 30px !important;
+}
