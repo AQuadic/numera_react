@@ -6,7 +6,7 @@ const SignupPage = () => {
             <img
                 src="/images/auth/auth_image.png"
                 alt="numera"
-                className="w-1/2 h-full"
+                className="w-1/2 h-full md:block hidden"
             />
 
             <SignUpForm />
