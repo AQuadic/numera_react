@@ -6,6 +6,7 @@ import SignupPage from "./components/auth/singup/SignupPage";
 import ForgetPassPage from "./components/auth/forget_password/ForgetPassPage";
 import ResetPassPage from "./components/auth/reset_passwotrd/ResetPassPass";
 import DrawYourPlatePage from "./pages/DrawYourPlatePage";
+import FAQsPage from "./pages/FAQsPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="draw_your_plates" element={<DrawYourPlatePage />} />
+          <Route path="faq" element={<FAQsPage />} />
         </Route>
           <Route path="signin" element={<SigninPage />} />
           <Route path="signup" element={<SignupPage />} />

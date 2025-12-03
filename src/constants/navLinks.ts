@@ -14,7 +14,7 @@ export const navLinks =[
     },
     {
         title: "FAQs",
-        href: "/"
+        href: "/faq"
     },
     {
         title: "Contact Us",
