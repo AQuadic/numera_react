@@ -1,3 +1,4 @@
+import FilterYourPlates from "../components/home/FilterYourPlates"
 import HomeCategories from "../components/home/HomeCategories"
 import HomeHero from "../components/home/HomeHero"
 
@@ -6,6 +7,7 @@ const HomePage = () => {
         <div>
             <HomeHero />
             <HomeCategories />
+            <FilterYourPlates />
         </div>
     )
 }

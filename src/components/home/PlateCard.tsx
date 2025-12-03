@@ -1,0 +1,38 @@
+import Heart from "../icons/home/Heart"
+
+const PlateCard = () => {
+    return (
+        <section className="w-[282px] h-[292px] rounded-lg bg-[#F0F0F0] py-6 px-2">
+            <div className="flex items-center justify-between">
+                <div className="w-[93px] h-[30px] bg-[#CFEAD6] rounded-md text-[#1E7634] font-medium flex items-center justify-center">
+                    Best Deal
+                </div>
+                <Heart />
+            </div>
+            <img 
+                src="/images/plates/plate_image.png"
+                alt="Plate image"
+                className="mt-6"
+            />
+
+            <div className="mt-6 flex items-center justify-between">
+                <p className="text-[#717171] text-sm font-medium">Category : <span>Premium</span></p>
+                <p className="text-[#1E7634] text-sm font-medium">Available</p>
+            </div>
+
+            <h2 className="text-[#192540] text-lg font-medium mt-3">VIP Lucky Numbers</h2>
+
+            <div className="mt-3 flex items-center justify-between">
+                <h2 className="text-[#192540] text-xl font-semibold">
+                85,000 <span className="text-sm relative top-1">AED</span>
+                </h2>
+
+                <div className="w-[147px] h-12 bg-[#EBAF29] rounded-[10px] text-[#192540] text-base font-semibold flex items-center justify-center">
+                    View Details
+                </div>
+            </div>
+        </section>
+    )
+}
+
+export default PlateCard
