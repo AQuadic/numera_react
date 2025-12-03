@@ -236,7 +236,7 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
         {isOpen && (
           <div
             ref={dropdownRef}
-            className="absolute top-full left-0 right-0 z-99 mt-2 rounded-md border border-input bg-popover text-popover-foreground shadow-md max-h-60 overflow-hidden"
+            className="absolute top-full left-0 right-0 z-99 mt-2 rounded-md border border-input bg-popover text-popover-foreground shadow-md max-h-60 overflow-hidden bg-white"
             dir="ltr"
           >
             {/* Search input */}
