@@ -8,7 +8,7 @@ import {
   getCountryByCode,
   type Country,
 }  from "../../constants/countries";
-import { cn } from "../lib/utils";
+import { cn } from "../../lib/utils";
 
 export interface PhoneValue {
   // iso2 country code (e.g. 'EG'), not the dial code

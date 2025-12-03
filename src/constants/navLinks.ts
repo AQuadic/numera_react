@@ -6,7 +6,7 @@ export const navLinks =[
     },
     {
         title: "Draw your plate",
-        href: "/"
+        href: "/draw_your_plates"
     },
     {
         title: "Sell your plate",
