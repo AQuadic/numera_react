@@ -10,8 +10,8 @@ const HomeCategories = () => {
     ];
 
     return (
-        <section className="container md:py-[58px]">
-        <h2 className="text-[#192540] text-[32px] font-medium">Categories</h2>
+        <section className="container md:py-[58px] py-5">
+        <h2 className="text-[#192540] md:text-[32px] text-2xl font-medium">Categories</h2>
 
         <div className="mt-8 flex flex-wrap gap-6">
             {categories.map((item, i) => (
@@ -22,7 +22,7 @@ const HomeCategories = () => {
             >
                 {item.icon}
                 <p
-                    className="text-2xl font-semibold"
+                    className="md:text-2xl text-xl font-semibold"
                     style={{ color: item.textColor }}
                     >
                     {item.title}

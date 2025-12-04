@@ -8,16 +8,16 @@ const Footer = () => {
     return (
         <footer className="bg-[#EBAF29] py-[58px]">
             <div className="container">
-                <div className="flex flex-wrap justify-between">
+                <div className="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 justify-between">
 
-                <div>
-                    <img src="/images/header/numra_logo.png" alt="log"/>
-                    <p className="text-[#192540] font-medium mt-3">Your trusted platform to buy and <br /> sell custom car plates.</p>
+                <div className="">
+                    <img src="/images/header/numra_logo.png" alt="log" className="mx-auto md:mx-0"/>
+                    <p className="text-[#192540] font-medium mt-3 text-center md:text-start">Your trusted platform to buy and <br /> sell custom car plates.</p>
                 </div>
 
                 <div>
-                    <h2 className="text-[#192540] text-xl font-semibold">Company</h2>
-                    <div className="flex flex-col gap-4 mt-4">
+                    <h2 className="text-[#192540] text-xl font-semibold md:text-start text-center">Company</h2>
+                    <div className="flex flex-col items-center md:items-start md:gap-4 gap-2 mt-4">
                         {navLinks.map((link) => (
                         <Link
                         key={link.title}
@@ -30,29 +30,29 @@ const Footer = () => {
                     </div>
                 </div>
 
-                <div>
-                    <h2 className="text-[#192540] text-xl font-semibold">Contact Us</h2>
+                <div className="md:mt-0 mt-4">
+                    <h2 className="text-[#192540] text-xl font-semibold md:text-start text-center">Contact Us</h2>
                     <a
                         href="https://wa.me/201236547896"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex gap-2 mt-4"
+                        className="flex md:justify-start justify-center gap-2 mt-4"
                         >
                         <Whatsapp />
                         <p className="text-[#192540] text-base">+201236547896</p>
                     </a>
                 </div>
 
-                <div>
-                    <h2 className="text-[#192540] text-xl font-semibold">Subscribe</h2>
+                <div className="md:mt-0 mt-4">
+                    <h2 className="text-[#192540] text-xl font-semibold md:text-start text-center">Subscribe</h2>
                     <p className="md:w-[379px] w-full text-[#4A4949] text-base leading-[150%] mt-3">Subscribe to get the latest updates, fitness tips, and exclusive offers — straight to your inbox.</p>
                     <div className="mt-4 relative">
                         <input 
                             type="text"
-                            className="md:w-[379px] w-full h-14 border border-[#192540] rounded-2xl px-4 placeholder:text-[#4A4949] "
+                            className="lg:w-[379px] w-full h-14 border border-[#192540] rounded-2xl px-4 placeholder:text-[#4A4949] "
                             placeholder="Write your email"
                         />
-                        <button className="w-[103px] h-14 bg-[#192540] rounded-tr-2xl rounded-br-2xl absolute right-0">
+                        <button className="w-[103px] h-14 bg-[#192540] rounded-tr-2xl rounded-br-2xl absolute right-0 xl:-right-17 lg:right-28 md:top-0">
                             <p className="text-[#EBAF29] text-lg font-bold">Send</p>
                         </button>
                     </div>

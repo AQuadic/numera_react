@@ -6,7 +6,7 @@ const FilterYourPlates = () => {
     return (
         <div className="container md:py-[58px] py-10">
             <div className="flex flex-wrap items-center justify-between">
-                <h2 className="text-[#192540] text-[32px] font-medium">Filter Your Plates</h2>
+                <h2 className="text-[#192540] md:text-[32px] text-2xl font-medium">Filter Your Plates</h2>
 
                 <div className="flex items-center gap-6 mt-2 lg:mt-0">
                     <div className="relative">
@@ -27,7 +27,7 @@ const FilterYourPlates = () => {
                 </div>
             </div>
 
-            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 items-center justify-center gap-6">
+            <div className="mt-8 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-center justify-center gap-6">
                 {[...Array(8)].map((_, index) => (
                     <PlateCard key={index} />
                 ))}

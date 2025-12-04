@@ -15,7 +15,7 @@ const Header = () => {
         <header className="container py-3 flex items-center justify-between px-4 md:px-10">
             <img src="/images/header/numra_logo.png" className="w-32" />
 
-            <div className="hidden md:flex items-center gap-6">
+            <div className="hidden lg:flex items-center gap-6">
             {navLinks.map((link) => (
                 <Link
                 key={link.title}
@@ -27,7 +27,7 @@ const Header = () => {
             ))}
             </div>
 
-            <div className="hidden md:flex items-center gap-6">
+            <div className="hidden lg:flex items-center gap-6">
             <Chat />
             <Notifications />
             <Link to='/signin' className="bg-[#EBAF29] w-[180px] h-14 rounded-[20px] text-[#192540] text-lg font-semibold flex items-center justify-center gap-2 ">
@@ -38,7 +38,7 @@ const Header = () => {
 
             <button
             onClick={() => setOpen(true)}
-            className="md:hidden text-[#192540] text-3xl"
+            className="lg:hidden text-[#192540] text-3xl"
             >
             <Menu />
             </button>
@@ -87,10 +87,10 @@ const Header = () => {
                     <Notifications />
                 </div>
 
-                <button className="mt-8 bg-[#EBAF29] w-full py-3 rounded-[16px] text-[#192540] text-lg font-semibold flex items-center justify-center gap-2 ">
+                <Link to='/signin' className="mt-8 bg-[#EBAF29] w-full py-3 rounded-2xl text-[#192540] text-lg font-semibold flex items-center justify-center gap-2 ">
                     <Profile />
                     Log In
-                </button>
+                </Link>
                 </motion.div>
             </>
             )}
