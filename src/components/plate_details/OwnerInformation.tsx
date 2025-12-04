@@ -1,3 +1,4 @@
+import { Link } from "react-router"
 import Chat from "../icons/plates/Chat"
 import Phone from "../icons/plates/Phone"
 import Verified from "../icons/plates/Verified"
@@ -7,7 +8,7 @@ const OwnerInformation = () => {
     return (
         <section className="container md:py-[58px] py-10">
             <h2 className="text-[#192540] text-[32px] font-medium">Owner Information</h2>
-            <div className="mt-9 flex flex-wrap justify-between">
+            <Link to='/seller_profile' className="mt-9 flex flex-wrap justify-between">
                 <div className="flex gap-3">
                     <img
                         src="/images/plates/owner_img.jpg"
@@ -39,7 +40,7 @@ const OwnerInformation = () => {
                         <p className="text-[#FEFEFE] text-xl font-medium">WhatsApp</p>
                     </div>
                 </div>
-            </div>
+            </Link>
         </section>
     )
 }
