@@ -1,8 +1,9 @@
+import { Link } from "react-router"
 import Heart from "../icons/home/Heart"
 
 const PlateCard = () => {
     return (
-        <section className="w-[282px] h-[292px] rounded-lg bg-[#F0F0F0] py-6 px-2">
+        <Link to='/plate_details' className="w-[282px] h-[292px] rounded-lg bg-[#F0F0F0] py-6 px-2">
             <div className="flex items-center justify-between">
                 <div className="w-[93px] h-[30px] bg-[#CFEAD6] rounded-md text-[#1E7634] font-medium flex items-center justify-center">
                     Best Deal
@@ -31,7 +32,7 @@ const PlateCard = () => {
                     View Details
                 </div>
             </div>
-        </section>
+        </Link>
     )
 }
 

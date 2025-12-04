@@ -8,6 +8,7 @@ import ResetPassPage from "./components/auth/reset_passwotrd/ResetPassPass";
 import DrawYourPlatePage from "./pages/DrawYourPlatePage";
 import FAQsPage from "./pages/FAQsPage";
 import ContactUsPage from "./pages/ContactUsPage";
+import PlateDetails from "./pages/PlateDetails";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="draw_your_plates" element={<DrawYourPlatePage />} />
           <Route path="faq" element={<FAQsPage />} />
           <Route path="contact_us" element={<ContactUsPage />} />
+          <Route path="plate_details" element={<PlateDetails />} />
         </Route>
           <Route path="signin" element={<SigninPage />} />
           <Route path="signup" element={<SignupPage />} />

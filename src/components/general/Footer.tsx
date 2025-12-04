@@ -22,7 +22,7 @@ const Footer = () => {
                         <Link
                         key={link.title}
                         to={link.href}
-                        className="text-[#192540] text-lg font-medium hover:text-[#EBAF29] transition"
+                        className="text-[#192540] text-lg font-medium"
                         >
                         {link.title}
                         </Link>
