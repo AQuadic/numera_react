@@ -45,11 +45,11 @@ const DrawPlatesPattern = () => {
                 type="text"
                 value={pattern}
                 readOnly
-                className="md:w-[692px] w-full h-[72px] border border-[#F0F0F0] rounded-md px-2"
+                className="lg:w-[692px] w-full h-[72px] border border-[#F0F0F0] rounded-md px-2"
                 placeholder="Start building your pattern"
             />
             <div
-                className="absolute top-6 right-4 cursor-pointer"
+                className="absolute top-6 right-4 lg:right-20 xl:right-64 cursor-pointer"
                 onClick={removeLast}
             >
                 <XIcon />
@@ -102,7 +102,7 @@ const DrawPlatesPattern = () => {
         </div>
 
         <Link to='/plates_result'>
-            <button className="md:w-[450px] h-14 bg-[#EBAF29] rounded-md mt-6 text-[#192540] text-lg font-semibold cursor-pointer">
+            <button className="md:w-[450px] w-full h-14 bg-[#EBAF29] rounded-md mt-6 text-[#192540] text-lg font-semibold cursor-pointer">
                 Search matching plates
             </button>
         </Link>
