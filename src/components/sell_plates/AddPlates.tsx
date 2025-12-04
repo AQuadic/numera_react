@@ -5,6 +5,7 @@ import AddPlatesHeader from "./AddPlatesHeader";
 import Warning from "../icons/plates/Warning";
 import { Switch } from "../ui/switch";
 import PlusIcon from "../icons/plates/PlusIcon";
+import { Link } from "react-router";
 
 const AddPlates = () => {
   const [plates, setPlates] = useState([{}]);
@@ -130,9 +131,9 @@ const AddPlates = () => {
                 </div>
 
                 <div className="mt-6 flex items-center justify-between gap-6">
-                    <div className="w-1/2 h-14 bg-[#EBAF29] rounded-md text-[#192540] text-base font-semibold flex items-center justify-center">
+                    <Link to="/confirm_plate" className="w-1/2 h-14 bg-[#EBAF29] rounded-md text-[#192540] text-base font-semibold flex items-center justify-center">
                         Continue to review
-                    </div>
+                    </Link>
                     <div className="w-1/2 h-14 border border-[#EBAF29] rounded-md text-[#192540] text-base font-semibold flex items-center justify-center">
                         Save Draft
                     </div>
