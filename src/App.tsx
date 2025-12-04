@@ -9,6 +9,7 @@ import DrawYourPlatePage from "./pages/DrawYourPlatePage";
 import FAQsPage from "./pages/FAQsPage";
 import ContactUsPage from "./pages/ContactUsPage";
 import PlateDetails from "./pages/PlateDetails";
+import PhoneNumberDetails from "./pages/PhoneNumberDetails";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="faq" element={<FAQsPage />} />
           <Route path="contact_us" element={<ContactUsPage />} />
           <Route path="plate_details" element={<PlateDetails />} />
+          <Route path="phone_number_details" element={<PhoneNumberDetails />} />
         </Route>
           <Route path="signin" element={<SigninPage />} />
           <Route path="signup" element={<SignupPage />} />
