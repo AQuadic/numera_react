@@ -11,6 +11,7 @@ import PlateDetails from "./pages/PlateDetails";
 import PhoneNumberDetails from "./pages/PhoneNumberDetails";
 import DrawPlatesPage from "./pages/DrawPlatesPage";
 import DrawYourPlatePage from "./pages/DrawYourPlatePage";
+import SellPlatesPage from "./pages/SellPlatesPage";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="draw_your_plates" element={<DrawPlatesPage />} />
           <Route path="plates_result" element={<DrawYourPlatePage />} />
+          <Route path="sell_plates" element={<SellPlatesPage />} />
           <Route path="faq" element={<FAQsPage />} />
           <Route path="contact_us" element={<ContactUsPage />} />
           <Route path="plate_details" element={<PlateDetails />} />
