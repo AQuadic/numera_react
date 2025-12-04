@@ -9,7 +9,7 @@ import {
 const Filter = () => {
     return (
         <div className="w-[223px] md:h-screen h-full overflow-y-auto md:bg-[#F0F0F0] py-8 px-4">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 mb-6">
                 <FilterIcon />
                 <p className="text-[#192540] text-xl font-medium">Filter</p>
             </div>
