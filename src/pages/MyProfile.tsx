@@ -2,6 +2,7 @@ import { useState } from "react";
 import Sidebar from "../components/my_profile/Sidebar";
 import MyProfileComponent from "../components/my_profile/MyProfileComponent";
 import WhyChooseNumra from "../components/home/WhyChooseNumra";
+import MyAdsComponent from "../components/my_profile/MyAdsComponent";
 
 const MyProfile = () => {
     const [selected, setSelected] = useState("profile");
@@ -11,7 +12,7 @@ const MyProfile = () => {
             case "profile":
                 return <MyProfileComponent />
             case "ads":
-                return <div className="p-6">My Ads Component</div>;
+                return <MyAdsComponent />
             case "analytics":
                 return <div className="p-6">Analytics Dashboard</div>;
             case "plan":
