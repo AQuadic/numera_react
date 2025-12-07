@@ -14,6 +14,7 @@ import DrawYourPlatePage from "./pages/DrawYourPlatePage";
 import SellPlatesPage from "./pages/SellPlatesPage";
 import ConfirmPlate from "./components/sell_plates/ConfirmPlate";
 import SellerProfile from "./pages/SellerProfile";
+import MyProfile from "./pages/MyProfile";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="plate_details" element={<PlateDetails />} />
           <Route path="phone_number_details" element={<PhoneNumberDetails />} />
           <Route path="seller_profile" element={<SellerProfile />} />
+          <Route path="profile" element={<MyProfile />} />
         </Route>
           <Route path="signin" element={<SigninPage />} />
           <Route path="signup" element={<SignupPage />} />
