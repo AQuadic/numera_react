@@ -1,5 +1,10 @@
 import { useState } from "react";
 import Sidebar from "../components/my_profile/Sidebar";
+import MyProfileComponent from "../components/my_profile/MyProfileComponent";
+import WhyChooseNumra from "../components/home/WhyChooseNumra";
+import MyAdsComponent from "../components/my_profile/MyAdsComponent";
+import AnalyticalDashboard from "../components/my_profile/AnalyticalDashboard/AnalyticalDashboard";
+import MyPlan from "../components/my_profile/plans/MyPlan";
 
 const MyProfile = () => {
     const [selected, setSelected] = useState("profile");
@@ -7,13 +12,13 @@ const MyProfile = () => {
     const renderContent = () => {
         switch (selected) {
             case "profile":
-                return <div className="p-6">Profile Component</div>;
+                return <MyProfileComponent />
             case "ads":
-                return <div className="p-6">My Ads Component</div>;
+                return <MyAdsComponent />
             case "analytics":
-                return <div className="p-6">Analytics Dashboard</div>;
+                return <AnalyticalDashboard />
             case "plan":
-                return <div className="p-6">My Plan Component</div>;
+                return <MyPlan />
             case "settings":
                 return <div className="p-6">App Settings Component</div>;
             case "support":
@@ -24,12 +29,16 @@ const MyProfile = () => {
     };
 
     return (
-        <div className="flex gap-6 py-6">
-            <Sidebar selected={selected} onSelect={setSelected} />
-            <div className="flex-1 bg-white rounded-xl shadow p-6">
-                {renderContent()}
+        <section>
+            <div className="flex gap-6 py-6">
+                <Sidebar selected={selected} onSelect={setSelected} />
+                <div className="flex-1 py-12 container">
+                    {renderContent()}
+                </div>
             </div>
-        </div>
+
+            <WhyChooseNumra />
+        </section>
     );
 };
 
