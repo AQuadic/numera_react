@@ -3,6 +3,7 @@ import Axios, {
   type InternalAxiosRequestConfig,
   type AxiosError,
 } from "axios";
+import toast from "react-hot-toast";
 
 const TOKEN_KEY = "numra_token";
 const API_BASE_URL = "https://numra.motofy.io/api";
@@ -47,11 +48,60 @@ export const axios = Axios.create({
 
 axios.interceptors.request.use(authRequestInterceptor);
 
+// Helper to extract error message from API response
+const getErrorMessageFromResponse = (error: AxiosError): string => {
+  const data = error.response?.data as
+    | {
+        message?: string;
+        errors?: Record<string, string[]>;
+      }
+    | undefined;
+
+  if (data?.message) {
+    return data.message;
+  }
+
+  if (data?.errors) {
+    const firstError = Object.values(data.errors)[0];
+    if (firstError && firstError.length > 0) {
+      return firstError[0];
+    }
+  }
+
+  if (error.message) {
+    return error.message;
+  }
+
+  return "An unexpected error occurred";
+};
+
+// Helper to extract success message from API response
+const getSuccessMessageFromResponse = (
+  response: AxiosResponse
+): string | null => {
+  const data = response.data as { message?: string } | undefined;
+  return data?.message || null;
+};
+
 axios.interceptors.response.use(
-  (response: AxiosResponse) => response,
+  (response: AxiosResponse) => {
+    // Show success toast if API returns a message (for mutating requests)
+    const method = response.config.method?.toLowerCase();
+    if (method && ["post", "put", "patch", "delete"].includes(method)) {
+      const message = getSuccessMessageFromResponse(response);
+      if (message) {
+        toast.success(message);
+      }
+    }
+    return response;
+  },
   (error: AxiosError) => {
     // Log the error for debugging
     console.error("API Error:", error.response?.status, error.response?.data);
+
+    // Show error toast
+    const errorMessage = getErrorMessageFromResponse(error);
+    toast.error(errorMessage);
 
     // Handle 401 Unauthorized - but DON'T auto-remove token
     // The token might be valid but a different endpoint failed
