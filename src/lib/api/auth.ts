@@ -143,6 +143,30 @@ export const logout = (): void => {
   removeToken();
 };
 
+// Change Password Request
+export interface ChangePasswordRequest {
+  current_password: string;
+  password: string;
+  password_confirmation: string;
+}
+
+export interface ChangePasswordResponse {
+  message?: string;
+}
+
+/**
+ * Change the current user's password
+ */
+export const changePassword = async (
+  data: ChangePasswordRequest
+): Promise<ChangePasswordResponse> => {
+  const response = await axios.post<ChangePasswordResponse>(
+    "/user/change_password",
+    data
+  );
+  return response.data;
+};
+
 /**
  * Extract error message from API error
  */
