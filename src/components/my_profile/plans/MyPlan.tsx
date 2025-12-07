@@ -1,4 +1,5 @@
 import PlanCards from "./PlanCards"
+import PlansFAQs from "./PlansFAQs"
 import WhyUpgrade from "./WhyUpgrade"
 
 const MyPlan = () => {
@@ -6,6 +7,7 @@ const MyPlan = () => {
         <div>
             <PlanCards />
             <WhyUpgrade />
+            <PlansFAQs />
         </div>
     )
 }
