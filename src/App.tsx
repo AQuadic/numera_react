@@ -15,29 +15,46 @@ import SellPlatesPage from "./pages/SellPlatesPage";
 import ConfirmPlate from "./components/sell_plates/ConfirmPlate";
 import SellerProfile from "./pages/SellerProfile";
 import MyProfile from "./pages/MyProfile";
+import AuthProvider from "./components/auth/AuthProvider";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import GuestRoute from "./components/auth/GuestRoute";
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
-          <Route path="draw_your_plates" element={<DrawPlatesPage />} />
-          <Route path="plates_result" element={<DrawYourPlatePage />} />
-          <Route path="sell_plates" element={<SellPlatesPage />} />
-          <Route path="confirm_plate" element={<ConfirmPlate />} />
-          <Route path="faq" element={<FAQsPage />} />
-          <Route path="contact_us" element={<ContactUsPage />} />
-          <Route path="plate_details" element={<PlateDetails />} />
-          <Route path="phone_number_details" element={<PhoneNumberDetails />} />
-          <Route path="seller_profile" element={<SellerProfile />} />
-          <Route path="profile" element={<MyProfile />} />
-        </Route>
-          <Route path="signin" element={<SigninPage />} />
-          <Route path="signup" element={<SignupPage />} />
-          <Route path="forget_password" element={<ForgetPassPage />} />
-          <Route path="reset_password" element={<ResetPassPage />} />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          {/* Public routes with layout */}
+          <Route path="/" element={<Layout />}>
+            <Route index element={<HomePage />} />
+            <Route path="draw_your_plates" element={<DrawPlatesPage />} />
+            <Route path="plates_result" element={<DrawYourPlatePage />} />
+            <Route path="faq" element={<FAQsPage />} />
+            <Route path="contact_us" element={<ContactUsPage />} />
+            <Route path="plate_details" element={<PlateDetails />} />
+            <Route
+              path="phone_number_details"
+              element={<PhoneNumberDetails />}
+            />
+            <Route path="seller_profile" element={<SellerProfile />} />
+
+            {/* Protected routes - require authentication */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="sell_plates" element={<SellPlatesPage />} />
+              <Route path="confirm_plate" element={<ConfirmPlate />} />
+              <Route path="profile" element={<MyProfile />} />
+            </Route>
+          </Route>
+
+          {/* Guest-only routes (redirect to home if logged in) */}
+          <Route element={<GuestRoute />}>
+            <Route path="signin" element={<SigninPage />} />
+            <Route path="signup" element={<SignupPage />} />
+            <Route path="forget_password" element={<ForgetPassPage />} />
+            <Route path="reset_password" element={<ResetPassPage />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
