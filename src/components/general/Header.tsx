@@ -10,7 +10,8 @@ import { useAuthStore } from "../../store/useAuthStore";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
-  const { user, isAuthenticated } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   return (
     <>
@@ -32,7 +33,7 @@ const Header = () => {
         <div className="hidden lg:flex items-center gap-6">
           <Chat />
           <Notifications />
-          {isAuthenticated && user ? (
+          {isAuthenticated() && user ? (
             <Link
               to="/profile"
               className="bg-[#EBAF29] min-w-[180px] h-14 px-4 rounded-[20px] text-[#192540] text-lg font-semibold flex items-center justify-center gap-2"
@@ -102,7 +103,7 @@ const Header = () => {
                 <Notifications />
               </div>
 
-              {isAuthenticated && user ? (
+              {isAuthenticated() && user ? (
                 <Link
                   to="/profile"
                   onClick={() => setOpen(false)}
