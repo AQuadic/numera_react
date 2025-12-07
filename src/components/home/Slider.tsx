@@ -34,7 +34,7 @@ export default function SimpleSlider() {
                 <img
                 src={imageUrl}
                 alt={item.name}
-                className="rounded-[50px] w-full h-[597px]"
+                className="rounded-[50px] w-full md:h-[597px]"
                 />
             </div>
             );

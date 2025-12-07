@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { navLinks } from "../../constants/navLinks";
-import Chat from "../icons/header/Chat";
+// import Chat from "../icons/header/Chat";
 import Notifications from "../icons/header/Notifications";
 import Profile from "../icons/header/Profile";
 import { useState } from "react";
@@ -31,7 +31,7 @@ const Header = () => {
         </div>
 
         <div className="hidden lg:flex items-center gap-6">
-          <Chat />
+          {/* <Chat /> */}
           <Notifications />
           {isAuthenticated() && user ? (
             <Link
@@ -99,7 +99,7 @@ const Header = () => {
               </nav>
 
               <div className="flex items-center justify-center gap-4 mt-8">
-                <Chat />
+                {/* <Chat /> */}
                 <Notifications />
               </div>
 
