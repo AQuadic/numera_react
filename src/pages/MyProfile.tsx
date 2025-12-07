@@ -3,6 +3,7 @@ import Sidebar from "../components/my_profile/Sidebar";
 import MyProfileComponent from "../components/my_profile/MyProfileComponent";
 import WhyChooseNumra from "../components/home/WhyChooseNumra";
 import MyAdsComponent from "../components/my_profile/MyAdsComponent";
+import AnalyticalDashboard from "../components/my_profile/AnalyticalDashboard/AnalyticalDashboard";
 
 const MyProfile = () => {
     const [selected, setSelected] = useState("profile");
@@ -14,7 +15,7 @@ const MyProfile = () => {
             case "ads":
                 return <MyAdsComponent />
             case "analytics":
-                return <div className="p-6">Analytics Dashboard</div>;
+                return <AnalyticalDashboard />
             case "plan":
                 return <div className="p-6">My Plan Component</div>;
             case "settings":
