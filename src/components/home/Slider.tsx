@@ -1,9 +1,17 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useQuery } from "@tanstack/react-query";
+import { getSlider, type SliderItem } from "../../lib/api/slider/getSlider";
+import Spinner from "../icons/general/Spinner";
 
 export default function SimpleSlider() {
-  var settings = {
+  const { data: sliderItems, isLoading } = useQuery({
+    queryKey: ["slider"],
+    queryFn: getSlider,
+  });
+
+  const settings = {
     dots: true,
     infinite: true,
     speed: 500,
@@ -11,39 +19,26 @@ export default function SimpleSlider() {
     slidesToScroll: 1,
     arrows: false,
   };
+
+  if (isLoading) return <div className="flex items-center justify-center">
+    <Spinner />
+  </div>
+
     return (
         <Slider {...settings}>
-            <div>
-                <img 
-                    src="/images/hero/heroImg.png"
-                    alt="hero image"
-                    className="rounded-[50px]"
-                />
-            </div>
+        {sliderItems?.map((item: SliderItem, i: number) => {
+            const imageUrl = item.ar_image?.url || item.en_image?.url || "";
 
-            <div>
-                <img 
-                    src="/images/hero/heroImg.png"
-                    alt="hero image"
-                    className="rounded-[50px]"
+            return (
+            <div key={i}>
+                <img
+                src={imageUrl}
+                alt={item.name}
+                className="rounded-[50px] w-full h-[597px]"
                 />
             </div>
-
-            <div>
-                <img 
-                    src="/images/hero/heroImg.png"
-                    alt="hero image"
-                    className="rounded-[50px]"
-                />
-            </div>
-
-            <div>
-                <img 
-                    src="/images/hero/heroImg.png"
-                    alt="hero image"
-                    className="rounded-[50px]"
-                />
-            </div>
+            );
+        })}
         </Slider>
     );
 }
