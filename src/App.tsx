@@ -19,6 +19,7 @@ import AuthProvider from "./components/auth/AuthProvider";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import GuestRoute from "./components/auth/GuestRoute";
 import PlatesFilter from "./pages/PlatesFilter";
+import PageDetails from "./pages/PageDetails";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
             <Route path="contact_us" element={<ContactUsPage />} />
             <Route path="plate_details" element={<PlateDetails />} />
             <Route path="plates_filter" element={<PlatesFilter />} />
+            <Route path="page/:id" element={<PageDetails />} />
             <Route
               path="phone_number_details"
               element={<PhoneNumberDetails />}
