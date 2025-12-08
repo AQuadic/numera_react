@@ -4,7 +4,7 @@ import XIcon from "../../../icons/profile/XIcon"
 
 const PlanSuggestions = () => {
     return (
-        <section className="mt-6 flex gap-6">
+        <section className="mt-6 flex md:flex-row flex-col gap-6">
             <div className="w-full h-[332px] bg-[#EFF9F2] rounded-md py-4 px-2">
                 <h2 className="text-[#192540] text-xl font-medium">Your Plan Benefits</h2>
                 <ul>

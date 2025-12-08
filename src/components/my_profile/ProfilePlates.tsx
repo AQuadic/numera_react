@@ -13,8 +13,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 const ProfilePlates = () => {
     return (
         <section>
-            <div className="w-[348px] bg-[#F0F0F0] rounded-md px-4 py-3 bg-[url('/images/plates/plate_stars.png')] bg-no-repeat bg- bg-position-[center_-0px]">
-                <div className="flex items-center justify-between">
+            <div className="md:w-[348px] w-full bg-[#F0F0F0] rounded-md px-4 py-3 bg-[url('/images/plates/plate_stars.png')] bg-no-repeat bg- bg-position-[center_-0px]">
+                <div className="flex flew items-center justify-between">
                     <div className="flex items-center gap-2">
                         <div className="px-6 py-2 bg-[#B2E3C4] rounded-[20px] text-[#1E7634] font-medium">Active</div>
                         <p className="text-[#717171] text-[10px]">Expires in 25 days</p>
@@ -62,7 +62,7 @@ const ProfilePlates = () => {
                     <p className="text-[#155DFD] text-sm font-medium absolute -top-1 left-4">Available</p>
                 </div>
 
-                <div className="mt-4 flex items-center gap-4">
+                <div className="mt-4 flex flex-wrap items-center gap-4">
                     <div className="flex items-center gap-2">
                         <Views />
                         <p className="text-[#717171] text-[10px] font-medium">999 Views</p>
@@ -78,12 +78,12 @@ const ProfilePlates = () => {
                 </div>
 
                 <div className="flex items-center gap-3 mt-4">
-                    <button className="w-[152px] h-11 rounded-[10px] bg-[#EBAF29] flex items-center justify-center gap-1">
+                    <button className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#EBAF29] flex items-center justify-center gap-1">
                         <Republish />
                         <p className="text-[#192540] text-base font-medium">Republish</p>
                     </button>
 
-                    <button className="w-[152px] h-11 rounded-[10px] bg-[#E4E4E4] flex items-center justify-center gap-1">
+                    <button className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#E4E4E4] flex items-center justify-center gap-1">
                         <PlatePaused />
                         <p className="text-[#192540] text-base font-medium">Pause</p>
                     </button>

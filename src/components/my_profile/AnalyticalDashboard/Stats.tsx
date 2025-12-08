@@ -15,7 +15,7 @@ interface StatsProps {
 const Stats = ({ analytics }: StatsProps) => {
     return (
         <div>
-            <div className="flex items-center gap-6">
+            <div className="flex flex-wrap items-center gap-6">
                 <div className="bg-[#FFF9E0] px-3 py-4 w-full rounded-md">
                     <div className="flex justify-between">
                         <div className="flex items-center gap-3">

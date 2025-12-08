@@ -11,8 +11,8 @@ interface TopPerformingAdsProps {
 const TopPerformingAds = ({ analytics }: TopPerformingAdsProps) => {
     return (
         <div>
-            <div className="mt-6 flex items-center justify-between gap-6">
-                <div className="w-1/2 h-[332px] bg-[#F0F0F0] rounded-md p-4">
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-6">
+                <div className="xl:w-1/2 xl:h-[332px] w-full h-full bg-[#F0F0F0] rounded-md p-4">
                     <h2 className="text-[#192540] text-[32px] font-medium">Top Performing Ads</h2>
                     <div className="mt-1 flex flex-col gap-4">
                         {[1, 2, 3].map((_, index) => (
@@ -52,7 +52,7 @@ const TopPerformingAds = ({ analytics }: TopPerformingAdsProps) => {
                     
             </div>
 
-                <div className="w-1/2 h-[332px] bg-[#F0F0F0] rounded-md p-4">
+                <div className="xl:w-1/2 xl:h-[332px] w-full h-full bg-[#F0F0F0] rounded-md p-4">
                     <h2 className="text-[#192540] text-[32px] font-medium">Traffic Sources</h2>
                     <DonutChart
                         views={analytics?.views ?? 0}
