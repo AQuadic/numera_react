@@ -3,8 +3,8 @@ import Inquiries from "../../icons/profile/Inquiries"
 import ResponseRate from "../../icons/profile/ResponseRate"
 import TotalViews from "../../icons/profile/TotalViews"
 import UpArrow from "../../icons/profile/UpArrow"
-import Filter from "../../icons/home/Filter"
-import Search from "../../icons/home/Search"
+// import Filter from "../../icons/home/Filter"
+// import Search from "../../icons/home/Search"
 import ActiveAds from "../../icons/profile/ActiveAds"
 import type { AnalyticsData } from "../../../lib/api/analytics/getAnalytics";
 
@@ -75,7 +75,7 @@ const Stats = ({ analytics }: StatsProps) => {
 
             </div>
 
-            <div className="flex items-center gap-6 mt-6">
+            {/* <div className="flex items-center gap-6 mt-6">
                 <div className="relative w-full">
                     <input 
                         type="text"
@@ -90,7 +90,7 @@ const Stats = ({ analytics }: StatsProps) => {
                 <div className="lg:w-[78px] w-full h-14 border border-[#F0F0F0] rounded-md flex items-center justify-center gap-3">
                     <Filter />
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }
