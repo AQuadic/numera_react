@@ -7,17 +7,23 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore";
+import { getToken } from "../../lib/axios";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
   const user = useAuthStore((state) => state.user);
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  // Check token directly - it persists in localStorage even on refresh
+  const hasToken = !!getToken();
 
   return (
     <>
       <header className="container py-3 flex items-center justify-between px-4 md:px-10">
-        <Link to='/'>
-          <img src="/images/header/numra_logo.png" className="w-32" />
+        <Link to="/">
+          <img
+            src="/images/header/numra_logo.png"
+            className="w-32"
+            alt="Numra logo"
+          />
         </Link>
 
         <div className="hidden lg:flex items-center gap-6">
@@ -35,13 +41,13 @@ const Header = () => {
         <div className="hidden lg:flex items-center gap-6">
           {/* <Chat /> */}
           <Notifications />
-          {isAuthenticated() && user ? (
+          {hasToken ? (
             <Link
               to="/profile"
               className="bg-[#EBAF29] min-w-[180px] h-14 px-4 rounded-[20px] text-[#192540] text-lg font-semibold flex items-center justify-center gap-2"
             >
               <Profile />
-              {user.name}
+              {user?.name ?? "Account"}
             </Link>
           ) : (
             <Link
@@ -105,14 +111,14 @@ const Header = () => {
                 <Notifications />
               </div>
 
-              {isAuthenticated() && user ? (
+              {hasToken ? (
                 <Link
                   to="/profile"
                   onClick={() => setOpen(false)}
                   className="mt-8 bg-[#EBAF29] w-full py-3 rounded-2xl text-[#192540] text-lg font-semibold flex items-center justify-center gap-2"
                 >
                   <Profile />
-                  {user.name}
+                  {user?.name || "Profile"}
                 </Link>
               ) : (
                 <Link

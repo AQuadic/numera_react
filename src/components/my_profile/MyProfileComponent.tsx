@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Profile from "../icons/header/Profile";
 import Verified from "../icons/plates/Verified";
-import Change_password from "../icons/profile/Change_password";
+import ChangePassword from "../icons/profile/Change_password";
 import Crown from "../icons/profile/Crown";
 import {
   Accordion,
@@ -10,13 +10,27 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion";
-import { changePassword } from "../../lib/api/auth";
+import { changePassword, updateUser } from "../../lib/api/auth";
+import { useAuthStore } from "../../store/useAuthStore";
 
 const MyProfileComponent = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  const user = useAuthStore((s) => s.user);
+  const refetchUser = useAuthStore((s) => s.refetchUser);
+
+  // form state for editable profile fields - initialize from current user
+  const [name, setName] = useState(() => user?.name ?? "");
+
+  useEffect(() => {
+    if (user) {
+      setName(user.name || "");
+    }
+  }, [user]);
 
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,11 +76,13 @@ const MyProfileComponent = () => {
       <div className="w-full p-6 bg-[#F0F0F0] rounded-md flex flex-col items-center justify-center">
         <img
           src="/images/plates/owner_img.jpg"
-          alt="owner image"
+          alt={user?.name ?? "Profile avatar"}
           className="w-[116px] h-[116px] rounded-full"
         />
         <div className="mt-4 flex items-center gap-3">
-          <h2 className="text-[#192540] text-2xl font-medium">Ahmed Mohamed</h2>
+          <h2 className="text-[#192540] text-2xl font-medium">
+            {user?.name ?? "Ahmed Mohamed"}
+          </h2>
           <Verified />
         </div>
 
@@ -128,26 +144,51 @@ const MyProfileComponent = () => {
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              <div className="px-2">
-                <label htmlFor="name" className="text-[#192540] text-base">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  className="w-full h-12 border rounded-md mt-2 px-2"
-                  placeholder="Enter your name"
-                />
-              </div>
-              <div className="px-2 mt-4">
-                <label htmlFor="password" className="text-[#192540] text-base">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  className="w-full h-12 border rounded-md mt-2 px-2"
-                  placeholder="Enter your password"
-                />
-              </div>
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+
+                  if (!name || name.trim().length < 2) {
+                    toast.error("Please enter a valid name");
+                    return;
+                  }
+
+                  setIsUpdating(true);
+                  try {
+                    await updateUser({ name: name.trim() });
+                    // Refetch user to get fresh data from server
+                    await refetchUser();
+                  } catch {
+                    // axios interceptor will show toast; no-op here
+                  } finally {
+                    setIsUpdating(false);
+                  }
+                }}
+                autoComplete="off"
+              >
+                <div className="px-2">
+                  <label htmlFor="name" className="text-[#192540] text-base">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full h-12 border rounded-md mt-2 px-2"
+                    placeholder="Enter your name"
+                  />
+                </div>
+                <div className="px-2 mt-6">
+                  <button
+                    type="submit"
+                    disabled={isUpdating}
+                    className="w-full h-12 bg-[#EBAF29] rounded-md text-[#192540] text-base font-semibold cursor-pointer hover:bg-[#d9a025] transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isUpdating ? "Saving..." : "Save"}
+                  </button>
+                </div>
+              </form>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
@@ -159,7 +200,7 @@ const MyProfileComponent = () => {
           >
             <AccordionTrigger>
               <div className="flex items-center gap-2">
-                <Change_password />
+                <ChangePassword />
                 <p className="text-[#192540] text-base font-medium">
                   Change Password
                 </p>

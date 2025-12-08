@@ -6,10 +6,24 @@ export interface User {
   id: number;
   name: string;
   phone: string;
-  email?: string;
-  avatar?: string;
+  phone_country?: string;
+  phone_normalized?: string;
+  phone_national?: string;
+  phone_e164?: string;
+  phone_verified_at?: string | null;
+  email?: string | null;
+  email_verified_at?: string | null;
+  language?: string;
+  image?: string | null;
   created_at?: string;
   updated_at?: string;
+  city_id?: number | null;
+  country_id?: number | null;
+  is_active?: number;
+  type?: string;
+  company_name?: string | null;
+  verification_status?: string | null;
+  unread_notifications_count?: number;
 }
 
 // API returns `{ user: ..., token: ... }` directly (no status/message), but we also
@@ -119,15 +133,28 @@ export const login = async (payload: LoginRequest): Promise<AuthResponse> => {
  */
 export const getCurrentUser = async (): Promise<UserResponse> => {
   const response = await axios.post("/user/user");
-  const raw = response.data as unknown;
-  const data = raw as
-    | { user?: User }
-    | { data?: User }
-    | { data?: { user?: User } };
-  const user =
-    (data as { user?: User }).user ??
-    (data as { data?: User }).data ??
-    (data as { data?: { user?: User } }).data?.user;
+  const raw = response.data;
+
+  // API returns user directly OR wrapped in { user: ... } or { data: ... }
+  let user: User | undefined;
+
+  if (raw && typeof raw === "object") {
+    if ("id" in raw && "name" in raw) {
+      // User returned directly
+      user = raw as User;
+    } else if ("user" in raw && raw.user) {
+      // Wrapped in { user: ... }
+      user = raw.user as User;
+    } else if ("data" in raw && raw.data) {
+      // Wrapped in { data: ... }
+      const data = raw.data;
+      if ("id" in data && "name" in data) {
+        user = data as User;
+      } else if ("user" in data && data.user) {
+        user = data.user as User;
+      }
+    }
+  }
 
   if (!user) {
     throw new Error("Current user response missing user");
@@ -164,6 +191,28 @@ export const changePassword = async (
     "/user/change_password",
     data
   );
+  return response.data;
+};
+
+// Update user/profile request
+export interface UpdateUserRequest {
+  name?: string;
+  email?: string;
+  phone?: string;
+}
+
+export interface UpdateUserResponse {
+  user?: User;
+  message?: string;
+}
+
+/**
+ * Update current authenticated user's data (e.g. name, email, phone)
+ */
+export const updateUser = async (
+  data: UpdateUserRequest
+): Promise<UpdateUserResponse> => {
+  const response = await axios.post<UpdateUserResponse>("/user/update", data);
   return response.data;
 };
 
