@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import Bike from "../icons/home/Bike";
 import Car from "../icons/home/Car";
 import Phone from "../icons/home/Phone";
@@ -15,7 +16,7 @@ const HomeCategories = () => {
 
         <div className="mt-8 flex flex-wrap gap-6">
             {categories.map((item, i) => (
-            <div
+            <Link to='/plates_filter'
                 key={i}
                 className="md:w-[384px] w-full h-[134px] rounded-md flex flex-col items-center justify-center gap-3"
                 style={{ backgroundColor: item.bg }}
@@ -27,7 +28,7 @@ const HomeCategories = () => {
                     >
                     {item.title}
                 </p>
-            </div>
+            </Link>
             ))}
         </div>
         </section>
