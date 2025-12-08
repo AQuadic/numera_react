@@ -7,3 +7,6 @@ export type {
   SignUpRequest,
   LoginRequest,
 } from "./auth";
+
+export { createSuggestion } from "./suggestions";
+export type { SuggestionRequest, SuggestionResponse } from "./suggestions";
