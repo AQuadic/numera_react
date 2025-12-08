@@ -8,6 +8,7 @@ import Search from "../../icons/home/Search"
 import ActiveAds from "../../icons/profile/ActiveAds"
 import { useQuery } from "@tanstack/react-query";
 import { getAnalytics, type AnalyticsData } from "../../../lib/api/analytics/getAnalytics";
+import Spinner from "../../icons/general/Spinner"
 
 const Stats = () => {
   const { data, isLoading } = useQuery<AnalyticsData>({
@@ -17,7 +18,9 @@ const Stats = () => {
     retry: 2,
   });
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <div className="flex items-center justify-center">
+    <Spinner />
+  </div>
 
     return (
         <div>

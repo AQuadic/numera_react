@@ -35,7 +35,7 @@ const ViewsOverview = () => {
   ];
 
   return (
-    <div className="w-full bg-gray-100 rounded-lg p-6">
+    <div className="w-full bg-gray-100 rounded-lg p-6 mt-4">
       <div className="flex items-center justify-between mb-4">
             <div className="flex items-center justify-between">
                     <h2 className="text-[#192540] text-[32px] font-medium">Views Overview</h2>
