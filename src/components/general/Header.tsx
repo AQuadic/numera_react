@@ -7,6 +7,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -42,7 +43,21 @@ const Header = () => {
 
         <div className="hidden lg:flex items-center gap-6">
           {/* <Chat /> */}
-          <Notifications />
+
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Notifications />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-96">
+              <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Notifications 1</DropdownMenuItem>
+              <DropdownMenuItem>Notifications 2</DropdownMenuItem>
+              <DropdownMenuItem>Notifications 3</DropdownMenuItem>
+              <DropdownMenuItem>Notifications 4</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           {hasUser ? (
             <Link
               to="/profile"
