@@ -11,7 +11,9 @@ import {
   AccordionTrigger,
 } from "../ui/accordion";
 import { changePassword, updateUser } from "../../lib/api/auth";
+import { getAdsCounts } from "../../lib/api/analytics/getAnalytics";
 import { useAuthStore } from "../../store/useAuthStore";
+import type { AdsCounts } from "../../lib/api/analytics/getAnalytics";
 
 const MyProfileComponent = () => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -19,6 +21,8 @@ const MyProfileComponent = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [adsCounts, setAdsCounts] = useState<AdsCounts | null>(null);
+  const [adsLoading, setAdsLoading] = useState(false);
 
   const user = useAuthStore((s) => s.user);
   const refetchUser = useAuthStore((s) => s.refetchUser);
@@ -31,6 +35,51 @@ const MyProfileComponent = () => {
       setName(user.name || "");
     }
   }, [user]);
+
+  // Fetch ads counts
+  useEffect(() => {
+    const fetchAdsCounts = async () => {
+      setAdsLoading(true);
+      try {
+        const counts = await getAdsCounts();
+        setAdsCounts(counts);
+      } catch {
+        // Error handling - silently fail for now
+      } finally {
+        setAdsLoading(false);
+      }
+    };
+
+    fetchAdsCounts();
+  }, []);
+
+  // Calculate "Member since" from created_at
+  const getMemberSince = () => {
+    if (!user?.created_at) return "Member since unknown";
+    const date = new Date(user.created_at);
+    return `Member since ${date.getFullYear()}`;
+  };
+
+  // Get verification status badge
+  const getVerificationStatusText = () => {
+    if (user?.verification_status === "verified") {
+      return "Verified";
+    }
+    if (user?.verification_status === "pending") {
+      return "Pending";
+    }
+    return "Not Verified";
+  };
+
+  const getVerificationStatusStyle = () => {
+    if (user?.verification_status === "verified") {
+      return "bg-[#D5DCF2] text-[#002083]";
+    }
+    if (user?.verification_status === "pending") {
+      return "bg-[#FFF4E6] text-[#FF9800]";
+    }
+    return "bg-[#F5F5F5] text-[#717171]";
+  };
 
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,37 +124,46 @@ const MyProfileComponent = () => {
     <section>
       <div className="w-full p-6 bg-[#F0F0F0] rounded-md flex flex-col items-center justify-center">
         <img
-          src="/images/plates/owner_img.jpg"
+          src={user?.image || "/images/plates/owner_img.jpg"}
           alt={user?.name ?? "Profile avatar"}
-          className="w-[116px] h-[116px] rounded-full"
+          className="w-[116px] h-[116px] rounded-full object-cover"
         />
         <div className="mt-4 flex items-center gap-3">
           <h2 className="text-[#192540] text-2xl font-medium">
-            {user?.name ?? "Ahmed Mohamed"}
+            {user?.name ?? "User"}
           </h2>
-          <Verified />
+          {user?.verification_status === "verified" && <Verified />}
         </div>
 
         <p className="text-[#717171] text-base font-medium mt-2">
-          Premium Dealer
+          {user?.type === "personal" ? "Personal User" : "Business User"}
         </p>
         <p className="text-[#717171] text-base font-medium mt-1">
-          Member since 2019
+          {getMemberSince()}
         </p>
 
         <div className="flex flex-wrap justify-center items-center gap-6 mt-4 lg:mt-6">
           <div className="w-[180px] h-[75px] bg-[#FEFEFE] rounded-[10px] flex flex-col items-center justify-center gap-1">
-            <p className="text-[#192540] text-xl font-medium">14</p>
+            <p className="text-[#192540] text-xl font-medium">
+              {adsLoading ? "-" : adsCounts?.sold_ads ?? 0}
+            </p>
             <p className="text-[#717171] text-base font-medium">Sold Plate</p>
           </div>
 
           <div className="w-[180px] h-[75px] bg-[#FEFEFE] rounded-[10px] flex flex-col items-center justify-center gap-1">
-            <p className="text-[#EBAF29] text-xl font-medium">5</p>
+            <p className="text-[#EBAF29] text-xl font-medium">
+              {adsLoading ? "-" : adsCounts?.active_ads ?? 0}
+            </p>
             <p className="text-[#717171] text-base font-medium">Active ADs</p>
           </div>
 
           <div className="w-[180px] h-[75px] bg-[#FEFEFE] rounded-[10px] flex flex-col items-center justify-center gap-1">
-            <p className="text-[#192540] text-xl font-medium">3</p>
+            <p className="text-[#192540] text-xl font-medium">
+              {user?.created_at
+                ? new Date().getFullYear() -
+                  new Date(user.created_at).getFullYear()
+                : 0}
+            </p>
             <p className="text-[#717171] text-base font-medium">Active Years</p>
           </div>
         </div>
@@ -282,14 +340,16 @@ const MyProfileComponent = () => {
 
       <div className="mt-6 border border-[#F0F0F0] rounded-md px-6 py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Verified />
+          {user?.verification_status === "verified" && <Verified />}
           <p className="text-[#192540] text-base font-medium">
             Account Verification
           </p>
         </div>
 
-        <button className="bg-[#D5DCF2] p-2 text-[#002083] text-sm font-medium rounded-xl">
-          Verified
+        <button
+          className={`p-2 text-sm font-medium rounded-xl ${getVerificationStatusStyle()}`}
+        >
+          {getVerificationStatusText()}
         </button>
       </div>
     </section>
