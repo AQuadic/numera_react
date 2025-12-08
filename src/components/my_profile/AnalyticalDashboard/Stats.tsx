@@ -6,7 +6,19 @@ import UpArrow from "../../icons/profile/UpArrow"
 import Filter from "../../icons/home/Filter"
 import Search from "../../icons/home/Search"
 import ActiveAds from "../../icons/profile/ActiveAds"
+import { useQuery } from "@tanstack/react-query";
+import { getAnalytics, type AnalyticsData } from "../../../lib/api/analytics/getAnalytics";
+
 const Stats = () => {
+  const { data, isLoading } = useQuery<AnalyticsData>({
+    queryKey: ["analytics"],
+    queryFn: getAnalytics,
+    staleTime: 1000 * 60 * 5,
+    retry: 2,
+  });
+
+  if (isLoading) return <p>Loading...</p>;
+
     return (
         <div>
             <div className="flex items-center gap-6">
@@ -14,11 +26,11 @@ const Stats = () => {
                     <div className="flex justify-between">
                         <div className="flex items-center gap-3">
                             <TotalViews />
-                            <p className="text-[#192540] text-[32px] font-medium">1.247</p>
+                            <p className="text-[#192540] text-[32px] font-medium">{data?.total_views}</p>
                         </div>
                         <div className="w-[51px] h-5 bg-[#E4FBDE] rounded-md flex items-center justify-center gap-0.5">
-                            <UpArrow />
-                            <p className="text-[#19AA3D] text-[10px] font-medium">12%</p>
+                        <UpArrow />
+                        <p className="text-[#19AA3D] text-[10px] font-medium">{data?.total_views}%</p>
                         </div>
                     </div>
                     <p className="text-[#717171] text-sm font-medium mt-3">Total Views</p>
@@ -28,11 +40,11 @@ const Stats = () => {
                     <div className="flex justify-between">
                         <div className="flex items-center gap-3">
                             <Inquiries />
-                            <p className="text-[#192540] text-[32px] font-medium">35</p>
+                            <p className="text-[#192540] text-[32px] font-medium">{data?.inquiries}</p>
                         </div>
                         <div className="w-[51px] h-5 bg-[#E4FBDE] rounded-md flex items-center justify-center gap-0.5">
                             <UpArrow />
-                            <p className="text-[#19AA3D] text-[10px] font-medium">12%</p>
+                            <p className="text-[#19AA3D] text-[10px] font-medium">{data?.inquiries}%</p>
                         </div>
                     </div>
                     <p className="text-[#717171] text-sm font-medium mt-3">Inquiries</p>
@@ -42,11 +54,11 @@ const Stats = () => {
                     <div className="flex justify-between">
                         <div className="flex items-center gap-3">
                             <ResponseRate />
-                            <p className="text-[#192540] text-[32px] font-medium">80%</p>
+                            <p className="text-[#192540] text-[32px] font-medium">{data?.response_rate}%</p>
                         </div>
                         <div className="w-[51px] h-5 bg-[#E4FBDE] rounded-md flex items-center justify-center gap-0.5">
                             <UpArrow />
-                            <p className="text-[#19AA3D] text-[10px] font-medium">12%</p>
+                            <p className="text-[#19AA3D] text-[10px] font-medium">{data?.response_rate}%</p>
                         </div>
                     </div>
                     <p className="text-[#717171] text-sm font-medium mt-3">Response Rate</p>
@@ -56,11 +68,11 @@ const Stats = () => {
                     <div className="flex justify-between">
                         <div className="flex items-center gap-3">
                             <ActiveAds />
-                            <p className="text-[#192540] text-[32px] font-medium">5</p>
+                            <p className="text-[#192540] text-[32px] font-medium">{data?.active_ads}</p>
                         </div>
                         <div className="w-[51px] h-5 bg-[#FFF4F4] rounded-md flex items-center justify-center gap-0.5">
                             <DownArrow />
-                            <p className="text-[#D71F1F] text-[10px] font-medium">12%</p>
+                            <p className="text-[#D71F1F] text-[10px] font-medium">{data?.active_ads}%</p>
                         </div>
                     </div>
                     <p className="text-[#717171] text-sm font-medium mt-3">Active Ads</p>

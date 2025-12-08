@@ -1,10 +1,18 @@
+import { useQuery } from "@tanstack/react-query"
 import { Link } from "react-router"
 import { navLinks } from "../../constants/navLinks"
 import Whatsapp from "../icons/footer/Whatsapp"
 import Instagram from "../icons/footer/Instagram"
 import Facebook from "../icons/footer/Facebook"
+import { getPages, type Page } from "../../lib/api/pages/getPages";
+import Spinner from "../icons/general/Spinner"
 
 const Footer = () => {
+  const { data: pages, isLoading } = useQuery<Page[]>({
+    queryKey: ["pages"],
+    queryFn: getPages,
+  });
+
     return (
         <footer className="bg-[#EBAF29] py-[58px]">
             <div className="container">
@@ -27,6 +35,21 @@ const Footer = () => {
                         {link.title}
                         </Link>
                     ))}
+
+                    <div className="">
+                        <div className="flex flex-col items-center md:items-start md:gap-4 gap-2">
+                        {isLoading && <Spinner />}
+                        {pages?.map((page) => (
+                            <Link
+                            key={page.id}
+                            to={`/page/${page.id}`}
+                            className="text-[#192540] text-lg font-medium"
+                            >
+                            {page.title.en}
+                            </Link>
+                        ))}
+                        </div>
+                    </div>
                     </div>
                 </div>
 
