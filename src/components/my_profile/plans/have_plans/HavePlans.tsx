@@ -1,4 +1,5 @@
 import FreePlans from "./FreePlans"
+import PlanSuggestions from "./PlanSuggestions"
 import UsageStatistics from "./UsageStatistics"
 
 const HavePlans = () => {
@@ -6,6 +7,7 @@ const HavePlans = () => {
         <div>
             <FreePlans />
             <UsageStatistics />
+            <PlanSuggestions />
         </div>
     )
 }
