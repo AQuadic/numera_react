@@ -1,13 +1,19 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { ScrollRestoration, useOutlet } from "react-router";
+import { useOutlet, useLocation } from "react-router";
+import { useEffect } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 
 const Layout = () => {
   const outlet = useOutlet();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Use instant scroll for accessibility/UX consistency — change to 'smooth' if preferred
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+  }, [location.pathname]);
   return (
     <div>
-      <ScrollRestoration />
       <Header />
       <AnimatePresence mode="wait">
         <motion.div

@@ -7,13 +7,15 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore";
-import { getToken } from "../../lib/axios";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
   const user = useAuthStore((state) => state.user);
-  // Check token directly - it persists in localStorage even on refresh
-  const hasToken = !!getToken();
+  // Show the user's name when the store has a user; this avoids relying on a
+  // token-only check which can be false when the server uses HttpOnly cookies.
+  // AuthProvider hydrates the store before rendering, so user will be available
+  // immediately when authenticated.
+  const hasUser = !!user;
 
   return (
     <>
@@ -41,13 +43,13 @@ const Header = () => {
         <div className="hidden lg:flex items-center gap-6">
           {/* <Chat /> */}
           <Notifications />
-          {hasToken ? (
+          {hasUser ? (
             <Link
               to="/profile"
               className="bg-[#EBAF29] min-w-[180px] h-14 px-4 rounded-[20px] text-[#192540] text-lg font-semibold flex items-center justify-center gap-2"
             >
               <Profile />
-              {user?.name ?? "Account"}
+              {user?.name}
             </Link>
           ) : (
             <Link
@@ -111,14 +113,14 @@ const Header = () => {
                 <Notifications />
               </div>
 
-              {hasToken ? (
+              {hasUser ? (
                 <Link
                   to="/profile"
                   onClick={() => setOpen(false)}
                   className="mt-8 bg-[#EBAF29] w-full py-3 rounded-2xl text-[#192540] text-lg font-semibold flex items-center justify-center gap-2"
                 >
                   <Profile />
-                  {user?.name || "Profile"}
+                  {user?.name}
                 </Link>
               ) : (
                 <Link
