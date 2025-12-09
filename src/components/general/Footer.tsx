@@ -14,8 +14,13 @@ import Tiktok from "../icons/footer/Tiktok";
 import LinkedIn from "../icons/footer/LinkedIn";
 import Youtube from "../icons/footer/Youtube";
 import X from "../icons/footer/X";
+import { postSubscribe } from "../../lib/api/subscribe";
+import toast from "react-hot-toast";
+import { useState } from "react";
 
 const Footer = () => {
+  const [email, setEmail] = useState("");
+
   const { data: pages, isLoading } = useQuery<Page[]>({
     queryKey: ["pages"],
     queryFn: getPages,
@@ -26,7 +31,18 @@ const Footer = () => {
         queryFn: getSocials,
     });
 
-    console.log("Socials : ", socials)
+    const handleSubscribe = async () => {
+        if (!email) return toast.error("Email is required");
+
+        try {
+        const response = await postSubscribe({ email });
+            toast.dismiss()
+            toast.success(response.message);
+        } catch (error: any) {
+            toast.dismiss()
+            toast.error(error.message || "Something went wrong");
+        }
+    };
 
 
     return (
@@ -90,15 +106,17 @@ const Footer = () => {
 
                 <div className="md:mt-0 mt-4">
                     <h2 className="text-[#192540] text-xl font-semibold md:text-start text-center">Contact Us</h2>
-                    <a
-                        href="https://wa.me/201236547896"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex md:justify-start justify-center gap-2 mt-4"
-                        >
-                        <Whatsapp />
-                        <p className="text-[#192540] text-base">+201236547896</p>
-                    </a>
+                    {socials?.phone && (
+                        <a
+                            href={`tel:${socials.phone}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex md:justify-start justify-center gap-2 mt-4"
+                            >
+                            <Whatsapp />
+                            <p className="text-[#192540] text-base">{socials.phone}</p>
+                        </a>
+                    )}
                 </div>
 
                 <div className="md:mt-0 mt-4">
@@ -109,8 +127,10 @@ const Footer = () => {
                             type="text"
                             className="lg:w-[379px] w-full h-14 border border-[#192540] rounded-2xl px-4 placeholder:text-[#4A4949] "
                             placeholder="Write your email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
-                        <button className="w-[103px] h-14 bg-[#192540] rounded-tr-2xl rounded-br-2xl absolute right-0 xl:-right-17 lg:right-28 md:top-0">
+                        <button onClick={handleSubscribe} className="w-[103px] h-14 bg-[#192540] rounded-tr-2xl rounded-br-2xl absolute right-0 xl:-right-17 lg:right-28 md:top-0 cursor-pointer">
                             <p className="text-[#EBAF29] text-lg font-bold">Send</p>
                         </button>
                     </div>
@@ -159,7 +179,7 @@ const Footer = () => {
                     )}
                     {socials?.twitter && (
                         <a href={socials.twitter} target="_blank" rel="noreferrer">
-                        <X /> {/* Twitter icon */}
+                        <X />
                         </a>
                     )}
                     </div>
