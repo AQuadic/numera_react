@@ -120,3 +120,8 @@ export const getCities = async (): Promise<City[]> => {
   const response = await axios.get<City[]>("/city");
   return response.data;
 };
+
+export const getPlateById = async (id: number): Promise<Plate> => {
+  const response = await axios.get<{ data: Plate }>(`/plates/${id}`);
+  return response.data.data;
+};

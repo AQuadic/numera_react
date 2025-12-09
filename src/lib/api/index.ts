@@ -11,8 +11,8 @@ export type {
 export { createSuggestion } from "./suggestions";
 export type { SuggestionRequest, SuggestionResponse } from "./suggestions";
 
-export { getPlates, getCities } from "./plates";
+export { getPlates, getCities, getPlateById } from "./plates";
 export type { Plate, PlateFilters, City, PaginatedResponse } from "./plates";
 
-export { getSims } from "./sims";
+export { getSims, getSimById } from "./sims";
 export type { Sim, SimFilters, Operator } from "./sims";

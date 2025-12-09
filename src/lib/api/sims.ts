@@ -96,6 +96,7 @@ export const getSims = async (
   filters?: SimFilters
 ): Promise<PaginatedResponse<Sim>> => {
   const params = new URLSearchParams();
+  params.append("pagination", "simple");
 
   if (filters?.numbers) params.append("numbers", filters.numbers);
   if (filters?.price_from)
@@ -108,4 +109,9 @@ export const getSims = async (
 
   const response = await axios.get<PaginatedResponse<Sim>>(url);
   return response.data;
+};
+
+export const getSimById = async (id: number): Promise<Sim> => {
+  const response = await axios.get<{ data: Sim }>(`/sims/${id}`);
+  return response.data.data;
 };
