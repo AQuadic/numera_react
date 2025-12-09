@@ -1,13 +1,20 @@
-const DonutChart = () => {
+interface DonutChartProps {
+  views: number;
+  visitor: number;
+}
+
+const DonutChart = ({ views, visitor }: DonutChartProps) => {
+  const total = views + visitor || 1;
+
   const data = [
-    { label: "user", value: 27, color: "#2D2FF0" },
-    { label: "Visitor", value: 73, color: "#EBAF29" },
+    { label: "Views", value: (views / total) * 100, color: "#2D2FF0" },
+    { label: "Visitors", value: (visitor / total) * 100, color: "#EBAF29" },
   ];
 
   const radius = 70;
   const center = radius + 25;
   const strokeWidth = 28;
-  
+
   let currentAngle = -90;
 
   return (
@@ -25,28 +32,28 @@ const DonutChart = () => {
         {/* Data segments */}
         {data.map((segment, index) => {
           const angle = (segment.value / 100) * 360;
+
+          // Don't draw if value is 0
+          if (angle === 0) return null;
+
           const startAngle = currentAngle;
           const endAngle = currentAngle + angle;
-          
-          // Convert angles to radians
+
           const startRad = (startAngle * Math.PI) / 180;
           const endRad = (endAngle * Math.PI) / 180;
-          
-          // Calculate start and end points
+
           const x1 = center + radius * Math.cos(startRad);
           const y1 = center + radius * Math.sin(startRad);
           const x2 = center + radius * Math.cos(endRad);
           const y2 = center + radius * Math.sin(endRad);
-          
-          // Determine if arc should be large
+
           const largeArc = angle > 180 ? 1 : 0;
-          
-          // Create path
+
           const pathData = `
             M ${x1} ${y1}
             A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2}
           `;
-          
+
           currentAngle += angle;
 
           return (
@@ -70,7 +77,7 @@ const DonutChart = () => {
           className="text-2xl font-medium"
           fill="#192540"
         >
-          73%
+          {Math.round((views / total) * 100)}%
         </text>
       </svg>
 

@@ -7,8 +7,16 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore";
+import { 
+  Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription 
+} from "../ui/dialog";
+// import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import DownloadApp from "./DownloadApp";
+import XIcon from "../icons/header/XIcon";
+import Bell from "../icons/header/Bell";
 
 const Header = () => {
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const user = useAuthStore((state) => state.user);
   // Show the user's name when the store has a user; this avoids relying on a
@@ -29,20 +37,87 @@ const Header = () => {
         </Link>
 
         <div className="hidden lg:flex items-center gap-6">
-          {navLinks.map((link) => (
-            <Link
-              key={link.title}
-              to={link.href}
-              className="text-[#192540] text-lg font-medium hover:text-[#EBAF29] transition"
-            >
-              {link.title}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            if (link.dialog) {
+              return (
+                <Dialog key={link.title}>
+                  <DialogTrigger asChild>
+                    <button className="text-[#192540] text-lg font-medium hover:text-[#EBAF29] transition cursor-pointer">
+                      {link.title}
+                    </button>
+                  </DialogTrigger>
+
+                  <DialogContent className="w-[860px] max-w-full px-0">
+                    <DialogHeader>
+                      <DialogTitle></DialogTitle>
+                      <DialogDescription>
+                        <DownloadApp />
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              );
+            }
+
+            return (
+              <Link key={link.title} to={link.href} className="text-[#192540] text-lg font-medium hover:text-[#EBAF29] transition">
+                {link.title}
+              </Link>
+            );
+          })}
         </div>
 
         <div className="hidden lg:flex items-center gap-6">
           {/* <Chat /> */}
-          <Notifications />
+
+          <button onClick={() => setNotificationsOpen(true)} className="cursor-pointer">
+            <Notifications />
+          </button>
+
+          <AnimatePresence>
+          {notificationsOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setNotificationsOpen(false)}
+              className="fixed inset-0 bg-black z-40"
+            />
+
+                <motion.div
+                  initial={{ x: "100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "100%" }}
+                  transition={{ type: "spring", stiffness: 120 }}
+                  className="fixed top-0 right-0 h-full w-[360px] bg-white shadow-lg z-50 flex flex-col"
+                >
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-[#192540] text-xl font-semibold mb-4 p-6">Notifications</h2>
+                    <button
+                      className="text-3xl mb-6 text-[#192540]"
+                      onClick={() => setNotificationsOpen(false)}
+                    >
+                      <XIcon />
+                    </button>
+                  </div>
+
+
+                  <div className="flex flex-col gap-3 overflow-y-auto relative">
+                    <div className="flex items-center justify-between border-b py-4 bg-[#FDFAF3]">
+                      <div className="flex items-center gap-2 px-6 ">
+                        <Bell />
+                        <p className="text-[#192540] text-sm font-medium">Your plate has been publish .</p>
+                      </div>
+                      <p className="text-[#717171] text-[12px] px-2">10:00 AM</p>
+                    </div>
+                    <div className="absolute w-2 h-2 rounded-full bg-[#D71F1F] top-4 left-9"></div>
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+
           {hasUser ? (
             <Link
               to="/profile"
@@ -96,16 +171,42 @@ const Header = () => {
               </button>
 
               <nav className="flex flex-col gap-5">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.title}
-                    to={link.href}
-                    onClick={() => setOpen(false)}
-                    className="text-[#192540] text-xl font-semibold hover:text-[#EBAF29] transition"
-                  >
-                    {link.title}
-                  </Link>
-                ))}
+                {navLinks.map((link) => {
+                  if (link.dialog) {
+                    return (
+                      <Dialog key={link.title}>
+                        <DialogTrigger asChild>
+                          <button
+                            className="text-[#192540] text-xl font-semibold hover:text-[#EBAF29] transition text-start cursor-pointer"
+                            onClick={() => setOpen(false)}
+                          >
+                            {link.title}
+                          </button>
+                        </DialogTrigger>
+
+                        <DialogContent className="w-[860px] max-w-full px-0">
+                          <DialogHeader>
+                            <DialogTitle></DialogTitle>
+                            <DialogDescription>
+                              <DownloadApp />
+                            </DialogDescription>
+                          </DialogHeader>
+                        </DialogContent>
+                      </Dialog>
+                    );
+                  }
+
+                  return (
+                    <Link
+                      key={link.title}
+                      to={link.href}
+                      onClick={() => setOpen(false)}
+                      className="text-[#192540] text-xl font-semibold hover:text-[#EBAF29] transition"
+                    >
+                      {link.title}
+                    </Link>
+                  );
+                })}
               </nav>
 
               <div className="flex items-center justify-center gap-4 mt-8">

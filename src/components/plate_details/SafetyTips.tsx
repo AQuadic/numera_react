@@ -1,14 +1,19 @@
+import { useQuery } from "@tanstack/react-query";
 import Check from "../icons/plates/Check";
 import Safety from "../icons/plates/Safety";
-
-const tips = [
-  "Always meet in public places.",
-  "Verify seller identity and documents.",
-  "Use secure payment methods.",
-  "Report suspicious activity to NUMRA.",
-];
+import { getSafety, type SafetyResponse } from "../../lib/api/safety";
+import Spinner from "../icons/general/Spinner";
 
 const SafetyTips = () => {
+    const { data, isLoading } = useQuery<SafetyResponse>({
+        queryKey: ["safetyTips"],
+        queryFn: getSafety,
+    });
+
+    if (isLoading) return <div className="flex items-center justify-center">
+        <Spinner />
+    </div>
+
     return (
         <section className="container md:py-10">
         <div className="flex items-center gap-2 mb-4">
@@ -17,10 +22,10 @@ const SafetyTips = () => {
         </div>
 
         <div className="mt-4 flex flex-wrap gap-3">
-            {tips.map((tip, index) => (
+            {data?.tips.map((tipItem, index) => (
             <div key={index} className="flex items-start gap-2">
                 <Check />
-                <p className="text-[#4B5563] text-base font-medium">{tip}</p>
+                <p className="text-[#4B5563] text-base font-medium">{tipItem.tip.en}</p>
             </div>
             ))}
         </div>

@@ -10,7 +10,7 @@ export const navLinks =[
     },
     {
         title: "Sell your plate",
-        href: "/sell_plates"
+        dialog: true
     },
     {
         title: "FAQs",

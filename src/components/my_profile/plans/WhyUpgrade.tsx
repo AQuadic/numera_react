@@ -6,7 +6,7 @@ const WhyUpgrade = () => {
     return (
         <section className="mt-12">
             <h2 className="text-[#192540] text-2xl font-medium">Why Upgrade ?</h2>
-            <div className="mt-8 flex items-center justify-between">
+            <div className="mt-8 flex flex-wrap items-center justify-between lg:gap-0 gap-8">
                 <div className="flex gap-2">
                     <GoldViews />
                     <div>

@@ -8,7 +8,7 @@ import Silver from "../../icons/profile/Silver"
 const PlanCards = () => {
     return (
         <section>
-            <div className="flex items-center justify-between gap-6">
+            <div className="flex lg:flex-row flex-col items-center justify-between gap-6">
                 {/* Silver */}
                 <div className="w-full h-[444px] px-2 py-4 rounded-md bg-[#F1F1F1] flex flex-col justify-between">
                 <div>

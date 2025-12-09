@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import Profile from "../icons/header/Profile";
 import Verified from "../icons/plates/Verified";
 import ChangePassword from "../icons/profile/Change_password";
-import Crown from "../icons/profile/Crown";
+// import Crown from "../icons/profile/Crown";
 import {
   Accordion,
   AccordionContent,
@@ -169,7 +169,7 @@ const MyProfileComponent = () => {
         </div>
       </div>
 
-      <div className="w-full py-4 px-6 bg-[#EBAF29] rounded-md mt-6 flex items-center justify-between">
+      {/* <div className="w-full py-4 px-6 bg-[#EBAF29] rounded-md mt-6 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Crown />
           <div>
@@ -185,7 +185,7 @@ const MyProfileComponent = () => {
         <button className="w-[100px] h-10 bg-[#192540] rounded-md text-[#FEFEFE] text-sm font-semibold cursor-pointer">
           Manage
         </button>
-      </div>
+      </div> */}
 
       <div className="mt-8 flex flex-col gap-6">
         <Accordion type="single" collapsible>

@@ -5,7 +5,7 @@ import Plus from "../../../icons/profile/Plus"
 const FreePlans = () => {
     return (
         <section>
-            <div className="flex items-center gap-6">
+            <div className="flex flex-wrap items-center gap-6">
                 <div className="w-[721px] h-[132px] bg-[#F0F0F0] rounded-md py-4 px-2 flex flex-col justify-between">
                     <div className="flex justify-between">
                         <div className="flex items-center gap-3">

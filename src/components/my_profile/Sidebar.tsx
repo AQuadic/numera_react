@@ -25,8 +25,7 @@ const Sidebar = ({ onSelect, selected }: SidebarProps) => {
     const logout_item = { title: "Log out", icon: <Logout />, id: "logout" };
 
     return (
-        <section className="w-[300px] h-screen bg-[#F0F0F0] pl-6 py-12 flex flex-col justify-between">
-            {/* Top links */}
+        <section className="w-[260px] md:w-[300px] h-full bg-[#F0F0F0] pl-6 lg:py-12 flex flex-col justify-between">
             <div>
                 {sidebar_links.map((item) => (
                     <div

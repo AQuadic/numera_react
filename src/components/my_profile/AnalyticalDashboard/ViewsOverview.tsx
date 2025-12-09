@@ -1,50 +1,52 @@
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select"
-const ViewsOverview = () => {
-  const data = [
-    { day: 1, views: 420 },
-    { day: 2, views: 480 },
-    { day: 3, views: 450 },
-    { day: 4, views: 520 },
-    { day: 5, views: 490 },
-    { day: 6, views: 560 },
-    { day: 7, views: 530 },
-    { day: 8, views: 600 },
-    { day: 9, views: 580 },
-    { day: 10, views: 620 },
-    { day: 11, views: 610 },
-    { day: 12, views: 640 },
-    { day: 13, views: 630 },
-    { day: 14, views: 650 },
-    { day: 15, views: 640 },
-    { day: 16, views: 660 },
-    { day: 17, views: 650 },
-    { day: 18, views: 670 },
-    { day: 19, views: 680 },
-    { day: 20, views: 690 },
-    { day: 21, views: 700 },
-    { day: 22, views: 710 },
-    { day: 23, views: 720 },
-    { day: 24, views: 710 },
-    { day: 25, views: 730 },
-    { day: 26, views: 740 },
-    { day: 27, views: 750 },
-    { day: 28, views: 760 },
-    { day: 29, views: 780 },
-    { day: 30, views: 820 },
-  ];
+import { type AnalyticsData } from "../../../lib/api/analytics/getAnalytics";
+
+interface ViewsOverviewProps {
+  analytics?: AnalyticsData;
+}
+
+const ViewsOverview = ({ analytics }: ViewsOverviewProps) => {
+  const data = analytics?.views_over_days?.map((views, index) => ({
+    day: index + 1,
+    views: views
+  })) || [];
+
+  if (!data.length) {
+    return (
+      <div className="w-full bg-gray-100 rounded-lg p-6 mt-4">
+        <div className="mb-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-[#192540] text-[32px] font-medium">Views Overview</h2>
+            <Select>
+              <SelectTrigger className="w-[212px] mt-4 h-12! flex items-center justify-center">
+                <SelectValue placeholder="last month" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1">last month</SelectItem>
+                <SelectItem value="2">last week</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <div className="w-full h-64 bg-white rounded-lg p-4 flex items-center justify-center">
+          <p className="text-gray-500">No data available</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full bg-gray-100 rounded-lg p-6 mt-4">
-      <div className="flex items-center justify-between mb-4">
+      <div className="mb-4">
             <div className="flex items-center justify-between">
                     <h2 className="text-[#192540] text-[32px] font-medium">Views Overview</h2>
                     <Select>
                         <SelectTrigger className="w-[212px] mt-4 h-12! flex items-center justify-center">
-                        <SelectValue placeholder="last mounth" />
+                        <SelectValue placeholder="last month" />
                         </SelectTrigger>
                         <SelectContent>
-                        <SelectItem value="1">last mounth</SelectItem>
+                        <SelectItem value="1">last month</SelectItem>
                         <SelectItem value="2">last week</SelectItem>
                         </SelectContent>
                     </Select>
@@ -60,7 +62,7 @@ const ViewsOverview = () => {
               axisLine={false}
               tickLine={false}
               tick={{ fill: '#666', fontSize: 12 }}
-              interval={0}
+              interval={Math.floor(data.length / 10) || 0}
             />
             <YAxis hide={true} />
             <defs>
