@@ -7,15 +7,27 @@ import Facebook from "../icons/footer/Facebook";
 import { getPages, type Page } from "../../lib/api/pages/getPages";
 import Spinner from "../icons/general/Spinner";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "../ui/dialog";
-import GooglePlay from "../icons/plates/GooglePlay";
-import AppStore from "../icons/plates/AppStore";
 import DownloadApp from "./DownloadApp";
+import { getSocials, type SocialLinks } from "../../lib/api/getSocials";
+import Snapchat from "../icons/footer/Snapchat";
+import Tiktok from "../icons/footer/Tiktok";
+import LinkedIn from "../icons/footer/LinkedIn";
+import Youtube from "../icons/footer/Youtube";
+import X from "../icons/footer/X";
 
 const Footer = () => {
   const { data: pages, isLoading } = useQuery<Page[]>({
     queryKey: ["pages"],
     queryFn: getPages,
   });
+
+    const { data: socials } = useQuery<SocialLinks, Error>({
+        queryKey: ["socials"],
+        queryFn: getSocials,
+    });
+
+    console.log("Socials : ", socials)
+
 
     return (
         <footer className="bg-[#EBAF29] py-[58px]">
@@ -109,11 +121,48 @@ const Footer = () => {
 
             <div className="flex items-center justify-center gap-4 mt-1">
                 <h2 className="text-[#192540] text-xl font-medium">Follow Us</h2>
-                <div className="flex items-center gap-2">
-                    <Whatsapp />
-                    <Instagram />
-                    <Facebook />
-                </div>
+                <div className="flex items-center gap-2 mt-2">
+                    {socials?.facebook && (
+                        <a href={socials.facebook} target="_blank" rel="noreferrer">
+                        <Facebook />
+                        </a>
+                    )}
+                    {socials?.whatsapp && (
+                        <a href={`https://wa.me/${socials.whatsapp}`} target="_blank" rel="noreferrer">
+                        <Whatsapp />
+                        </a>
+                    )}
+                    {socials?.instagram && (
+                        <a href={socials.instagram} target="_blank" rel="noreferrer">
+                        <Instagram />
+                        </a>
+                    )}
+                    {socials?.snapchat && (
+                        <a href={socials.snapchat} target="_blank" rel="noreferrer">
+                        <Snapchat />
+                        </a>
+                    )}
+                    {socials?.tiktok && (
+                        <a href={socials.tiktok} target="_blank" rel="noreferrer">
+                        <Tiktok />
+                        </a>
+                    )}
+                    {socials?.linkedin && (
+                        <a href={socials.linkedin} target="_blank" rel="noreferrer">
+                        <LinkedIn />
+                        </a>
+                    )}
+                    {socials?.youtube && (
+                        <a href={socials.youtube} target="_blank" rel="noreferrer">
+                        <Youtube />
+                        </a>
+                    )}
+                    {socials?.twitter && (
+                        <a href={socials.twitter} target="_blank" rel="noreferrer">
+                        <X /> {/* Twitter icon */}
+                        </a>
+                    )}
+                    </div>
             </div>
             </div>
         </footer>
