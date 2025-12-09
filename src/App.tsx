@@ -19,6 +19,7 @@ import AuthProvider from "./components/auth/AuthProvider";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import GuestRoute from "./components/auth/GuestRoute";
 import PlatesFilter from "./pages/PlatesFilter";
+import SimsPage from "./pages/SimsPage";
 import PageDetails from "./pages/PageDetails";
 
 function App() {
@@ -34,10 +35,16 @@ function App() {
             <Route path="faq" element={<FAQsPage />} />
             <Route path="contact_us" element={<ContactUsPage />} />
             <Route path="plate_details" element={<PlateDetails />} />
+            <Route path="plate_details/:id" element={<PlateDetails />} />
             <Route path="plates_filter" element={<PlatesFilter />} />
+            <Route path="sims" element={<SimsPage />} />
             <Route path="page/:id" element={<PageDetails />} />
             <Route
               path="phone_number_details"
+              element={<PhoneNumberDetails />}
+            />
+            <Route
+              path="phone_number_details/:id"
               element={<PhoneNumberDetails />}
             />
             <Route path="seller_profile" element={<SellerProfile />} />

@@ -1,39 +1,88 @@
-import { Link } from "react-router"
-import Heart from "../icons/home/Heart"
+import { Link } from "react-router";
+import Heart from "../icons/home/Heart";
+import type { Plate } from "../../lib/api";
 
-const PlateCard = () => {
-    return (
-        <Link to='/plate_details' className="md:w-[282px] w-full rounded-lg bg-[#F0F0F0] py-6 px-2">
-            <div className="flex items-center justify-between">
-                <div className="w-[93px] h-[30px] bg-[#CFEAD6] rounded-md text-[#1E7634] font-medium flex items-center justify-center">
-                    Best Deal
-                </div>
-                <Heart />
-            </div>
-            <img 
-                src="/images/plates/plate_image.png"
-                alt="Plate image"
-                className="mt-6"
-            />
-
-            <div className="mt-6 flex items-center justify-between">
-                <p className="text-[#717171] md:text-sm text-xs font-medium">Category : <span>Premium</span></p>
-                <p className="text-[#1E7634] md:text-sm text-xs font-medium">Available</p>
-            </div>
-
-            <h2 className="text-[#192540] md:text-lg font-medium mt-3">VIP Lucky Numbers</h2>
-
-            <div className="mt-3 flex items-center justify-between">
-                <h2 className="text-[#192540] md:text-xl text-xs font-semibold">
-                85,000 <span className="md:text-sm text-xs relative md:top-1">AED</span>
-                </h2>
-
-                <div className="w-[147px] h-12 bg-[#EBAF29] rounded-[10px] text-[#192540] text-base font-semibold flex items-center justify-center">
-                    View Details
-                </div>
-            </div>
-        </Link>
-    )
+interface PlateCardProps {
+  plate: Plate;
 }
 
-export default PlateCard
+const PlateCard = ({ plate }: PlateCardProps) => {
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("en-AE").format(price);
+  };
+
+  const getVehicleTypeLabel = (type: string) => {
+    const labels: Record<string, string> = {
+      classic: "Classic",
+      bikes: "Bikes",
+      cars: "Cars",
+      fun: "Fun",
+    };
+    return labels[type] || type;
+  };
+
+  return (
+    <Link
+      to={`/plate_details/${plate.id}`}
+      className="md:w-[282px] w-full rounded-lg bg-[#F0F0F0] py-6 px-2 hover:shadow-lg transition-shadow"
+    >
+      <div className="flex items-center justify-between">
+        <div
+          className={`h-[30px] px-3 rounded-md font-medium flex items-center justify-center text-sm ${
+            plate.is_sold
+              ? "bg-[#FFE5E5] text-[#D32F2F]"
+              : "bg-[#CFEAD6] text-[#1E7634]"
+          }`}
+        >
+          {plate.is_sold ? "Sold" : "Available"}
+        </div>
+        <Heart />
+      </div>
+      <img
+        src={plate.image_url}
+        alt={`Plate ${plate.letters}${plate.numbers}`}
+        className="mt-6 w-full h-auto"
+      />
+
+      <div className="mt-6 flex items-center justify-between">
+        <p className="text-[#717171] md:text-sm text-xs font-medium">
+          Type: <span>{getVehicleTypeLabel(plate.vehicle_type)}</span>
+        </p>
+        <p
+          className={`md:text-sm text-xs font-medium ${
+            plate.is_sold ? "text-[#D32F2F]" : "text-[#1E7634]"
+          }`}
+        >
+          {plate.is_sold ? "Sold" : "Available"}
+        </p>
+      </div>
+
+      <h2 className="text-[#192540] md:text-lg font-medium mt-3 truncate">
+        {plate.letters ? `${plate.letters} - ` : ""}
+        {plate.numbers}
+      </h2>
+
+      <div className="mt-3 flex items-center justify-between">
+        <h2 className="text-[#192540] md:text-xl text-lg font-semibold">
+          {formatPrice(plate.price)}{" "}
+          <span className="md:text-sm text-xs relative md:top-1">AED</span>
+        </h2>
+
+        <div className="w-[147px] h-12 bg-[#EBAF29] rounded-[10px] text-[#192540] text-base font-semibold flex items-center justify-center hover:bg-[#d9a01f] transition-colors">
+          View Details
+        </div>
+      </div>
+
+      {/* Negotiable Badge */}
+      {plate.is_negotiable && (
+        <div className="mt-3 text-center">
+          <span className="inline-block px-3 py-1 bg-[#E3F2FD] text-[#1976D2] text-xs font-medium rounded-full">
+            Negotiable
+          </span>
+        </div>
+      )}
+    </Link>
+  );
+};
+
+export default PlateCard;

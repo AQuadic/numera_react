@@ -1,74 +1,43 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router";
-import PlateCard from "../components/home/PlateCard";
-import { getPlates, getCities } from "../lib/api";
-import type { Plate, City, PlateFilters as ApiPlateFilters } from "../lib/api";
+import SimCard from "../components/home/SimCard";
+import { getSims } from "../lib/api";
+import type { Sim, SimFilters as ApiSimFilters } from "../lib/api";
 
-const PlatesFilter = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [plates, setPlates] = useState<Plate[]>([]);
-  const [cities, setCities] = useState<City[]>([]);
+const SimsPage = () => {
+  const [sims, setSims] = useState<Sim[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   // Filter states
-  const [filters, setFilters] = useState<ApiPlateFilters>({
-    emirate_id: undefined,
-    vehicle_types: [],
-    letters: "",
+  const [filters, setFilters] = useState<ApiSimFilters>({
     numbers: "",
     price_from: undefined,
     price_to: undefined,
   });
 
-  // Initialize filters from URL params
+  // Fetch sims
   useEffect(() => {
-    const vehicleTypesParam = searchParams.get("vehicle_types");
-    const vehicleTypes = vehicleTypesParam ? vehicleTypesParam.split(",") : [];
-
-    setFilters((prev) => ({
-      ...prev,
-      vehicle_types: vehicleTypes,
-    }));
-  }, [searchParams]);
-
-  // Fetch cities
-  useEffect(() => {
-    const fetchCities = async () => {
-      try {
-        const citiesData = await getCities();
-        setCities(citiesData);
-      } catch (error) {
-        console.error("Error fetching cities:", error);
-      }
-    };
-
-    fetchCities();
-  }, []);
-
-  // Fetch plates
-  useEffect(() => {
-    const fetchPlates = async () => {
+    const fetchSims = async () => {
       try {
         setLoading(true);
-        const response = await getPlates({
+        const response = await getSims({
           ...filters,
           page: currentPage,
         });
-        setPlates(response.data);
+        setSims(response.data);
         setTotalPages(response.last_page);
       } catch (error) {
-        console.error("Error fetching plates:", error);
+        console.error("Error fetching sims:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPlates();
+    fetchSims();
   }, [filters, currentPage]);
 
-  const handleFilterChange = (key: keyof ApiPlateFilters, value: unknown) => {
+  const handleFilterChange = (key: keyof ApiSimFilters, value: unknown) => {
     setFilters((prev) => ({
       ...prev,
       [key]: value,
@@ -76,47 +45,19 @@ const PlatesFilter = () => {
     setCurrentPage(1);
   };
 
-  const handleVehicleTypeToggle = (type: string) => {
-    setFilters((prev) => {
-      const currentTypes = prev.vehicle_types || [];
-      const newTypes = currentTypes.includes(type)
-        ? currentTypes.filter((t) => t !== type)
-        : [...currentTypes, type];
-
-      // Update URL params
-      const params = new URLSearchParams(searchParams);
-      if (newTypes.length > 0) {
-        params.set("vehicle_types", newTypes.join(","));
-      } else {
-        params.delete("vehicle_types");
-      }
-      setSearchParams(params);
-
-      return {
-        ...prev,
-        vehicle_types: newTypes,
-      };
-    });
-    setCurrentPage(1);
-  };
-
   const clearFilters = () => {
     setFilters({
-      emirate_id: undefined,
-      vehicle_types: [],
-      letters: "",
       numbers: "",
       price_from: undefined,
       price_to: undefined,
     });
-    setSearchParams({});
     setCurrentPage(1);
   };
 
   return (
     <section className="container md:py-[58px] py-5">
       <h2 className="text-[#192540] md:text-[32px] text-2xl font-medium mb-8">
-        All Plates
+        Mobile Numbers
       </h2>
 
       <div className="flex flex-col lg:flex-row gap-8">
@@ -132,87 +73,27 @@ const PlatesFilter = () => {
             </button>
           </div>
 
-          {/* Vehicle Types */}
-          <div className="mb-6">
-            <h4 className="text-sm font-semibold text-[#192540] mb-3">
-              Vehicle Type
-            </h4>
-            <div className="space-y-2">
-              {["cars", "classic", "bikes", "fun"].map((type) => (
-                <label
-                  key={type}
-                  className="flex items-center gap-2 cursor-pointer"
-                >
-                  <input
-                    type="checkbox"
-                    checked={filters.vehicle_types?.includes(type)}
-                    onChange={() => handleVehicleTypeToggle(type)}
-                    className="w-4 h-4 accent-[#EBAF29]"
-                  />
-                  <span className="text-sm text-[#192540] capitalize">
-                    {type}
-                  </span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          {/* Emirate */}
-          <div className="mb-6">
-            <h4 className="text-sm font-semibold text-[#192540] mb-3">
-              Emirate
-            </h4>
-            <select
-              value={filters.emirate_id || ""}
-              onChange={(e) =>
-                handleFilterChange(
-                  "emirate_id",
-                  e.target.value ? Number(e.target.value) : undefined
-                )
-              }
-              className="w-full px-3 py-2 border border-[#F0F0F0] rounded-md text-sm"
-            >
-              <option value="">All Emirates</option>
-              {cities.map((city) => (
-                <option key={city.id} value={city.id}>
-                  {city.name.en}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Letters */}
-          <div className="mb-6">
-            <h4 className="text-sm font-semibold text-[#192540] mb-3">
-              Letters
-            </h4>
-            <input
-              type="text"
-              value={filters.letters || ""}
-              onChange={(e) => handleFilterChange("letters", e.target.value)}
-              placeholder="e.g., A"
-              className="w-full px-3 py-2 border border-[#F0F0F0] rounded-md text-sm"
-            />
-          </div>
-
           {/* Numbers */}
           <div className="mb-6">
             <h4 className="text-sm font-semibold text-[#192540] mb-3">
-              Numbers
+              Search Numbers
             </h4>
             <input
               type="text"
               value={filters.numbers || ""}
               onChange={(e) => handleFilterChange("numbers", e.target.value)}
-              placeholder="e.g., 123"
+              placeholder="e.g., 050"
               className="w-full px-3 py-2 border border-[#F0F0F0] rounded-md text-sm"
             />
+            <p className="text-xs text-[#717171] mt-1">
+              Enter partial number to search
+            </p>
           </div>
 
           {/* Price Range */}
           <div className="mb-6">
             <h4 className="text-sm font-semibold text-[#192540] mb-3">
-              Price Range
+              Price Range (AED)
             </h4>
             <div className="space-y-3">
               <input
@@ -241,9 +122,17 @@ const PlatesFilter = () => {
               />
             </div>
           </div>
+
+          {/* Info Box */}
+          <div className="bg-[#E3F2FD] rounded-lg p-4">
+            <p className="text-xs text-[#1976D2]">
+              💡 Tip: Use the number filter to search for specific patterns or
+              digits in the phone numbers.
+            </p>
+          </div>
         </div>
 
-        {/* Plates Grid */}
+        {/* Sims Grid */}
         <div className="flex-1">
           {loading && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -258,17 +147,20 @@ const PlatesFilter = () => {
             </div>
           )}
 
-          {!loading && plates.length === 0 && (
+          {!loading && sims.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-[#717171] text-lg">No plates found</p>
+              <p className="text-[#717171] text-lg">No mobile numbers found</p>
+              <p className="text-[#717171] text-sm mt-2">
+                Try adjusting your filters
+              </p>
             </div>
           )}
 
-          {!loading && plates.length > 0 && (
+          {!loading && sims.length > 0 && (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {plates.map((plate) => (
-                  <PlateCard key={plate.id} plate={plate} />
+                {sims.map((sim) => (
+                  <SimCard key={sim.id} sim={sim} />
                 ))}
               </div>
 
@@ -308,4 +200,4 @@ const PlatesFilter = () => {
   );
 };
 
-export default PlatesFilter;
+export default SimsPage;
