@@ -1,30 +1,32 @@
+import { useQuery } from "@tanstack/react-query";
+import { getWhyChooseNumra, type ChooseNumraItem } from "../../lib/api/whyChooseNumra";
+import Spinner from "../icons/general/Spinner";
 
 const WhyChooseNumra = () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["whyChooseNumra"],
+    queryFn: getWhyChooseNumra,
+  });
+
+  if (isLoading) return <div className="flex items-center justify-center py-10">
+    <Spinner />
+  </div>
+
     return (
         <section className="container md:py-[58px] py-10">
             <h2 className="text-[#192540] md:text-[32px] text-2xl font-medium">Why Choose <span className="text-[#B48110]">Numra</span></h2>
 
             <div className="md:mt-20 mt-5 flex flex-wrap items-center justify-between gap-8">
-                <div className="relative">
-                    <img src="/images/home/1.png" alt="1" className="md:block hidden absolute -left-16 top-0 text-[240px] font-bold text-[#F0F0F0] select-none -z-10"/>
-                    <img src="/images/home/QuickActionIcon.svg" alt="icon" className="relative z-10" />
-                    <h2 className="text-[#192540] md:text-2xl text-xl font-semibold mt-1">Ease of use at every step</h2>
-                    <p className="w-[315px] text-[#717171] text-sm font-medium mt-3">We provide you with a smooth and effortless experience that allows you to get things done quickly and without complications.</p>
+                {data?.choose_numera.map((item: ChooseNumraItem, index: number) => (
+                <div key={index} className="relative">
+                    <img src={`/images/home/${index + 1}.png`} className="md:block hidden absolute -left-16 top-0 text-[240px] font-bold text-[#F0F0F0] select-none -z-10"/>
+                    <div className="bg-[#FDFAF3] rounded-full w-[86px] h-[86px] flex items-center justify-center">
+                        <img src={item.icon} alt="icon" className="relative z-10 w-[50px] h-[50px] " />
+                    </div>
+                    <h2 className="text-[#192540] md:text-2xl text-xl font-semibold mt-5">{item.Question.en}</h2>
+                    <p className="w-[315px] text-[#717171] text-sm font-medium mt-3">{item.Answer.en}</p>
                 </div>
-
-                <div className="relative">
-                    <img src="/images/home/2.png" alt="2" className="md:block hidden absolute -left-16 top-0 text-[240px] font-bold text-[#F0F0F0] select-none -z-10"/>
-                    <img src="/images/home/CustomerSupportIcon.svg" alt="icon" className="relative z-10" />
-                    <h2 className="text-[#192540] md:text-2xl text-xl font-semibold mt-1">We're here whenever you need us</h2>
-                    <p className="w-[315px] text-[#717171] text-sm font-medium mt-3">Our customer support team is ready to <br /> assist you anytime, 24/7.</p>
-                </div>
-
-                <div className="relative">
-                    <img src="/images/home/3.png" alt="3" className="md:block hidden absolute -left-16 top-0 text-[240px] font-bold text-[#F0F0F0] select-none -z-10"/>
-                    <img src="/images/home/PrivacyIcon.svg" alt="icon" className="relative z-10" />
-                    <h2 className="text-[#192540] md:text-2xl text-xl font-semibold mt-1">Your privacy is our responsibility</h2>
-                    <p className="w-[315px] text-[#717171] text-sm font-medium mt-3">We are committed to the highest standards of <br /> protection to keep your personal data <br /> completely secure.</p>
-                </div>
+            ))}
             </div>
         </section>
     )
