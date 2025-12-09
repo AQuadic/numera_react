@@ -1,4 +1,4 @@
-import { Link } from "react-router"
+// import { Link } from "react-router"
 import Active from "../icons/profile/Active"
 import Paused from "../icons/profile/Paused"
 import Sold from "../icons/profile/Sold"
@@ -73,9 +73,9 @@ const MyAdsComponent = () => {
                 </Tabs>
             </div>
 
-            <Link to='/sell_plates' className="md:w-[440px] h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold mt-8 flex items-center justify-center mx-auto">
+            {/* <Link to='/sell_plates' className="md:w-[440px] h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold mt-8 flex items-center justify-center mx-auto">
                 Add  New ADs
-            </Link>
+            </Link> */}
         </section>
     )
 }
