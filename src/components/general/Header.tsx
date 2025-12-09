@@ -109,7 +109,7 @@ const Header = () => {
                         <Bell />
                         <p className="text-[#192540] text-sm font-medium">Your plate has been publish .</p>
                       </div>
-                      <p className="text-[#717171] text-[12px]">10:00 AM</p>
+                      <p className="text-[#717171] text-[12px] px-2">10:00 AM</p>
                     </div>
                     <div className="absolute w-2 h-2 rounded-full bg-[#D71F1F] top-4 left-9"></div>
                   </div>
