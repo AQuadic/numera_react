@@ -7,7 +7,13 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore";
+import { 
+  Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription 
+} from "../ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import GooglePlay from "../icons/plates/GooglePlay";
+import AppStore from "../icons/plates/AppStore";
+import DownloadApp from "./DownloadApp";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -30,15 +36,34 @@ const Header = () => {
         </Link>
 
         <div className="hidden lg:flex items-center gap-6">
-          {navLinks.map((link) => (
-            <Link
-              key={link.title}
-              to={link.href}
-              className="text-[#192540] text-lg font-medium hover:text-[#EBAF29] transition"
-            >
-              {link.title}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            if (link.dialog) {
+              return (
+                <Dialog key={link.title}>
+                  <DialogTrigger asChild>
+                    <button className="text-[#192540] text-lg font-medium hover:text-[#EBAF29] transition cursor-pointer">
+                      {link.title}
+                    </button>
+                  </DialogTrigger>
+
+                  <DialogContent className="w-[860px] max-w-full px-0">
+                    <DialogHeader>
+                      <DialogTitle></DialogTitle>
+                      <DialogDescription>
+                        <DownloadApp />
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              );
+            }
+
+            return (
+              <Link key={link.title} to={link.href} className="text-[#192540] text-lg font-medium hover:text-[#EBAF29] transition">
+                {link.title}
+              </Link>
+            );
+          })}
         </div>
 
         <div className="hidden lg:flex items-center gap-6">
@@ -111,16 +136,42 @@ const Header = () => {
               </button>
 
               <nav className="flex flex-col gap-5">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.title}
-                    to={link.href}
-                    onClick={() => setOpen(false)}
-                    className="text-[#192540] text-xl font-semibold hover:text-[#EBAF29] transition"
-                  >
-                    {link.title}
-                  </Link>
-                ))}
+                {navLinks.map((link) => {
+                  if (link.dialog) {
+                    return (
+                      <Dialog key={link.title}>
+                        <DialogTrigger asChild>
+                          <button
+                            className="text-[#192540] text-xl font-semibold hover:text-[#EBAF29] transition text-start cursor-pointer"
+                            onClick={() => setOpen(false)}
+                          >
+                            {link.title}
+                          </button>
+                        </DialogTrigger>
+
+                        <DialogContent className="w-[860px] max-w-full px-0">
+                          <DialogHeader>
+                            <DialogTitle></DialogTitle>
+                            <DialogDescription>
+                              <DownloadApp />
+                            </DialogDescription>
+                          </DialogHeader>
+                        </DialogContent>
+                      </Dialog>
+                    );
+                  }
+
+                  return (
+                    <Link
+                      key={link.title}
+                      to={link.href}
+                      onClick={() => setOpen(false)}
+                      className="text-[#192540] text-xl font-semibold hover:text-[#EBAF29] transition"
+                    >
+                      {link.title}
+                    </Link>
+                  );
+                })}
               </nav>
 
               <div className="flex items-center justify-center gap-4 mt-8">

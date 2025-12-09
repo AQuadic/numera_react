@@ -1,11 +1,15 @@
-import { useQuery } from "@tanstack/react-query"
-import { Link } from "react-router"
-import { navLinks } from "../../constants/navLinks"
-import Whatsapp from "../icons/footer/Whatsapp"
-import Instagram from "../icons/footer/Instagram"
-import Facebook from "../icons/footer/Facebook"
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router";
+import { navLinks } from "../../constants/navLinks";
+import Whatsapp from "../icons/footer/Whatsapp";
+import Instagram from "../icons/footer/Instagram";
+import Facebook from "../icons/footer/Facebook";
 import { getPages, type Page } from "../../lib/api/pages/getPages";
-import Spinner from "../icons/general/Spinner"
+import Spinner from "../icons/general/Spinner";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "../ui/dialog";
+import GooglePlay from "../icons/plates/GooglePlay";
+import AppStore from "../icons/plates/AppStore";
+import DownloadApp from "./DownloadApp";
 
 const Footer = () => {
   const { data: pages, isLoading } = useQuery<Page[]>({
@@ -26,7 +30,28 @@ const Footer = () => {
                 <div>
                     <h2 className="text-[#192540] text-xl font-semibold md:text-start text-center">Company</h2>
                     <div className="flex flex-col items-center md:items-start md:gap-4 gap-2 mt-4">
-                        {navLinks.map((link) => (
+                    {navLinks.map((link) => {
+                        if (link.dialog) {
+                        return (
+                            <Dialog key={link.title}>
+                            <DialogTrigger asChild>
+                                <button className="text-[#192540] text-lg font-medium hover:text-[#192540] transition cursor-pointer">
+                                {link.title}
+                                </button>
+                            </DialogTrigger>
+                            <DialogContent className="w-[860px] max-w-full px-0">
+                                <DialogHeader>
+                                <DialogTitle></DialogTitle>
+                                <DialogDescription>
+                                    <DownloadApp />
+                                </DialogDescription>
+                                </DialogHeader>
+                            </DialogContent>
+                            </Dialog>
+                        );
+                        }
+
+                        return (
                         <Link
                         key={link.title}
                         to={link.href}
@@ -34,21 +59,19 @@ const Footer = () => {
                         >
                         {link.title}
                         </Link>
-                    ))}
+                    )})}
 
-                    <div className="">
-                        <div className="flex flex-col items-center md:items-start md:gap-4 gap-2">
+                    <div className="flex flex-col items-center md:items-start md:gap-4 gap-2">
                         {isLoading && <Spinner />}
                         {pages?.map((page) => (
-                            <Link
+                        <Link
                             key={page.id}
                             to={`/page/${page.id}`}
                             className="text-[#192540] text-lg font-medium"
-                            >
+                        >
                             {page.title.en}
-                            </Link>
+                        </Link>
                         ))}
-                        </div>
                     </div>
                     </div>
                 </div>
