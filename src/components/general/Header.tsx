@@ -11,8 +11,6 @@ import {
   Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription 
 } from "../ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import GooglePlay from "../icons/plates/GooglePlay";
-import AppStore from "../icons/plates/AppStore";
 import DownloadApp from "./DownloadApp";
 
 const Header = () => {
