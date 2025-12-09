@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import DeleteIcon from "../icons/plates/DeleteIcon";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import AddPlatesHeader from "./AddPlatesHeader";
@@ -6,20 +7,37 @@ import Warning from "../icons/plates/Warning";
 import { Switch } from "../ui/switch";
 import PlusIcon from "../icons/plates/PlusIcon";
 import { Link } from "react-router";
+import { getCityPlateLetters, type CityPlateLettersResponse } from "../../lib/api/plates/getCityPlateLetters";
+
+const options = ["Private", "Bike", "Classic", "Fun"];
+const cities = [
+  "dubai",
+  "abu_dhuabi",
+  "ajman",
+  "ras_alkhima",
+  "om_qauquan",
+  "fujairah",
+  "sharjah",
+];
 
 const AddPlates = () => {
   const [plates, setPlates] = useState([{}]);
-  const options = ["Private", "bike", "classic", "Fun"];
   const [selectedTypes, setSelectedTypes] = useState(["Private"]);
+  const [selectedCities, setSelectedCities] = useState(["dubai"]);
+  const [selectedCodes, setSelectedCodes] = useState([""]); // store selected letter for each plate
 
   const addPlate = () => {
     setPlates([...plates, {}]);
     setSelectedTypes([...selectedTypes, "Private"]);
+    setSelectedCities([...selectedCities, "dubai"]);
+    setSelectedCodes([...selectedCodes, ""]);
   };
 
   const removePlate = (index: number) => {
     setPlates(plates.filter((_, i) => i !== index));
     setSelectedTypes(selectedTypes.filter((_, i) => i !== index));
+    setSelectedCities(selectedCities.filter((_, i) => i !== index));
+    setSelectedCodes(selectedCodes.filter((_, i) => i !== index));
   };
 
   const selectType = (plateIndex: number, type: string) => {
@@ -28,12 +46,32 @@ const AddPlates = () => {
     setSelectedTypes(updatedTypes);
   };
 
+  const selectCity = (plateIndex: number, city: string) => {
+    const updatedCities = [...selectedCities];
+    updatedCities[plateIndex] = city;
+    setSelectedCities(updatedCities);
+  };
+
+  const selectCode = (plateIndex: number, code: string) => {
+    const updatedCodes = [...selectedCodes];
+    updatedCodes[plateIndex] = code;
+    setSelectedCodes(updatedCodes);
+  };
+
     return (
         <div>
         <AddPlatesHeader />
         <div className="mt-8 container space-y-8">
-            {plates.map((_, index) => (
-            <div key={index} className=" pb-6">
+            {plates.map((_, index) => {
+            const { data: lettersData, isLoading } = useQuery<CityPlateLettersResponse>({
+                queryKey: ["cityPlateLetters", selectedCities[index], selectedTypes[index]],
+                queryFn: () => getCityPlateLetters(selectedCities[index], selectedTypes[index]),
+                enabled: !!selectedCities[index] && !!selectedTypes[index],
+                });
+
+
+        return (
+            <div key={index} className="pb-6">
                 <div className="flex items-center justify-between">
                 <h2 className="text-[#192540] text-[32px] font-medium">Plate #{index + 1}</h2>
                 <DeleteIcon className="cursor-pointer" onClick={() => removePlate(index)} />
@@ -45,12 +83,18 @@ const AddPlates = () => {
                 </label>
                 <Select>
                     <SelectTrigger className="w-full mt-4 h-12!">
-                    <SelectValue placeholder="Dubai" />
+                    <SelectValue placeholder={selectedCities[index]} />
                     </SelectTrigger>
                     <SelectContent>
-                    <SelectItem value="1">Dubai</SelectItem>
-                    <SelectItem value="2">Dubai</SelectItem>
-                    <SelectItem value="3">Dubai</SelectItem>
+                        {cities.map((city) => (
+                        <SelectItem
+                            key={city}
+                            value={city}
+                            onClick={() => selectCity(index, city)}
+                        >
+                            {city.charAt(0).toUpperCase() + city.slice(1)}
+                        </SelectItem>
+                        ))}
                     </SelectContent>
                 </Select>
                 </div>
@@ -79,13 +123,29 @@ const AddPlates = () => {
                     <label className="text-[#192540] text-base font-medium">Code</label>
                     <Select>
                     <SelectTrigger className="w-full mt-4 h-12!">
-                        <SelectValue placeholder="Dubai" />
+                        <SelectValue placeholder={selectedCodes[index] || "Select code"} />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="1">1</SelectItem>
-                        <SelectItem value="2">2</SelectItem>
-                        <SelectItem value="3">3</SelectItem>
-                    </SelectContent>
+                    {isLoading ? (
+                            <SelectItem value="loading" disabled>
+                            Loading...
+                            </SelectItem>
+                        ) : lettersData?.letters && lettersData.letters.length > 0 ? (
+                            lettersData.letters.map((letter) => (
+                            <SelectItem
+                                key={letter}
+                                value={letter}
+                                onClick={() => selectCode(index, letter)}
+                            >
+                                {letter}
+                            </SelectItem>
+                            ))
+                        ) : (
+                            <SelectItem value="no-letters" disabled>
+                            No letters available
+                            </SelectItem>
+                        )}
+                        </SelectContent>
                     </Select>
                 </div>
 
@@ -139,7 +199,7 @@ const AddPlates = () => {
                     </div>
                 </div>
             </div>
-            ))}
+            )})}
 
         </div>
         </div>
