@@ -29,8 +29,8 @@ const PlateCard = ({ plate }: PlateCardProps) => {
       to={`/plate_details/${plate.id}`}
       className="md:w-[282px] w-full rounded-lg bg-[#F0F0F0] py-6 px-2 hover:shadow-lg transition-shadow"
     >
-      <div className="flex items-center justify-between">
-        <div
+      <div className="flex items-center justify-end">
+        {/* <div
           className={`h-[30px] px-3 rounded-md font-medium flex items-center justify-center text-sm ${
             plate.is_sold
               ? "bg-[#FFE5E5] text-[#D32F2F]"
@@ -38,7 +38,7 @@ const PlateCard = ({ plate }: PlateCardProps) => {
           }`}
         >
           {plate.is_sold ? "Sold" : "Available"}
-        </div>
+        </div> */}
         <Heart />
       </div>
       <div className="mt-6 w-full min-h-[150px] h-auto bg-white rounded relative">
@@ -92,7 +92,7 @@ const PlateCard = ({ plate }: PlateCardProps) => {
       </div>
 
       {/* Negotiable Badge: keep a placeholder so all cards maintain equal height */}
-      <div className="mt-3 text-center h-8 flex items-center justify-center">
+      {/* <div className="mt-3 text-center h-8 flex items-center justify-center">
         {plate.is_negotiable ? (
           <span className="inline-block px-3 py-1 bg-[#E3F2FD] text-[#1976D2] text-xs font-medium rounded-full">
             Negotiable
@@ -102,7 +102,7 @@ const PlateCard = ({ plate }: PlateCardProps) => {
             Negotiable
           </span>
         )}
-      </div>
+      </div> */}
     </Link>
   );
 };
