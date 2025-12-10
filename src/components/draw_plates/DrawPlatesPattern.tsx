@@ -35,7 +35,7 @@ const DrawPlatesPattern = () => {
   };
 
             return (
-              <section className="px-4">
+              <section className="px-4 container">
                 <div
                   className="w-96 h-72 border flex flex-col justify-end mx-auto mb-2"
                   style={{ backgroundColor: bgColor }}
