@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { useState } from "react";
 import Heart from "../icons/home/Heart";
 import type { Sim } from "../../lib/api";
 
@@ -7,6 +8,8 @@ interface SimCardProps {
 }
 
 const SimCard = ({ sim }: SimCardProps) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-AE").format(price);
   };
@@ -30,12 +33,25 @@ const SimCard = ({ sim }: SimCardProps) => {
       </div>
 
       {/* Operator Logo */}
-      <div className="mt-6 flex items-center justify-center h-24">
+      <div className="mt-6 flex items-center justify-center h-24 relative">
+        {!imageLoaded && sim.operator?.image?.url && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded animate-pulse">
+            <img
+              src="/images/header/numra_logo.png"
+              alt="Loading"
+              className="w-16 h-16 object-contain opacity-30"
+            />
+          </div>
+        )}
         {sim.operator?.image?.url && (
           <img
             src={sim.operator.image.url}
             alt={sim.operator.name.en}
-            className="max-h-full max-w-full object-contain"
+            className={`max-h-full max-w-full object-contain transition-opacity duration-300 ${
+              imageLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            onLoad={() => setImageLoaded(true)}
+            onError={() => setImageLoaded(true)}
           />
         )}
       </div>
@@ -75,14 +91,18 @@ const SimCard = ({ sim }: SimCardProps) => {
         </div>
       </div>
 
-      {/* Negotiable Badge */}
-      {sim.is_negotiable && (
-        <div className="mt-3 text-center">
+      {/* Negotiable Badge: keep a placeholder so all cards maintain equal height */}
+      <div className="mt-3 text-center h-8 flex items-center justify-center">
+        {sim.is_negotiable ? (
           <span className="inline-block px-3 py-1 bg-[#E3F2FD] text-[#1976D2] text-xs font-medium rounded-full">
             Negotiable
           </span>
-        </div>
-      )}
+        ) : (
+          <span className="inline-block px-3 py-1 text-xs font-medium rounded-full invisible">
+            Negotiable
+          </span>
+        )}
+      </div>
     </Link>
   );
 };

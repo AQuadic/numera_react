@@ -123,13 +123,7 @@ const SimsPage = () => {
             </div>
           </div>
 
-          {/* Info Box */}
-          <div className="bg-[#E3F2FD] rounded-lg p-4">
-            <p className="text-xs text-[#1976D2]">
-              💡 Tip: Use the number filter to search for specific patterns or
-              digits in the phone numbers.
-            </p>
-          </div>
+          {/* Info Box - removed per design request */}
         </div>
 
         {/* Sims Grid */}
