@@ -10,13 +10,18 @@ import SoldActions from "../icons/profile/SoldActions"
 import Views from "../icons/profile/Views"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 
-const ProfilePlates = () => {
+interface ProfilePlatesProps {
+  plate: any;
+}
+
+const ProfilePlates = ({ plate }: ProfilePlatesProps) => {
+    if (!plate) return null;
     return (
         <section>
-            <div className="md:w-[348px] w-full bg-[#F0F0F0] rounded-md px-4 py-3 bg-[url('/images/plates/plate_stars.png')] bg-no-repeat bg- bg-position-[center_-0px]">
+            <div className="md:w-[348px] w-full bg-[#F0F0F0] rounded-md px-4 py-3 bg-[url('/images/plates/plate_stars.png')] bg-no-repeat bg-position-[center_-0px]">
                 <div className="flex flew items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <div className="px-6 py-2 bg-[#B2E3C4] rounded-[20px] text-[#1E7634] font-medium">Active</div>
+                        <div className="px-6 py-2 bg-[#B2E3C4] rounded-[20px] text-[#1E7634] font-medium">{plate.is_active ? "Active" : plate.is_sold ? "Sold" : "Paused"}</div>
                         <p className="text-[#717171] text-[10px]">Expires in 25 days</p>
                     </div>
 
@@ -45,35 +50,50 @@ const ProfilePlates = () => {
                     </Popover>
                 </div>
 
-                <div className="mt-3 flex gap-4">
-                    <img src="/images/plates/plate_img.png" />
+                <div className="mt-3 flex flex-wrap gap-4">
+                    <img src={plate.image_url} alt="plate" />
                     <div>
                         <h2 className="text-[#192540] text-base font-medium">
-                            5,000 <span className="text-base relative top-1">AED</span>
+                            {plate.price} <span className="text-base relative top-1">AED</span>
                         </h2>
-                        <h2 className="text-[#A3A3A3] text-sm font-medium">
-                            6,000 <span className="text-sm relative top-1">AED</span>
-                        </h2>
-                        <p className="text-[#0B7726] text-sm font-normal mt-2">Negotiable</p>
+
+                        {plate.old_price && (
+                            <h2 className="text-[#A3A3A3] text-sm font-medium">
+                                {plate.old_price} <span className="text-sm relative top-1">AED</span>
+                            </h2>
+                        )}
+
+                        {plate.is_negotiable && (
+                            <p className="text-[#0B7726] text-sm font-normal mt-2">Negotiable</p>
+                        )}
                     </div>
                 </div>
+
                 <div className="mt-2 relative">
-                    <img src="/images/plates/available_img.png" alt="bg"/> 
-                    <p className="text-[#155DFD] text-sm font-medium absolute -top-1 left-4">Available</p>
+                    <img src="/images/plates/available_img.png" alt="bg" />
+                    <p className="text-[#155DFD] text-sm font-medium absolute -top-1 left-4">
+                        {plate.is_sold ? "Sold" : "Available"}
+                    </p>
                 </div>
 
                 <div className="mt-4 flex flex-wrap items-center gap-4">
                     <div className="flex items-center gap-2">
                         <Views />
-                        <p className="text-[#717171] text-[10px] font-medium">999 Views</p>
+                        <p className="text-[#717171] text-[10px] font-medium">
+                            {plate.views_count} Views
+                        </p>
                     </div>
                     <div className="flex items-center gap-2">
                         <Heart />
-                        <p className="text-[#717171] text-[10px] font-medium">999 Views</p>
+                        <p className="text-[#717171] text-[10px] font-medium">
+                            {plate.favorites_count} Favorites
+                        </p>
                     </div>
                     <div className="flex items-center gap-2">
                         <Chat />
-                        <p className="text-[#717171] text-[10px] font-medium">999 Views</p>
+                        <p className="text-[#717171] text-[10px] font-medium">
+                            {plate.chats_count} Chats
+                        </p>
                     </div>
                 </div>
 

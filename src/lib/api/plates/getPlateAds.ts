@@ -2,20 +2,30 @@ import { axios } from "../../axios";
 
 export interface PlateAd {
   id: number;
-  emirate_id: number;
+  package_user_id?: number;
+  user_id?: number;
+  vehicle_type: "cars" | "fun" | "bikes" | "classic";
+  emirate_id: string;
   price: number;
-  vehicle_type: string;
   numbers: string;
   letters: string;
   status: string;
   created_at: string;
+  updated_at?: string;
+  is_active: boolean;
+  is_sold: boolean;
+  is_negotiable: boolean;
+  image_url?: string;
+  share_url?: string;
+  published_at?: string;
+  published_until?: string;
 }
 
 export interface GetPlateAdsParams {
   per_page?: number; 
   filter_type?: "active" | "paused_at" | "sold" | "none";
   pagination?: "normal" | "simple" | "none";
-  vehicle_types?: string[];
+  vehicle_types?: ("bikes" | "cars" | "fun" | "classic")[];
 }
 
 export interface GetPlateAdsResponse {
