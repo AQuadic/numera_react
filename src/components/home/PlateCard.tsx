@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { useState } from "react";
-import Heart from "../icons/home/Heart";
+// import Heart from "../icons/home/Heart";
 import type { Plate } from "../../lib/api";
 
 interface PlateCardProps {
@@ -39,7 +39,7 @@ const PlateCard = ({ plate }: PlateCardProps) => {
         >
           {plate.is_sold ? "Sold" : "Available"}
         </div> */}
-        <Heart />
+        {/* <Heart /> */}
       </div>
       <div className="mt-6 w-full min-h-[150px] h-auto bg-white rounded relative">
         {!imageLoaded && (

@@ -1,4 +1,4 @@
-import Heart from "../icons/home/Heart";
+// import Heart from "../icons/home/Heart";
 import Share from "../icons/plates/Share";
 import type { Plate } from "../../lib/api";
 
@@ -119,7 +119,7 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
 
           <div className="flex items-center md:gap-8 gap-4">
             <Share />
-            <Heart />
+            {/* <Heart /> */}
           </div>
         </div>
       </div>
