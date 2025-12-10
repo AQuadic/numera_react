@@ -1,12 +1,34 @@
 // import { Link } from "react-router"
+import { useQuery } from "@tanstack/react-query"
 import Active from "../icons/profile/Active"
 import Paused from "../icons/profile/Paused"
 import Sold from "../icons/profile/Sold"
 import TotalAds from "../icons/profile/TotalAds"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import ProfilePlates from "./ProfilePlates"
+import { getPlateAds } from "../../lib/api/plates/getPlateAds"
+import Spinner from "../icons/general/Spinner"
 
 const MyAdsComponent = () => {
+
+const { data, isLoading } = useQuery({
+    queryKey: ["plateAds", { per_page: 15, filter_type: "active" }],
+    queryFn: () =>
+        getPlateAds({
+        per_page: 15,
+        filter_type: "active",
+        pagination: "normal",
+        vehicle_types: ["Car", "Fun"],
+        }),
+    });
+
+    if (isLoading)
+        return (
+        <div className="flex items-center justify-center">
+            <Spinner />
+        </div>
+        );
+
     return (
         <section>
             <div className="flex flex-wrap items-center justify-center md:gap-[68px] gap-4">
