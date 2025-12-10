@@ -6,6 +6,12 @@ import X from "../icons/contact/X";
 import Instagram from "../icons/footer/Instagram";
 import Whatsapp from "../icons/footer/Whatsapp";
 import { createSuggestion, getErrorMessage } from "../../lib/api";
+import { useQuery } from "@tanstack/react-query";
+import { getSocials, type SocialLinks } from "../../lib/api/getSocials";
+import Snapchat from "../icons/footer/Snapchat";
+import Tiktok from "../icons/footer/Tiktok";
+import LinkedIn from "../icons/footer/LinkedIn";
+import Youtube from "../icons/footer/Youtube";
 
 const ContactUsForm: React.FC = () => {
   const [name, setName] = useState("");
@@ -14,6 +20,11 @@ const ContactUsForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { data: socials } = useQuery<SocialLinks, Error>({
+    queryKey: ["socials"],
+    queryFn: getSocials,
+});
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -148,12 +159,16 @@ const ContactUsForm: React.FC = () => {
               <p className="text-[#192540] text-base font-medium">
                 Phone Number
               </p>
-              <a
-                href="https://wa.me/+971 586144848"
-                className="text-[#192540] text-xl font-medium"
-              >
-                +971 586144848
-              </a>
+              {socials?.phone && (
+                  <a
+                      href={`tel:${socials.phone}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#192540] text-xl font-medium"
+                    >
+                      <p className="text-[#192540] text-base">{socials.phone}</p>
+                  </a>
+              )}
             </div>
           </div>
 
@@ -161,12 +176,15 @@ const ContactUsForm: React.FC = () => {
             <Email />
             <div>
               <p className="text-[#192540] text-base font-medium">Email</p>
-              <a
-                href="mailto:Numra@gmail.com"
-                className="text-[#192540] text-xl font-medium"
-              >
-                Numra@gmail.com
-              </a>
+
+              {socials?.email && (
+                <a
+                  href={`mailto:${socials.email}`}
+                  className="text-[#192540] text-xl font-medium"
+                >
+                  {socials.email}
+                </a>
+              )}
             </div>
           </div>
 
@@ -176,11 +194,47 @@ const ContactUsForm: React.FC = () => {
             Connect With Us
           </h2>
 
-          <div className="flex items-center gap-6 mt-4">
-            <Facebook />
-            <Whatsapp />
-            <Instagram />
-            <X />
+          <div className="flex items-center gap-2 mt-2">
+              {socials?.facebook && (
+                  <a href={socials.facebook} target="_blank" rel="noreferrer">
+                  <Facebook />
+                  </a>
+              )}
+              {socials?.whatsapp && (
+                  <a href={`https://wa.me/${socials.whatsapp}`} target="_blank" rel="noreferrer">
+                  <Whatsapp />
+                  </a>
+              )}
+              {socials?.instagram && (
+                  <a href={socials.instagram} target="_blank" rel="noreferrer">
+                  <Instagram />
+                  </a>
+              )}
+              {socials?.snapchat && (
+                  <a href={socials.snapchat} target="_blank" rel="noreferrer">
+                  <Snapchat />
+                  </a>
+              )}
+              {socials?.tiktok && (
+                  <a href={socials.tiktok} target="_blank" rel="noreferrer">
+                  <Tiktok />
+                  </a>
+              )}
+              {socials?.linkedin && (
+                  <a href={socials.linkedin} target="_blank" rel="noreferrer">
+                  <LinkedIn />
+                  </a>
+              )}
+              {socials?.youtube && (
+                  <a href={socials.youtube} target="_blank" rel="noreferrer">
+                  <Youtube />
+                  </a>
+              )}
+              {socials?.twitter && (
+                  <a href={socials.twitter} target="_blank" rel="noreferrer">
+                  <X />
+                  </a>
+              )}
           </div>
         </div>
       </div>

@@ -14,6 +14,10 @@ import {
 import DownloadApp from "./DownloadApp";
 import XIcon from "../icons/header/XIcon";
 import Bell from "../icons/header/Bell";
+import { useQuery } from "@tanstack/react-query";
+import { getBroadcastNotifications } from "../../lib/api/notifications/getNotifications";
+import NotificationsEmptyState from "./NotificationsEmptyState";
+import Spinner from "../icons/general/Spinner";
 
 const Header = () => {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -24,6 +28,13 @@ const Header = () => {
   // AuthProvider hydrates the store before rendering, so user will be available
   // immediately when authenticated.
   const hasUser = !!user;
+
+  const { data: notificationsData, isLoading } = useQuery({
+    queryKey: ["broadcastNotifications"],
+    queryFn: () => getBroadcastNotifications({ per_page: 10, pagination: "simple" }),
+  });
+
+  const notifications = notificationsData?.data ?? [];
 
   return (
     <>
@@ -37,9 +48,8 @@ const Header = () => {
         </Link>
 
         <div className="hidden lg:flex items-center gap-6">
-          {navLinks.map((link) => {
-            if (link.dialog) {
-              return (
+          {navLinks.map((link) =>
+            link.dialog ? (
                 <Dialog key={link.title}>
                   <DialogTrigger asChild>
                     <button className="text-[#192540] text-lg font-medium hover:text-[#EBAF29] transition cursor-pointer">
@@ -56,22 +66,22 @@ const Header = () => {
                     </DialogHeader>
                   </DialogContent>
                 </Dialog>
-              );
-            }
-
-            return (
+              ) : (
               <Link key={link.title} to={link.href} className="text-[#192540] text-lg font-medium hover:text-[#EBAF29] transition">
                 {link.title}
               </Link>
-            );
-          })}
+            )
+          )}
         </div>
 
         <div className="hidden lg:flex items-center gap-6">
           {/* <Chat /> */}
 
-          <button onClick={() => setNotificationsOpen(true)} className="cursor-pointer">
+          <button onClick={() => setNotificationsOpen(true)} className="relative cursor-pointer">
             <Notifications />
+            {notifications.length > 0 && (
+              <span className="absolute top-0 right-0 w-2 h-2 rounded-full bg-[#D71F1F]" />
+            )}
           </button>
 
           <AnimatePresence>
@@ -102,16 +112,22 @@ const Header = () => {
                     </button>
                   </div>
 
-
-                  <div className="flex flex-col gap-3 overflow-y-auto relative">
-                    <div className="flex items-center justify-between border-b py-4 bg-[#FDFAF3]">
-                      <div className="flex items-center gap-2 px-6 ">
-                        <Bell />
-                        <p className="text-[#192540] text-sm font-medium">Your plate has been publish .</p>
+                  <div className="flex-1 flex flex-col gap-3 overflow-y-auto px-2 pb-4">
+                    {isLoading && <div className="flex items-center justify-center">
+                      <Spinner />
+                    </div> }
+                    {!isLoading && notifications.length === 0 && <NotificationsEmptyState />}
+                    {notifications.map((notification) => (
+                      <div key={notification.id} className="flex items-center justify-between border-b py-4 bg-[#FDFAF3] px-4">
+                        <div className="flex items-center gap-2">
+                          <Bell />
+                          <p className="text-[#192540] text-sm font-medium">{notification.message}</p>
+                        </div>
+                        <p className="text-[#717171] text-[12px]">
+                          {new Date(notification.created_at).toLocaleTimeString()}
+                        </p>
                       </div>
-                      <p className="text-[#717171] text-[12px] px-2">10:00 AM</p>
-                    </div>
-                    <div className="absolute w-2 h-2 rounded-full bg-[#D71F1F] top-4 left-9"></div>
+                    ))}
                   </div>
                 </motion.div>
               </>

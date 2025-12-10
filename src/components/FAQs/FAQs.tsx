@@ -41,17 +41,20 @@ const FAQs = () => {
                 {faqData.map((item, i) => (
                 <AccordionItem key={item.id} value={`item-${i}`} className="mt-6">
                     <AccordionTrigger
-                    className="text-[#192540] text-base font-medium flex items-center justify-between
+                    className="group text-[#192540] text-base font-medium flex items-center justify-between
                                 [&>svg]:hidden 
-                                data-[state=open]:bg-[#FDFAF3] data-[state=open]:border-none 
-                                bg-white px-3 py-2 rounded-md border"
+                                bg-white px-3 py-2 rounded-md border
+                                data-[state=open]:bg-[#FDFAF3] data-[state=open]:border-none"
                     >
-                    <span className="text-[#192540] text-2xl font-medium">
-                      {item.question.en}
-                    </span>
 
-                    <span className="text-xl font-bold block data-[state=open]:hidden">+</span>
-                    <span className="text-xl font-bold hidden data-[state=open]:block">−</span>
+                      <span className="text-[#192540] text-2xl font-medium">
+                        {item.question.en}
+                      </span>
+
+                      <div>
+                        <span className="text-xl font-bold group-data-[state=open]:hidden">+</span>
+                        <span className="text-xl font-bold hidden group-data-[state=open]:block">−</span>
+                      </div>
                     </AccordionTrigger>
 
                     <AccordionContent className="bg-[#FDFAF3] px-3 py-2 rounded-b-md">
