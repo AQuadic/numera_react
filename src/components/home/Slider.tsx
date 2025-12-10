@@ -31,11 +31,13 @@ export default function SimpleSlider() {
 
             return (
             <div key={i}>
+              <a href={item.url} target="_blank" rel="noopener noreferrer">
                 <img
                 src={imageUrl}
                 alt={item.name}
-                className="rounded-[50px] w-full md:h-[597px]"
+                className="rounded-[50px] w-full md:h-[597px] cursor-pointer"
                 />
+              </a>
             </div>
             );
         })}
