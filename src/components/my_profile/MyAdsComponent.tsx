@@ -94,7 +94,7 @@ const MyAdsComponent = () => {
                         <TabsTrigger value="all">All ADs</TabsTrigger>
                         <TabsTrigger value="active">Active</TabsTrigger>
                         <TabsTrigger value="sold">Sold</TabsTrigger>
-                        <TabsTrigger value="paused">Paused</TabsTrigger>
+                        <TabsTrigger value="paused_at">Paused</TabsTrigger>
                     </TabsList>
                     <TabsContent value={tab}>
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
