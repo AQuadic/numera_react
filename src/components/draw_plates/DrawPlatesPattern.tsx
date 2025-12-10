@@ -67,7 +67,7 @@ const DrawPlatesPattern = () => {
 
                 <div className="flex flex-wrap items-center gap-4 mt-4 w-full">
                   <Select onValueChange={setEmirate}>
-                    <SelectTrigger className="lg:w-80 w-full h-12!">
+                    <SelectTrigger className="lg:w-72 w-full h-12!">
                       <SelectValue placeholder="Emirate" />
                     </SelectTrigger>
                     <SelectContent>
@@ -83,7 +83,7 @@ const DrawPlatesPattern = () => {
 
                   <input
                     type="text"
-                    className="lg:w-80 w-full h-12 border rounded-md px-4"
+                    className="lg:w-72 w-full h-12 border rounded-md px-4"
                     placeholder="Letters"
                     value={letters}
                     onChange={(e) => setLetters(e.target.value)}
@@ -91,7 +91,7 @@ const DrawPlatesPattern = () => {
 
                   <input
                     type="text"
-                    className="lg:w-80 w-full h-12 border rounded-md px-4"
+                    className="lg:w-72 w-full h-12 border rounded-md px-4"
                     placeholder="Number"
                     value={numbers}
                     onChange={(e) => setNumbers(e.target.value)}
@@ -99,7 +99,7 @@ const DrawPlatesPattern = () => {
 
                 <input 
                     type="text"
-                    className="lg:w-80 w-full h-12 border rounded-md px-4"
+                    className="lg:w-72 w-full h-12 border rounded-md px-4"
                     placeholder="Price"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
