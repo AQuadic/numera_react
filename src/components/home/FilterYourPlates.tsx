@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import Filter from "../icons/home/Filter";
-import Search from "../icons/home/Search";
 import PlateCard from "./PlateCard";
 import { getPlates } from "../../lib/api";
 import type { Plate } from "../../lib/api";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import FilterComponent from "../general/FilterComponent";
 
 const FilterYourPlates = () => {
   const [plates, setPlates] = useState<Plate[]>([]);
@@ -34,21 +35,22 @@ const FilterYourPlates = () => {
         </h2>
 
         <div className="flex items-center gap-6 mt-2 lg:mt-0">
-          <div className="relative">
-            <input
-              type="text"
-              className="lg:w-[384px] w-full h-14 border border-[#F0F0F0] rounded-md px-12"
-              placeholder="Search"
-            />
-            <div className="absolute top-4 left-4">
-              <Search />
-            </div>
-          </div>
-
-          <div className="lg:w-[180px] w-full h-14 border border-[#F0F0F0] rounded-md flex items-center justify-center gap-3">
-            <p className="text-[#717171] font-semibold">Filter</p>
-            <Filter />
-          </div>
+          <Dialog>
+              <DialogTrigger className="w-full">
+                <div className="lg:w-[180px] w-full h-14 border border-[#F0F0F0] rounded-md flex items-center justify-center gap-3">
+                  <p className="text-[#717171] font-semibold">Filter</p>
+                  <Filter />
+                </div>
+              </DialogTrigger>
+              <DialogContent className="w-[860px] px-0!">
+                  <DialogHeader>
+                  <DialogTitle ></DialogTitle>
+                  <DialogDescription>
+                      <FilterComponent />
+                  </DialogDescription>
+                  </DialogHeader>
+              </DialogContent>
+          </Dialog>
         </div>
       </div>
 
