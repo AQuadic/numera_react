@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import SigninPage from "./components/auth/signin/SigninPage";
 import SignupPage from "./components/auth/singup/SignupPage";
 import ForgetPassPage from "./components/auth/forget_password/ForgetPassPage";
+import VerifyResetPage from "./components/auth/forget_password/VerifyResetPage";
 import ResetPassPage from "./components/auth/reset_passwotrd/ResetPassPass";
 import FAQsPage from "./pages/FAQsPage";
 import ContactUsPage from "./pages/ContactUsPage";
@@ -62,6 +63,7 @@ function App() {
             <Route path="signin" element={<SigninPage />} />
             <Route path="signup" element={<SignupPage />} />
             <Route path="forget_password" element={<ForgetPassPage />} />
+            <Route path="verify_reset" element={<VerifyResetPage />} />
             <Route path="reset_password" element={<ResetPassPage />} />
           </Route>
         </Routes>

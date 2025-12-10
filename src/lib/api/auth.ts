@@ -194,6 +194,112 @@ export const changePassword = async (
   return response.data;
 };
 
+// Forgot password (request OTP)
+export interface ForgotPasswordRequest {
+  // number only (no +, no dial code) e.g. "1012345678"
+  phone: string;
+  // iso2 country code (e.g. "EG")
+  phone_country: string;
+  // backend expects "sms" for phone flow
+  reset_type?: "sms";
+}
+
+export interface ForgotPasswordResponse {
+  message?: string;
+}
+
+/**
+ * Trigger password reset OTP via SMS
+ */
+export const requestPasswordReset = async (
+  payload: ForgotPasswordRequest
+): Promise<ForgotPasswordResponse> => {
+  const body = {
+    phone: payload.phone,
+    phone_country: payload.phone_country,
+    reset_type: payload.reset_type ?? "sms",
+  };
+
+  const response = await axios.post<ForgotPasswordResponse>(
+    "/user/forgot",
+    body
+  );
+  return response.data;
+};
+
+// Verify OTP (reset)
+export interface VerifyResetCodeRequest {
+  code: string;
+  type?: "reset";
+  phone: string;
+  phone_country: string;
+}
+
+export interface VerifyResetCodeResponse {
+  user: User;
+  reset_token: string;
+  [key: string]: unknown;
+}
+
+/**
+ * Verify the OTP sent for password reset and retrieve reset token
+ */
+export const verifyResetCode = async (
+  payload: VerifyResetCodeRequest
+): Promise<VerifyResetCodeResponse> => {
+  const body = {
+    code: payload.code,
+    type: payload.type ?? "reset",
+    phone: payload.phone,
+    phone_country: payload.phone_country,
+  };
+
+  const response = await axios.post<VerifyResetCodeResponse>(
+    "/user/verify",
+    body
+  );
+
+  const raw = response.data as
+    | VerifyResetCodeResponse
+    | { data?: VerifyResetCodeResponse };
+
+  const user = (raw as VerifyResetCodeResponse).user ?? raw?.data?.user;
+  const reset_token =
+    (raw as VerifyResetCodeResponse).reset_token ?? raw?.data?.reset_token;
+
+  if (!user || !reset_token) {
+    throw new Error("Verification response missing user or reset token");
+  }
+
+  return { user, reset_token };
+};
+
+// Reset password using reset token
+export interface ResetPasswordRequest {
+  password: string;
+  password_confirmation: string;
+  reset_token: string;
+  phone: string;
+  phone_country: string;
+}
+
+export interface ResetPasswordResponse {
+  message?: string;
+}
+
+/**
+ * Complete password reset with token from verification step
+ */
+export const resetPasswordWithToken = async (
+  payload: ResetPasswordRequest
+): Promise<ResetPasswordResponse> => {
+  const response = await axios.post<ResetPasswordResponse>(
+    "/user/change_password",
+    payload
+  );
+  return response.data;
+};
+
 // Update user/profile request
 export interface UpdateUserRequest {
   name?: string;

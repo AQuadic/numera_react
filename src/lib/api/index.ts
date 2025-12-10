@@ -1,4 +1,13 @@
-export { signUp, login, getCurrentUser, logout, getErrorMessage } from "./auth";
+export {
+  signUp,
+  login,
+  getCurrentUser,
+  logout,
+  getErrorMessage,
+  requestPasswordReset,
+  verifyResetCode,
+  resetPasswordWithToken,
+} from "./auth";
 export type {
   User,
   AuthResponse,
@@ -6,6 +15,12 @@ export type {
   ApiError,
   SignUpRequest,
   LoginRequest,
+  ForgotPasswordRequest,
+  ForgotPasswordResponse,
+  VerifyResetCodeRequest,
+  VerifyResetCodeResponse,
+  ResetPasswordRequest,
+  ResetPasswordResponse,
 } from "./auth";
 
 export { createSuggestion } from "./suggestions";

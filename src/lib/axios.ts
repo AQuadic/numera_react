@@ -6,7 +6,10 @@ import Axios, {
 import toast from "react-hot-toast";
 
 const TOKEN_KEY = "numra_token";
-const API_BASE_URL = "https://numra.motofy.io/api";
+const API_BASE_URL =
+  // Use env to allow dev proxy (e.g. VITE_API_BASE_URL=/api)
+  (typeof import.meta !== "undefined" && import.meta.env?.VITE_API_BASE_URL) ||
+  "https://numra.motofy.io/api";
 
 /** Get the stored token - checks localStorage first, then sessionStorage */
 export const getToken = (): string | undefined => {
