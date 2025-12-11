@@ -9,10 +9,18 @@ import AnalyticalDashboard from "../components/my_profile/AnalyticalDashboard/An
 import { Menu } from "lucide-react";
 // import MyPlan from "../components/my_profile/plans/MyPlan";
 import DownloadApp from "../components/general/DownloadApp";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "../components/ui/dialog"; 
 
 const MyProfile = () => {
   const [selected, setSelected] = useState("profile");
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [showDownloadDialog, setShowDownloadDialog] = useState(false); // <-- new state
 
   const navigate = useNavigate();
   const logout = useAuthStore((s) => s.logout);
@@ -22,6 +30,11 @@ const MyProfile = () => {
       // perform logout and redirect to sign in
       logout();
       navigate("/signin", { replace: true });
+      return;
+    }
+
+    if (id === "plan") {
+      setShowDownloadDialog(true);
       return;
     }
 
@@ -37,8 +50,6 @@ const MyProfile = () => {
         return <MyAdsComponent />;
       case "analytics":
         return <AnalyticalDashboard />;
-      case "plan":
-        return <DownloadApp />
       default:
         return null;
     }
@@ -74,6 +85,19 @@ const MyProfile = () => {
 
         <div className="flex-1 lg:py-12 container">{renderContent()}</div>
       </div>
+
+      {showDownloadDialog && (
+        <Dialog open={showDownloadDialog} onOpenChange={setShowDownloadDialog}>
+          <DialogContent className="w-[860px] max-w-full px-0">
+            <DialogHeader>
+              <DialogTitle></DialogTitle>
+              <DialogDescription>
+                <DownloadApp />
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      )}
 
       <WhyChooseNumra />
     </section>
