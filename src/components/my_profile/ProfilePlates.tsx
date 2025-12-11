@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { pauseSim } from "../../lib/api/plates/pauseSim";
+import { continuePlate } from "../../lib/api/plates/continuePlate"; // <-- import continue API
 import Chat from "../icons/profile/Chat"
 import Delete from "../icons/profile/Delete"
 import Edit from "../icons/profile/Edit"
@@ -15,13 +18,35 @@ interface ProfilePlatesProps {
 }
 
 const ProfilePlates = ({ plate }: ProfilePlatesProps) => {
-    if (!plate) return null;
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPaused, setIsPaused] = useState(!plate.is_active); // true if paused/sold
+
+  if (!plate) return null;
+
+  const handleTogglePause = async (plateId: number) => {
+    setIsLoading(true);
+    try {
+      if (isPaused) {
+        await continuePlate({ plate_id: plateId });
+      } else {
+        await pauseSim({ plate_id: plateId });
+      }
+      setIsPaused(!isPaused);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
     return (
         <section>
             <div className="md:w-[348px] w-full bg-[#F0F0F0] rounded-md px-4 py-3 bg-[url('/images/plates/plate_stars.png')] bg-no-repeat bg-position-[center_-0px]">
                 <div className="flex flew items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <div className="px-6 py-2 bg-[#B2E3C4] rounded-[20px] text-[#1E7634] font-medium">{plate.is_active ? "Active" : plate.is_sold ? "Sold" : "Paused"}</div>
+                        <div className="px-6 py-2 bg-[#B2E3C4] rounded-[20px] text-[#1E7634] font-medium">
+                            {plate.is_active ? "Active" : plate.is_sold ? "Sold" : "Paused"}
+                            </div>
                         <p className="text-[#717171] text-[10px]">Expires in 25 days</p>
                     </div>
 
@@ -103,10 +128,16 @@ const ProfilePlates = ({ plate }: ProfilePlatesProps) => {
                         <p className="text-[#192540] text-base font-medium">Republish</p>
                     </button>
 
-                    <button className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#E4E4E4] flex items-center justify-center gap-1">
-                        <PlatePaused />
-                        <p className="text-[#192540] text-base font-medium">Pause</p>
-                    </button>
+                    <button
+                        onClick={() => handleTogglePause(plate.id)}
+                        disabled={isLoading}
+                        className={`xl:w-[152px] w-full h-11 rounded-[10px] flex items-center justify-center gap-1 cursor-pointer `}
+                    >
+                    <PlatePaused />
+                    <p className="text-[#192540] text-base font-medium">
+                    {isLoading ? "Loading..." : isPaused ? "Continue" : "Pause"}
+                    </p>
+                </button>
                 </div>
             </div>
         </section>
