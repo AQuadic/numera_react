@@ -31,7 +31,7 @@ export default function SimpleSlider() {
 
             return (
             <div key={i}>
-              <a href={item.url} target="_blank" rel="noopener noreferrer">
+              <a href={item.url} rel="noopener noreferrer">
                 <img
                 src={imageUrl}
                 alt={item.name}
