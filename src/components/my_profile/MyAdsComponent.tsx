@@ -33,13 +33,6 @@ const MyAdsComponent = () => {
       }),
   });
 
-    if (isLoading)
-        return (
-        <div className="flex items-center justify-center">
-            <Spinner />
-        </div>
-        );
-
     return (
         <section>
             <div className="flex flex-wrap items-center justify-center md:gap-[68px] gap-4">
@@ -47,7 +40,7 @@ const MyAdsComponent = () => {
                     <TotalAds />
                     <div>
                         <h2 className="text-[#155DFD] text-2xl font-semibold">
-                        {data?.total ?? 0}
+                        {data?.total ?? "-"}
                         </h2>
                         <p className="text-[#717171] text-base font-medium mt-2">Total Ads</p>
                     </div>
@@ -94,16 +87,22 @@ const MyAdsComponent = () => {
                         <TabsTrigger value="all">All ADs</TabsTrigger>
                         <TabsTrigger value="active">Active</TabsTrigger>
                         <TabsTrigger value="sold">Sold</TabsTrigger>
-                        <TabsTrigger value="paused_at">Paused</TabsTrigger>
+                        <TabsTrigger value="paused">Paused</TabsTrigger>
                     </TabsList>
                     <TabsContent value={tab}>
+                        {isLoading ? (
+                        <div className="flex items-center justify-center py-12">
+                            <Spinner />
+                        </div>
+                        ) : data?.data && data.data.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                            {data?.data && data.data.length > 0 ? (
-                                data.data.map((plate) => <ProfilePlates key={plate.id} plate={plate} refetch={refetch} />)
+                            {data.data.map((plate) => (
+                            <ProfilePlates key={plate.id} plate={plate} refetch={refetch} />
+                            ))}
+                        </div>
                             ) : (
                                 <p className="text-center w-full text-gray-500">No ads found</p>
                             )}
-                            </div>
                         </TabsContent>
                 </Tabs>
             </div>
