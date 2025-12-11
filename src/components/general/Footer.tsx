@@ -20,6 +20,7 @@ import { useState } from "react";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { data: pages, isLoading } = useQuery<Page[]>({
     queryKey: ["pages"],
@@ -34,13 +35,17 @@ const Footer = () => {
     const handleSubscribe = async () => {
         if (!email) return toast.error("Email is required");
 
+        setLoading(true);
         try {
         const response = await postSubscribe({ email });
             toast.dismiss()
             toast.success(response.message);
+            setEmail("");
         } catch (error: any) {
-            toast.dismiss()
+            toast.dismiss();
             toast.error(error.message || "Something went wrong");
+            } finally {
+            setLoading(false);
         }
     };
 
@@ -129,9 +134,21 @@ const Footer = () => {
                             placeholder="Write your email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            disabled={loading}
                         />
-                        <button onClick={handleSubscribe} className="w-[103px] h-14 bg-[#192540] rounded-tr-2xl rounded-br-2xl absolute right-0 xl:-right-17 lg:right-28 md:top-0 cursor-pointer">
+                        <button
+                        onClick={handleSubscribe}
+                        className={`w-[103px] h-14 bg-[#192540] rounded-tr-2xl rounded-br-2xl absolute right-0 xl:-right-17 lg:right-28 md:top-0 
+                            ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+                        disabled={loading} 
+                        >
+                        {loading ? (
+                            <div className="flex justify-center items-center h-full">
+                                <p className="text-[#EBAF29] text-lg font-bold">sending ...</p>
+                            </div>
+                        ) : (
                             <p className="text-[#EBAF29] text-lg font-bold">Send</p>
+                        )}
                         </button>
                     </div>
                 </div>
