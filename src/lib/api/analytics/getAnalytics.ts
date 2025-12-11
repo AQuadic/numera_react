@@ -1,5 +1,12 @@
 import { axios } from "../../axios";
 
+export interface TopPerformingAd {
+  model_type: string;
+  ad_model: string;
+  views_count: number;
+  inquiries_count: number;
+}
+
 export interface AnalyticsData {
   views_over_days: number[];
   response_rate: number;
@@ -8,6 +15,7 @@ export interface AnalyticsData {
   visitor: number;
   active_ads: number;
   total_views: number;
+  top_three_performing_ads: TopPerformingAd[];
 }
 
 export interface AdsCounts {
