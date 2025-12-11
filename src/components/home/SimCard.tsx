@@ -78,7 +78,7 @@ const SimCard = ({ sim }: SimCardProps) => {
       </div>
 
       {/* Price and Action */}
-      <div className="mt-4 flex items-center justify-between">
+      <div className="mt-4 flex flex-wrap gap-2 items-center justify-between">
         <h2 className="text-[#192540] md:text-xl text-lg font-semibold">
           {formatPrice(sim.price)}{" "}
           <span className="md:text-sm text-xs relative md:top-1">AED</span>
