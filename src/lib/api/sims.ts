@@ -95,19 +95,18 @@ export interface SimFilters {
 export const getSims = async (
   filters?: SimFilters
 ): Promise<PaginatedResponse<Sim>> => {
-  const params = new URLSearchParams();
-  params.append("pagination", "simple");
+  const params: Record<string, string> = {
+    pagination: "simple",
+  };
 
-  if (filters?.numbers) params.append("numbers", filters.numbers);
-  if (filters?.price_from)
-    params.append("price_from", filters.price_from.toString());
-  if (filters?.price_to) params.append("price_to", filters.price_to.toString());
-  if (filters?.page) params.append("page", filters.page.toString());
+  if (filters?.numbers) params.numbers = filters.numbers;
+  if (filters?.price_from) params.price_from = filters.price_from.toString();
+  if (filters?.price_to) params.price_to = filters.price_to.toString();
+  if (filters?.page) params.page = filters.page.toString();
 
-  const queryString = params.toString();
-  const url = queryString ? `/sims?${queryString}` : "/sims";
-
-  const response = await axios.get<PaginatedResponse<Sim>>(url);
+  const response = await axios.get<PaginatedResponse<Sim>>("/sims", {
+    params,
+  });
   return response.data;
 };
 

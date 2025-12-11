@@ -47,6 +47,19 @@ function authRequestInterceptor(
 
 export const axios = Axios.create({
   baseURL: API_BASE_URL,
+  paramsSerializer: {
+    serialize: (params) => {
+      const searchParams = new URLSearchParams();
+      Object.entries(params).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((item) => searchParams.append(`${key}[]`, item));
+        } else if (value !== undefined && value !== null) {
+          searchParams.append(key, String(value));
+        }
+      });
+      return searchParams.toString();
+    },
+  },
 });
 
 axios.interceptors.request.use(authRequestInterceptor);

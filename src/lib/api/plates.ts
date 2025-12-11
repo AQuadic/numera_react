@@ -91,28 +91,22 @@ export interface City {
 export const getPlates = async (
   filters?: PlateFilters
 ): Promise<PaginatedResponse<Plate>> => {
-  const params = new URLSearchParams();
+  const params: Record<string, string | string[]> = {};
 
-  if (filters?.emirate_id)
-    params.append("emirate_id", filters.emirate_id.toString());
+  if (filters?.emirate_id) params.emirate_id = filters.emirate_id.toString();
   if (filters?.vehicle_types && filters.vehicle_types.length > 0) {
-    for (const type of filters.vehicle_types) {
-      params.append("vehicle_types[]", type);
-    }
+    params.vehicle_types = filters.vehicle_types;
   }
-  if (filters?.package_id)
-    params.append("package_id", filters.package_id.toString());
-  if (filters?.letters) params.append("letters", filters.letters);
-  if (filters?.numbers) params.append("numbers", filters.numbers);
-  if (filters?.price_from)
-    params.append("price_from", filters.price_from.toString());
-  if (filters?.price_to) params.append("price_to", filters.price_to.toString());
-  if (filters?.page) params.append("page", filters.page.toString());
+  if (filters?.package_id) params.package_id = filters.package_id.toString();
+  if (filters?.letters) params.letters = filters.letters;
+  if (filters?.numbers) params.numbers = filters.numbers;
+  if (filters?.price_from) params.price_from = filters.price_from.toString();
+  if (filters?.price_to) params.price_to = filters.price_to.toString();
+  if (filters?.page) params.page = filters.page.toString();
 
-  const queryString = params.toString();
-  const url = queryString ? `/plates?${queryString}` : "/plates";
-
-  const response = await axios.get<PaginatedResponse<Plate>>(url);
+  const response = await axios.get<PaginatedResponse<Plate>>("/plates", {
+    params,
+  });
   return response.data;
 };
 
