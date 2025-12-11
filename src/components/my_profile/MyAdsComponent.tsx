@@ -22,7 +22,7 @@ const MyAdsComponent = () => {
 
     const vehicleTypes: ("cars" | "fun" | "bikes" | "classic")[] = ["cars", "fun", "bikes", "classic"];
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["plateAds", tab, vehicleTypes],
     queryFn: () =>
       getPlateAds({
@@ -99,7 +99,7 @@ const MyAdsComponent = () => {
                     <TabsContent value={tab}>
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                             {data?.data && data.data.length > 0 ? (
-                                data.data.map((plate) => <ProfilePlates key={plate.id} plate={plate} />)
+                                data.data.map((plate) => <ProfilePlates key={plate.id} plate={plate} refetch={refetch} />)
                             ) : (
                                 <p className="text-center w-full text-gray-500">No ads found</p>
                             )}

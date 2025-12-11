@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { pauseSim } from "../../lib/api/plates/pauseSim";
-import { continuePlate } from "../../lib/api/plates/continuePlate"; // <-- import continue API
+import { continuePlate } from "../../lib/api/plates/continuePlate";
 import Chat from "../icons/profile/Chat"
 import Delete from "../icons/profile/Delete"
 import Edit from "../icons/profile/Edit"
@@ -15,11 +15,16 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 
 interface ProfilePlatesProps {
   plate: any;
+  refetch?: () => void;
 }
 
-const ProfilePlates = ({ plate }: ProfilePlatesProps) => {
+const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isPaused, setIsPaused] = useState(!plate.is_active); // true if paused/sold
+  const [isPaused, setIsPaused] = useState(!plate.is_active);
+
+  useEffect(() => {
+    setIsPaused(!plate.is_active);
+  }, [plate.is_active]);
 
   if (!plate) return null;
 
@@ -32,6 +37,7 @@ const ProfilePlates = ({ plate }: ProfilePlatesProps) => {
         await pauseSim({ plate_id: plateId });
       }
       setIsPaused(!isPaused);
+      refetch?.();
     } catch (error) {
       console.error(error);
     } finally {
