@@ -47,7 +47,7 @@ const FAQs = () => {
                                 data-[state=open]:bg-[#FDFAF3] data-[state=open]:border-none"
                     >
 
-                      <span className="text-[#192540] text-2xl font-medium">
+                      <span className="text-[#192540] md:text-2xl text-lg font-medium">
                         {item.question.en}
                       </span>
 
