@@ -99,7 +99,7 @@ const Header = () => {
                   initial={{ x: "100%" }}
                   animate={{ x: 0 }}
                   exit={{ x: "100%" }}
-                  transition={{ type: "spring", stiffness: 120 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 25 }} 
                   className="fixed top-0 right-0 h-full w-[360px] bg-white shadow-lg z-50 flex flex-col"
                 >
                   <div className="flex items-center justify-between">
@@ -176,7 +176,7 @@ const Header = () => {
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "spring", stiffness: 120 }}
+              transition={{ type: "spring", stiffness: 200, damping: 25 }}
               className="fixed top-0 right-0 h-full w-[75%] bg-white shadow-lg z-50 p-6 flex flex-col"
             >
               <button
