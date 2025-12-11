@@ -10,14 +10,14 @@ const HomeCategories = () => {
       bg: "#ECEDEF",
       textColor: "#192540",
       icon: <Car />,
-      link: "/plates_filter?vehicle_types=cars,classic",
+      link: "/plates_filter?vehicle_types[]=cars&vehicle_types[]=classic",
     },
     {
       title: "Boats Plates",
       bg: "#FCF8ED",
       textColor: "#966A08",
       icon: <Bike />,
-      link: "/plates_filter?vehicle_types=fun,bikes",
+      link: "/plates_filter?vehicle_types[]=fun&vehicle_types[]=bikes",
     },
     {
       title: "Mobile Numbers",

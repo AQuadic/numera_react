@@ -24,8 +24,16 @@ const PlatesFilter = () => {
 
   // Initialize filters from URL params
   useEffect(() => {
+    const vehicleTypesParams = searchParams.getAll("vehicle_types[]");
     const vehicleTypesParam = searchParams.get("vehicle_types");
-    const vehicleTypes = vehicleTypesParam ? vehicleTypesParam.split(",") : [];
+
+    // Support both formats: vehicle_types[]=x&vehicle_types[]=y OR vehicle_types=x,y
+    let vehicleTypes: string[] = [];
+    if (vehicleTypesParams.length > 0) {
+      vehicleTypes = vehicleTypesParams;
+    } else if (vehicleTypesParam) {
+      vehicleTypes = vehicleTypesParam.split(",").filter(Boolean);
+    }
 
     setFilters((prev) => ({
       ...prev,
@@ -83,12 +91,10 @@ const PlatesFilter = () => {
         ? currentTypes.filter((t) => t !== type)
         : [...currentTypes, type];
 
-      // Update URL params
-      const params = new URLSearchParams(searchParams);
+      // Update URL params with array format
+      const params = new URLSearchParams();
       if (newTypes.length > 0) {
-        params.set("vehicle_types", newTypes.join(","));
-      } else {
-        params.delete("vehicle_types");
+        newTypes.forEach((t) => params.append("vehicle_types[]", t));
       }
       setSearchParams(params);
 
