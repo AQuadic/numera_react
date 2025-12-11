@@ -33,10 +33,10 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   const handleTogglePause = async (plateId: number) => {
     setIsLoading(true);
     try {
-      if (isPaused) {
-        await continuePlate({ plate_id: plateId });
-      } else {
+      if (!isPaused) {
         await pauseSim({ plate_id: plateId });
+      } else {
+        await continuePlate({ plate_id: plateId });
       }
       setIsPaused(!isPaused);
       refetch?.();

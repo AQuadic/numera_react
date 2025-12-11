@@ -6,16 +6,16 @@ const DownloadApp = () => {
         <div>
             <div className="flex items-center justify-between">
                 <div className="flex-1">
-                    <h2 className="text-[#192540] text-[32px] font-medium px-8">Get the App Now !</h2>
-                    <p className="text-[#717171] text-xl font-medium mt-6 px-8">Enjoy quick access to exclusive car plates, motorcycle plate and premium phone numbers. All right from your phone with a smooth and fast app experience.</p>
+                    <h2 className="text-[#192540] md:text-[32px] font-medium md:px-8">Get the App Now !</h2>
+                    <p className="text-[#717171] md:text-xl font-medium mt-6 md:px-8">Enjoy quick access to exclusive car plates, motorcycle plate and premium phone numbers. All right from your phone with a smooth and fast app experience.</p>
 
-                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-6 px-8 mt-8">
+                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-6 md:px-8 px-2 mt-8">
                         <GooglePlay />
                         <AppStore />
                     </div>
                 </div>
 
-                <div className="md:flex hidden">
+                <div className="">
                     <img 
                         src="/images/getApp.png"
                         alt="get app"
