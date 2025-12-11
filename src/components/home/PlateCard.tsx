@@ -66,13 +66,9 @@ const PlateCard = ({ plate }: PlateCardProps) => {
         <p className="text-[#717171] md:text-sm text-xs font-medium">
           Type: <span>{getVehicleTypeLabel(plate.vehicle_type)}</span>
         </p>
-        <p
-          className={`md:text-sm text-xs font-medium ${
-            plate.is_sold ? "text-[#D32F2F]" : "text-[#1E7634]"
-          }`}
-        >
-          {plate.is_sold ? "Sold" : "Available"}
-        </p>
+        {plate.is_sold && (
+          <p className="md:text-sm text-xs font-medium text-[#D32F2F]">Sold</p>
+        )}
       </div>
 
       <h2 className="text-[#192540] md:text-lg font-medium mt-3 truncate">

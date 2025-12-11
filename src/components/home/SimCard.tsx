@@ -20,15 +20,13 @@ const SimCard = ({ sim }: SimCardProps) => {
       className="md:w-[282px] w-full rounded-lg bg-[#F0F0F0] py-6 px-2 hover:shadow-lg transition-shadow"
     >
       <div className="flex items-center justify-between">
-        <div
-          className={`h-[30px] px-3 rounded-md font-medium flex items-center justify-center text-sm ${
-            sim.is_sold
-              ? "bg-[#FFE5E5] text-[#D32F2F]"
-              : "bg-[#CFEAD6] text-[#1E7634]"
-          }`}
-        >
-          {sim.is_sold ? "Sold" : "Available"}
-        </div>
+        {sim.is_sold ? (
+          <div className="h-[30px] px-3 rounded-md font-medium flex items-center justify-center text-sm bg-[#FFE5E5] text-[#D32F2F]">
+            Sold
+          </div>
+        ) : (
+          <div />
+        )}
         <Heart />
       </div>
 
@@ -91,18 +89,7 @@ const SimCard = ({ sim }: SimCardProps) => {
         </div>
       </div>
 
-      {/* Negotiable Badge: keep a placeholder so all cards maintain equal height */}
-      <div className="mt-3 text-center h-8 flex items-center justify-center">
-        {sim.is_negotiable ? (
-          <span className="inline-block px-3 py-1 bg-[#E3F2FD] text-[#1976D2] text-xs font-medium rounded-full">
-            Negotiable
-          </span>
-        ) : (
-          <span className="inline-block px-3 py-1 text-xs font-medium rounded-full invisible">
-            Negotiable
-          </span>
-        )}
-      </div>
+      {/* Negotiable tag removed from card */}
     </Link>
   );
 };
