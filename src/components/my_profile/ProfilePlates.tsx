@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { pauseSim } from "../../lib/api/plates/pauseSim";
 import { continuePlate } from "../../lib/api/plates/continuePlate";
+import { republishPlate } from "../../lib/api/plates/republishPlate";
 import Chat from "../icons/profile/Chat";
 import Delete from "../icons/profile/Delete";
 import Edit from "../icons/profile/Edit";
@@ -20,6 +21,7 @@ interface ProfilePlatesProps {
 
 const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isRepublishing, setIsRepublishing] = useState(false);
   const [isPaused, setIsPaused] = useState(!plate.is_active);
 
   useEffect(() => {
@@ -44,6 +46,26 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
       setIsLoading(false);
     }
   };
+
+  const handleRepublish = async () => {
+    setIsRepublishing(true);
+    try {
+      const response = await republishPlate({
+        plate_id: plate.id,
+        package_user_id: plate.package_user_id,
+      });
+      
+      if (response.success) {
+        console.log(response.message || "Plate republished successfully");
+        refetch?.();
+      }
+    } catch (error) {
+      console.error("Failed to republish plate:", error);
+    } finally {
+      setIsRepublishing(false);
+    }
+  };
+
   return (
     <section>
       <div className="md:w-[348px] w-full bg-[#F0F0F0] rounded-md px-4 py-3 bg-[url('/images/plates/plate_stars.png')] bg-no-repeat bg-position-[center_-0px]">
@@ -126,15 +148,21 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
         </div>
 
         <div className="flex items-center gap-3 mt-4">
-          <button className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#EBAF29] flex items-center justify-center gap-1">
+          <button
+            onClick={handleRepublish}
+            disabled={isRepublishing}
+            className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#EBAF29] flex items-center justify-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
             <Republish />
-            <p className="text-[#192540] text-base font-medium">Republish</p>
+            <p className="text-[#192540] text-base font-medium">
+              {isRepublishing ? "Publishing..." : "Republish"}
+            </p>
           </button>
 
           <button
             onClick={() => handleTogglePause(plate.id)}
             disabled={isLoading}
-            className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#E4E4E4] flex items-center justify-center gap-1 cursor-pointer"
+            className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#E4E4E4] flex items-center justify-center gap-1 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <PlatePaused />
             <p className="text-[#192540] text-base font-medium">
