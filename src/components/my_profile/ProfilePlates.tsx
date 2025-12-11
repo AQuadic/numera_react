@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { pauseSim } from "../../lib/api/plates/pauseSim";
+import { continuePlate } from "../../lib/api/plates/continuePlate";
 import Chat from "../icons/profile/Chat";
 import Delete from "../icons/profile/Delete";
 import Edit from "../icons/profile/Edit";
@@ -12,10 +15,35 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 interface ProfilePlatesProps {
   plate: any;
+  refetch?: () => void;
 }
 
-const ProfilePlates = ({ plate }: ProfilePlatesProps) => {
+const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPaused, setIsPaused] = useState(!plate.is_active);
+
+  useEffect(() => {
+    setIsPaused(!plate.is_active);
+  }, [plate.is_active]);
+
   if (!plate) return null;
+
+  const handleTogglePause = async (plateId: number) => {
+    setIsLoading(true);
+    try {
+      if (isPaused) {
+        await continuePlate({ plate_id: plateId });
+      } else {
+        await pauseSim({ plate_id: plateId });
+      }
+      setIsPaused(!isPaused);
+      refetch?.();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <section>
       <div className="md:w-[348px] w-full bg-[#F0F0F0] rounded-md px-4 py-3 bg-[url('/images/plates/plate_stars.png')] bg-no-repeat bg-position-[center_-0px]">
@@ -103,9 +131,15 @@ const ProfilePlates = ({ plate }: ProfilePlatesProps) => {
             <p className="text-[#192540] text-base font-medium">Republish</p>
           </button>
 
-          <button className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#E4E4E4] flex items-center justify-center gap-1">
+          <button
+            onClick={() => handleTogglePause(plate.id)}
+            disabled={isLoading}
+            className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#E4E4E4] flex items-center justify-center gap-1 cursor-pointer"
+          >
             <PlatePaused />
-            <p className="text-[#192540] text-base font-medium">Pause</p>
+            <p className="text-[#192540] text-base font-medium">
+              {isLoading ? "Loading..." : isPaused ? "Continue" : "Pause"}
+            </p>
           </button>
         </div>
       </div>
