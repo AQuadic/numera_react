@@ -3,8 +3,6 @@ import Ads from "../icons/profile/Ads";
 import Analytical from "../icons/profile/Analytical";
 import Logout from "../icons/profile/Logout";
 import Plans from "../icons/profile/Plans";
-import Settings from "../icons/profile/Settings";
-import Support from "../icons/profile/Support";
 
 interface SidebarProps {
     onSelect: (id: string) => void;
@@ -17,9 +15,7 @@ const Sidebar = ({ onSelect, selected }: SidebarProps) => {
         { title: "My Profile", icon: <Profile />, id: "profile" },
         { title: "My ADs", icon: <Ads />, id: "ads" },
         { title: "Analytical Dashboard", icon: <Analytical />, id: "analytics" },
-        { title: "My Plan", icon: <Plans />, id: "plan" },
-        { title: "App Setting", icon: <Settings />, id: "settings" },
-        { title: "Support & Legal", icon: <Support />, id: "support" },
+        { title: "My Plan", icon: <Plans />, id: "plan" }
     ];
 
     const logout_item = { title: "Log out", icon: <Logout />, id: "logout" };

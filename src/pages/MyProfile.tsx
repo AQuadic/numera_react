@@ -39,10 +39,6 @@ const MyProfile = () => {
         return <AnalyticalDashboard />;
       case "plan":
         return <DownloadApp />
-      case "settings":
-        return <div className="p-6">App Settings Component</div>;
-      case "support":
-        return <div className="p-6">Support & Legal Component</div>;
       default:
         return null;
     }
