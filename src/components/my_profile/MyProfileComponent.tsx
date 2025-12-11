@@ -121,8 +121,8 @@ const MyProfileComponent = () => {
   };
 
   return (
-    <section>
-      <div className="w-full p-6 bg-[#F0F0F0] rounded-md flex flex-col items-center justify-center">
+    <section className="lg:py-[72px]">
+      <div className="w-full p-6 bg-[#F0F0F0] rounded-lg flex flex-col items-center justify-center">
         <img
           src={user?.image || "/images/plates/owner_img.jpg"}
           alt={user?.name ?? "Profile avatar"}

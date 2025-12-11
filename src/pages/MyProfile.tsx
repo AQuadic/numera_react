@@ -83,7 +83,7 @@ const MyProfile = () => {
           <Sidebar selected={selected} onSelect={handleSelect} />
         </div>
 
-        <div className="flex-1 lg:py-12 container">{renderContent()}</div>
+        <div className="flex-1 container">{renderContent()}</div>
       </div>
 
       {showDownloadDialog && (

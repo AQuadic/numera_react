@@ -37,7 +37,7 @@ const MyAdsComponent = () => {
     return (
         <section>
             <div className="flex flex-wrap items-center justify-center md:gap-[68px] gap-4">
-                <div className="md:px-6 px-2 py-5 bg-[#EEF6FF] rounded-md flex items-center gap-3">
+                <div className="md:px-6 px-2 py-5 bg-[#EEF6FF] rounded-lg flex items-center gap-3">
                     <TotalAds />
                     <div>
                         <h2 className="text-[#155DFD] text-2xl font-semibold">
@@ -47,7 +47,7 @@ const MyAdsComponent = () => {
                     </div>
                 </div>
 
-                <div className="md:px-6 px-2 py-5 bg-[#ECF5F1] rounded-md flex items-center gap-3">
+                <div className="md:px-6 px-2 py-5 bg-[#ECF5F1] rounded-lg flex items-center gap-3">
                     <Active />
                     <div>
                         <h2 className="text-[#19AA3D] text-2xl font-semibold">
@@ -57,7 +57,7 @@ const MyAdsComponent = () => {
                     </div>
                 </div>
 
-                <div className="md:px-6 px-2 py-5 bg-[#FFF9E0] rounded-md flex items-center gap-3">
+                <div className="md:px-6 px-2 py-5 bg-[#FFF9E0] rounded-lg flex items-center gap-3">
                     <Sold />
                     <div>
                         <h2 className="text-[#B48110] text-2xl font-semibold">
@@ -67,7 +67,7 @@ const MyAdsComponent = () => {
                     </div>
                 </div>
 
-                <div className="md:px-6 px-2 py-5 bg-[#F0F0F080] rounded-md flex items-center gap-3">
+                <div className="md:px-6 px-2 py-5 bg-[#F0F0F080] rounded-lg flex items-center gap-3">
                     <Paused />
                     <div>
                         <h2 className="text-[#717171] text-2xl font-semibold">
