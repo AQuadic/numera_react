@@ -98,7 +98,7 @@ const DrawPlatesPattern = () => {
                 />
 
                 <input 
-                    type="text"
+                    type="number"
                     className="lg:w-72 w-full h-12 border rounded-md px-4"
                     placeholder="Price"
                     value={price}
@@ -107,16 +107,19 @@ const DrawPlatesPattern = () => {
             </div>
 
             <div className="mt-4">
-                <label className="text-[#192540] text-base font-medium">
-                    Contact number
-                </label>
-                <input 
-                    type="text"
-                    className="w-full h-12 border rounded-md mt-2 px-4"
-                    placeholder="Mobile"
-                    value={mobile}
-                    onChange={(e) => setMobile(e.target.value)}
-                />
+              <label className="text-[#192540] text-base font-medium">
+                Contact number
+              </label>
+              <input 
+                type="text"
+                className="w-full h-12 border rounded-md mt-2 px-4"
+                placeholder="Mobile"
+                value={mobile}
+                onChange={(e) => {
+                  const onlyNumbers = e.target.value.replace(/\D/g, "");
+                  setMobile(onlyNumbers);
+                }}
+              />
             </div>
 
             <div className="mt-4">
