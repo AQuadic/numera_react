@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import ProfilePlates from "./ProfilePlates"
 import { getPlateAds, type GetPlateAdsParams } from "../../lib/api/plates/getPlateAds"
 import Spinner from "../icons/general/Spinner"
+import AdsEmptyState from "../general/AdsEmptyState";
 
 const MyAdsComponent = () => {
   const [tab, setTab] = useState<"all" | "active" | "sold" | "paused">("all");
@@ -101,7 +102,7 @@ const MyAdsComponent = () => {
                             ))}
                         </div>
                             ) : (
-                                <p className="text-center w-full text-gray-500">No ads found</p>
+                                <AdsEmptyState />
                             )}
                         </TabsContent>
                 </Tabs>
