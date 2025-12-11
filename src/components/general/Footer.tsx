@@ -156,7 +156,7 @@ const Footer = () => {
 
             <div className="w-full h-px mt-14 border-t border-dashed border-[#FEFEFE80]"></div>
 
-            <div className="flex items-center justify-center gap-4 mt-1">
+            <div className="flex flex-wrap items-center justify-center md:gap-4 gap-2 mt-1">
                 <h2 className="text-[#192540] text-xl font-medium">Follow Us</h2>
                 <div className="flex items-center gap-2 mt-2">
                     {socials?.facebook && (
