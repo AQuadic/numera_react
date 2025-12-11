@@ -32,6 +32,7 @@ const Header = () => {
   const { data: notificationsData, isLoading } = useQuery({
     queryKey: ["broadcastNotifications"],
     queryFn: () => getBroadcastNotifications({ per_page: 10, pagination: "simple" }),
+    enabled: hasUser, 
   });
 
   const notifications = notificationsData?.data ?? [];
@@ -74,15 +75,21 @@ const Header = () => {
           )}
         </div>
 
-        <div className="hidden lg:flex items-center gap-6">
+        <div className="flex items-center gap-6">
           {/* <Chat /> */}
 
+          
+        </div>
+
+          <div className="flex items-center gap-8">
+            {hasUser && (
           <button onClick={() => setNotificationsOpen(true)} className="relative cursor-pointer">
             <Notifications />
             {notifications.length > 0 && (
               <span className="absolute top-0 right-0 w-2 h-2 rounded-full bg-[#D71F1F]" />
             )}
           </button>
+        )}
 
           <AnimatePresence>
           {notificationsOpen && (
@@ -134,10 +141,16 @@ const Header = () => {
             )}
           </AnimatePresence>
 
-          {hasUser ? (
+        <button
+          onClick={() => setOpen(true)}
+          className="lg:hidden text-[#192540] text-3xl"
+        >
+          <Menu />
+        </button>
+        {hasUser ? (
             <Link
               to="/profile"
-              className="bg-[#EBAF29] min-w-[180px] h-14 px-4 rounded-[20px] text-[#192540] text-lg font-semibold flex items-center justify-center gap-2"
+              className="bg-[#EBAF29] min-w-[180px] h-14 px-4 rounded-[20px] text-[#192540] text-lg font-semibold hidden lg:flex items-center justify-center gap-2"
             >
               <Profile />
               {user?.name}
@@ -151,14 +164,7 @@ const Header = () => {
               Log In
             </Link>
           )}
-        </div>
-
-        <button
-          onClick={() => setOpen(true)}
-          className="lg:hidden text-[#192540] text-3xl"
-        >
-          <Menu />
-        </button>
+          </div>
       </header>
 
       <AnimatePresence>
@@ -224,11 +230,6 @@ const Header = () => {
                   );
                 })}
               </nav>
-
-              <div className="flex items-center justify-center gap-4 mt-8">
-                {/* <Chat /> */}
-                <Notifications />
-              </div>
 
               {hasUser ? (
                 <Link
