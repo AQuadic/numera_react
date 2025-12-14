@@ -3,7 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useQuery } from "@tanstack/react-query";
 import { getSlider, type SliderItem } from "../../lib/api/slider/getSlider";
-import Spinner from "../icons/general/Spinner";
+import { Skeleton } from "../ui/skeleton";
 
 export default function SimpleSlider() {
   const { data: sliderItems, isLoading } = useQuery({
@@ -20,9 +20,16 @@ export default function SimpleSlider() {
     arrows: false,
   };
 
-  if (isLoading) return <div className="flex items-center justify-center">
-    <Spinner />
-  </div>
+  if (isLoading)
+    return (
+      <Slider {...settings}>
+        {[...Array(3)].map((_, i) => (
+          <div key={i} className="px-4">
+            <Skeleton className="rounded-[50px] w-full md:h-[597px]" />
+          </div>
+        ))}
+      </Slider>
+    );
 
     return (
         <Slider {...settings}>
