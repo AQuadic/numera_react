@@ -19,6 +19,7 @@ export interface PlateAd {
   share_url?: string;
   published_at?: string;
   published_until?: string;
+  paused_at?: string | null;
 }
 
 export interface GetPlateAdsParams {

@@ -79,7 +79,7 @@ const MyAdsComponent = () => {
                     <Paused />
                     <div>
                         <h2 className="text-[#717171] text-2xl font-semibold">
-                        {data?.data?.filter((p) => !p.is_active && !p.is_sold).length ?? 0}
+                        {data?.data?.filter((p) => p.paused_at !== null).length ?? 0}
                         </h2>
                         <p className="text-[#717171] text-base font-medium mt-2">Paused</p>
                     </div>

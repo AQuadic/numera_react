@@ -72,7 +72,13 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
         <div className="flex flew items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="px-6 py-2 bg-[#B2E3C4] rounded-[20px] text-[#1E7634] font-medium">
-              {plate.is_active ? "Active" : plate.is_sold ? "Sold" : "Paused"}
+              {plate.is_active
+                ? "Active"
+                : plate.is_sold
+                ? "Sold"
+                : plate.paused_at
+                ? "Paused"
+                : "Continue"} 
             </div>
             <p className="text-[#717171] text-[10px]">Expires in 25 days</p>
           </div>
