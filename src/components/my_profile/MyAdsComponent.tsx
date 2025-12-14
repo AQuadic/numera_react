@@ -8,8 +8,8 @@ import TotalAds from "../icons/profile/TotalAds"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import ProfilePlates from "./ProfilePlates"
 import { getPlateAds, type GetPlateAdsParams } from "../../lib/api/plates/getPlateAds"
-import Spinner from "../icons/general/Spinner"
 import AdsEmptyState from "../general/AdsEmptyState";
+import { Skeleton } from "../ui/skeleton";
 
 const MyAdsComponent = () => {
   const [tab, setTab] = useState<"all" | "active" | "sold" | "paused">("all");
@@ -33,11 +33,18 @@ const MyAdsComponent = () => {
       }),
   });
 
-  console.log("Plates : ", data)
-
     return (
         <section>
             <div className="flex flex-wrap items-center justify-center md:gap-[68px] gap-4">
+            {isLoading ? (
+            [...Array(4)].map((_, i) => (
+                <Skeleton
+                key={i}
+                className="md:w-60 w-40 h-[90px] rounded-lg"
+                />
+            ))
+            ) : (
+            <>
                 <div className="md:px-6 px-2 py-5 bg-[#EEF6FF] rounded-lg flex items-center gap-3">
                     <TotalAds />
                     <div>
@@ -77,6 +84,8 @@ const MyAdsComponent = () => {
                         <p className="text-[#717171] text-base font-medium mt-2">Paused</p>
                     </div>
                 </div>
+                </>
+                )}
             </div>
 
             <div className="mt-12 flex items-center justify-center">
@@ -93,8 +102,13 @@ const MyAdsComponent = () => {
                     </TabsList>
                     <TabsContent value={tab}>
                         {isLoading ? (
-                        <div className="flex items-center justify-center py-12">
-                            <Spinner />
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                            {[...Array(6)].map((_, i) => (
+                            <Skeleton
+                                key={i}
+                                className="h-[220px] w-full rounded-lg"
+                            />
+                            ))}
                         </div>
                         ) : data?.data && data.data.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
