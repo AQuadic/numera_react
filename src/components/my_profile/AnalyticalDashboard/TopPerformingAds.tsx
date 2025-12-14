@@ -19,12 +19,14 @@ const  TopPerformingAds = ({ analytics }: TopPerformingAdsProps) => {
                         analytics.top_three_performing_ads.map((ad, index) => (
                             <div
                             key={index}
-                            className="border border-[#E5E5E5] rounded-[8px] md:h-[74px] md:px-5 px-2 py-3 flex items-center justify-between"
+                            className="border border-[#E5E5E5] rounded-[8px] lg:h-[74px] md:px-5 px-2 py-3 flex flex-wrap items-center justify-between relative"
                             >
-                            <div className="relative flex items-center gap-2">
-                                <div className="w-[50px] h-[50px] bg-[#192540] rounded-[8px] text-[#FEFEFE] flex items-center justify-center">
-                                {ad.model_type}
-                                </div>
+                            <div className=" flex items-center gap-2">
+                                <img 
+                                    src="/images/plates/plate_image.png"
+                                    alt="plate image"
+                                    className="w-28 h-[30px]"
+                                />
                                 <div className="absolute -top-3 -left-4">
                                 <AdsStar />
                                 </div>
