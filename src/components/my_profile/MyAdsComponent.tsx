@@ -27,7 +27,6 @@ const MyAdsComponent = () => {
     queryKey: ["plateAds", tab, vehicleTypes],
     queryFn: () =>
       getPlateAds({
-        per_page: 15,
         filter_type: filterMap[tab],
         pagination: "normal",
         vehicle_types: vehicleTypes,

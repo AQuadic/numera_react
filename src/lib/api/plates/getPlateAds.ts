@@ -30,9 +30,17 @@ export interface GetPlateAdsParams {
 
 export interface GetPlateAdsResponse {
   data: PlateAd[];
-  total?: number;
-  current_page?: number;
-  last_page?: number;
+
+  current_page: number;
+  per_page: number;
+  total: number;
+  last_page: number;
+
+  from?: number;
+  to?: number;
+
+  next_page_url?: string | null;
+  prev_page_url?: string | null;
 }
 
 export const getPlateAds = async (

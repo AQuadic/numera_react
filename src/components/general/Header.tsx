@@ -31,7 +31,7 @@ const Header = () => {
 
   const { data: notificationsData, isLoading } = useQuery({
     queryKey: ["broadcastNotifications"],
-    queryFn: () => getBroadcastNotifications({ per_page: 10, pagination: "simple" }),
+    queryFn: () => getBroadcastNotifications({pagination: "simple" }),
     enabled: hasUser, 
   });
 
