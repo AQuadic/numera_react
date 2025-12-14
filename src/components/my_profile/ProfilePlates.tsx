@@ -22,11 +22,11 @@ interface ProfilePlatesProps {
 const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRepublishing, setIsRepublishing] = useState(false);
-  const [isPaused, setIsPaused] = useState(!plate.is_active);
+  const [isPaused, setIsPaused] = useState(!plate.paused_at);
 
   useEffect(() => {
-    setIsPaused(!plate.is_active);
-  }, [plate.is_active]);
+    setIsPaused(!plate.paused_at);
+  }, [plate.paused_at]);
 
   if (!plate) return null;
 

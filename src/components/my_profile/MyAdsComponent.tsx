@@ -34,6 +34,8 @@ const MyAdsComponent = () => {
       }),
   });
 
+  console.log("Plates : ", data)
+
     return (
         <section>
             <div className="flex flex-wrap items-center justify-center md:gap-[68px] gap-4">
