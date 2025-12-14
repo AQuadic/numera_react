@@ -34,9 +34,9 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
     setIsLoading(true);
     try {
       if (!isPaused) {
-        await pauseSim({ plate_id: plateId });
-      } else {
         await continuePlate({ plate_id: plateId });
+      } else {
+        await pauseSim({ plate_id: plateId });
       }
       setIsPaused(!isPaused);
       refetch?.();
@@ -151,7 +151,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
           <button
             onClick={handleRepublish}
             disabled={isRepublishing}
-            className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#EBAF29] flex items-center justify-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#EBAF29] flex items-center justify-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             <Republish />
             <p className="text-[#192540] text-base font-medium">
