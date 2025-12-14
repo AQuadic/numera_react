@@ -1,8 +1,8 @@
 import { getFaqs } from "../../lib/api/faq/getFAQs";
-import Spinner from "../icons/general/Spinner";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { Skeleton } from "../ui/skeleton";
 
 const FAQs = () => {
   const [page, setPage] = useState(1);
@@ -12,12 +12,27 @@ const FAQs = () => {
     queryFn: () => getFaqs(page),
   });
 
-  if (isLoading)
+  if (isLoading) {
     return (
-      <div className="flex items-center justify-center">
-        <Spinner />
-      </div>
+      <section className="container flex md:flex-row flex-col items-center gap-4 md:py-[68px]">
+
+        <Skeleton className="w-full h-[400px] rounded-lg" />
+
+        <div className="w-full">
+          <Skeleton className="h-8 w-[320px] rounded-md" />
+
+          <Skeleton className="h-5 w-full mt-4 rounded-md" />
+          <Skeleton className="h-5 w-[90%] mt-2 rounded-md" />
+
+          <div className="mt-6 space-y-6">
+            {[...Array(4)].map((_, i) => (
+              <Skeleton key={i} className="h-14 w-full rounded-md" />
+            ))}
+          </div>
+        </div>
+      </section>
     );
+  }
 
   const faqData = data?.data ?? [];
 
