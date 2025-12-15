@@ -9,12 +9,15 @@ import { Link } from "react-router";
 import ArrowLeft from "../icons/profile/ArrowLeft";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import AccountVerificationDialog from "./AccountVerificationDialog";
+import DeleteAccount from "../icons/profile/DeleteAccount";
+import DeleteAccountDialog from "./DeleteAccountDialog";
 
 const MyProfileComponent = () => {
   const [adsCounts, setAdsCounts] = useState<AdsCounts | null>(null);
   const [adsLoading, setAdsLoading] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const user = useAuthStore((s) => s.user);
 
@@ -208,6 +211,24 @@ const MyProfileComponent = () => {
                 Contact support
               </Link>
             </div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+          <DialogTrigger className="w-full">
+            <div className="border border-[#F0F0F0] rounded-md px-6 py-4 mt-6 cursor-pointer">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <DeleteAccount />
+                  <p className="text-[#D71F1F] text-base font-medium">Delete Account</p>
+                </div>
+                <ArrowLeft />
+              </div>
+            </div>
+          </DialogTrigger>
+
+          <DialogContent className="w-3xl">
+            <DeleteAccountDialog onClose={() => setIsDeleteDialogOpen(false)} />
           </DialogContent>
         </Dialog>
 
