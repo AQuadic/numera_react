@@ -33,7 +33,7 @@ const FilterYourPlates = () => {
   }, []);
 
   const platesByPackage: PlatesByPackage = plates.reduce((acc, plate) => {
-    const packageName = plate.package_user.package.name.en;
+  const packageName = plate.package_user?.package?.name?.en ?? "Free";
     if (!acc[packageName]) acc[packageName] = [];
     acc[packageName].push(plate);
     return acc;

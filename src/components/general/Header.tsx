@@ -68,7 +68,7 @@ const Header = () => {
                   </DialogContent>
                 </Dialog>
               ) : (
-              <Link key={link.title} to={link.href} className="text-[#192540] text-lg font-medium hover:text-[#EBAF29] transition">
+              <Link key={link.title} to={link.href ?? "/"} className="text-[#192540] text-lg font-medium hover:text-[#EBAF29] transition">
                 {link.title}
               </Link>
             )
@@ -221,7 +221,7 @@ const Header = () => {
                   return (
                     <Link
                       key={link.title}
-                      to={link.href}
+                      to={link.href ?? "/"}
                       onClick={() => setOpen(false)}
                       className="text-[#192540] text-xl font-semibold hover:text-[#EBAF29] transition"
                     >

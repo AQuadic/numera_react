@@ -87,7 +87,7 @@ const Footer = () => {
                         return (
                         <Link
                         key={link.title}
-                        to={link.href}
+                        to={link.href ?? "/"}
                         className="text-[#192540] text-lg font-medium"
                         >
                         {link.title}

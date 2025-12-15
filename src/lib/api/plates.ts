@@ -18,9 +18,25 @@ export interface User {
   verification_status: string | null;
 }
 
+export interface Package {
+  id: number;
+  name: { ar: string; en: string };
+  primary_color: string;
+  secondary_color: string;
+}
+
+export interface PackageUser {
+  id: number;
+  user_id: number;
+  package_id: number;
+  iap: string;
+  package: Package;
+}
+
 export interface Plate {
   id: number;
   package_user_id: number;
+  package_user?: PackageUser;
   vehicle_type: "classic" | "bikes" | "cars" | "fun";
   emirate_id: string;
   is_active: boolean;
@@ -44,6 +60,7 @@ export interface Plate {
   share_url: string;
   user: User;
 }
+
 
 export interface PaginationLink {
   url: string | null;

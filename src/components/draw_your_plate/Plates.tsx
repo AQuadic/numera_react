@@ -5,7 +5,7 @@ const Plates = () => {
         <div>
             <div className="flex flex-wrap items-center justify-center gap-6">
                 {[...Array(12)].map((_, index) => (
-                    <PlateCard key={index} />
+                    <PlateCard key={index}  />
                 ))}
             </div>
         </div>

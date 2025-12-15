@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { useState } from "react";
+import React, { useState } from "react";
 import Heart from "../icons/home/Heart";
 import type { Plate } from "../../lib/api";
 import { toggleFavorite } from "../../lib/api/toggleFavorite";
@@ -36,7 +36,7 @@ const PlateCard = ({ plate }: PlateCardProps) => {
       ? "linear-gradient(90deg, rgba(138,138,138,0.5) 23.87%, #F0F0F0 100%)"
       : "#8A8A8A";
 
-  const handleToggleFavorite = async (e: MouseEvent) => {
+    const handleToggleFavorite = async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       e.stopPropagation();
 
@@ -65,7 +65,7 @@ const PlateCard = ({ plate }: PlateCardProps) => {
       className="md:w-[274px] w-full rounded-md hover:shadow-lg transition-shadow relative"
     >
       <div
-        className="rounded-md p-[1px]"
+        className="rounded-md p-px"
         style={{ background: borderGradient }}
       >
         <div className="bg-white rounded-md h-full w-full py-4 px-2 relative">
