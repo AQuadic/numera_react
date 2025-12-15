@@ -8,7 +8,7 @@ import type { AdsCounts } from "../../lib/api/analytics/getAnalytics";
 import { Link } from "react-router";
 import ArrowLeft from "../icons/profile/ArrowLeft";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
-import Upload from "../icons/profile/Upload";
+import AccountVerificationDialog from "./AccountVerificationDialog";
 
 const MyProfileComponent = () => {
   const [adsCounts, setAdsCounts] = useState<AdsCounts | null>(null);
@@ -156,32 +156,7 @@ const MyProfileComponent = () => {
                 <DialogHeader>
                 <DialogTitle ></DialogTitle>
                 <DialogDescription>
-                    <h2 className="text-[#192540] text-2xl font-medium">Account Verification</h2>
-                    <p className="text-[#717171] text-lg font-medium mt-4">To verify your identity, please upload your ID ,Our team will review your submission and get back to you shortly.</p>
-
-                    <div className="mt-10">
-                      <label htmlFor="id" className="text-[#192540] text-base font-medium">Upload ID</label>
-                      <div className="w-full h-[126px] border border-[#F0F0F0] rounded-md mt-4 flex flex-col items-center justify-center">
-                          <Upload />
-                          <p className="text-[#717171] text-sm font-normal mt-2">Upload a png or pdf of your ID document</p>
-                      </div>
-                    </div>
-
-                    <div className="px-2 mt-8">
-                      <label htmlFor="companyName" className="text-[#192540] text-base font-medium">
-                        Company Name
-                      </label>
-                      <input
-                        type="text"
-                        id="companyName"
-                        className="w-full h-12 border rounded-md mt-2 px-2"
-                        placeholder="Enter company name"
-                      />
-                    </div>
-
-                    <button className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold mt-8 cursor-pointer">
-                      Submit
-                    </button>
+                    <AccountVerificationDialog />
                 </DialogDescription>
                 </DialogHeader>
             </DialogContent>
