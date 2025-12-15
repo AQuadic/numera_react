@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { useState } from "react";
 import Heart from "../icons/home/Heart";
 import type { Plate } from "../../lib/api";
+import { toggleFavorite } from "../../lib/api/toggleFavorite";
 
 interface PlateCardProps {
   plate: Plate;
@@ -9,6 +10,8 @@ interface PlateCardProps {
 
 const PlateCard = ({ plate }: PlateCardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(plate.is_favorite ?? false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-AE").format(price);
@@ -31,6 +34,28 @@ const PlateCard = ({ plate }: PlateCardProps) => {
       : packageName === "Silver" || packageName === "Free"
       ? "linear-gradient(90deg, rgba(138,138,138,0.5) 23.87%, #F0F0F0 100%)"
       : "#8A8A8A";
+
+    const handleToggleFavorite = async (e: MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (isLoading) return;
+      setIsFavorited(prev => !prev);
+
+      try {
+        setIsLoading(true);
+        const res = await toggleFavorite({
+          favorable_id: plate.id,
+          favorable_type: "plate",
+        });
+        setIsFavorited(res.is_favorited);
+      } catch (error) {
+        setIsFavorited(prev => !prev);
+        console.error("Failed to toggle favorite", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
   return (
     <Link
@@ -66,7 +91,14 @@ const PlateCard = ({ plate }: PlateCardProps) => {
             >
               {plate.is_sold ? "Sold" : "Available"}
             </div>
-            <Heart />
+
+            <button
+              onClick={handleToggleFavorite}
+              disabled={isLoading}
+              className="cursor-pointer"
+            >
+              <Heart active={isFavorited} />
+            </button>
           </div>
 
           <div className="mt-6 w-full h-[54px] bg-white rounded relative">
