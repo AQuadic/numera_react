@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import AccountVerificationDialog from "./AccountVerificationDialog";
 import DeleteAccount from "../icons/profile/DeleteAccount";
 import DeleteAccountDialog from "./DeleteAccountDialog";
+import Heart from "../icons/home/Heart";
 
 const MyProfileComponent = () => {
   const [adsCounts, setAdsCounts] = useState<AdsCounts | null>(null);
@@ -213,6 +214,18 @@ const MyProfileComponent = () => {
             </div>
           </DialogContent>
         </Dialog>
+
+        <div className="border border-[#F0F0F0] rounded-md px-6 py-4 mt-6">
+          <Link to='/profile/favorite_plates' className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                  <Heart />
+                  <p className="text-[#192540] text-base font-medium">
+                    Favorite Plate
+                  </p>
+                </div>
+              <ArrowLeft />
+        </Link>
+      </div>
 
         <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
           <DialogTrigger className="w-full">

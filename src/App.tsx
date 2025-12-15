@@ -27,6 +27,7 @@ import MyProfileComponent from "./components/my_profile/MyProfileComponent";
 import MyAdsComponent from "./components/my_profile/MyAdsComponent";
 import AnalyticalDashboard from "./components/my_profile/AnalyticalDashboard/AnalyticalDashboard";
 import ChangePassword from "./components/my_profile/ChangePassword";
+import FavPlates from "./components/my_profile/FavPlates";
 
 function App() {
   return (
@@ -63,6 +64,7 @@ function App() {
                   <Route index element={<MyProfileComponent />} />
                   <Route path="personal_info" element={<PersonalInformation />} />
                   <Route path="change_password" element={<ChangePassword />} />
+                  <Route path="favorite_plates" element={<FavPlates />} />
                   <Route path="ads" element={<MyAdsComponent />} />
                   <Route
                     path="analytics"

@@ -23,7 +23,7 @@ const DeleteAccountDialog: React.FC<DeleteAccountDialogProps> = ({ onClose }) =>
       } else {
         toast.error(result.message || "Failed to delete account");
       }
-    } catch (error) {
+    } catch {
       toast.error("An error occurred while deleting your account");
     } finally {
       setIsDeleting(false);
