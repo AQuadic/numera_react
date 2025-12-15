@@ -2,7 +2,11 @@ import { useState, useRef } from "react";
 import Upload from "../icons/profile/Upload";
 import toast from "react-hot-toast";
 
-const AccountVerificationDialog = () => {
+interface AccountVerificationDialogProps {
+  onSubmit: () => void;
+}
+
+const AccountVerificationDialog: React.FC<AccountVerificationDialogProps> = ({ onSubmit }) => {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [companyName, setCompanyName] = useState("");
@@ -24,7 +28,7 @@ const AccountVerificationDialog = () => {
           setPreviewUrl(null);
         }
       } else {
-        alert("Please upload a PNG, JPG, or PDF file.");
+        toast.error("Please upload a PNG, JPG, or PDF file.");
       }
     }
   };
@@ -43,10 +47,10 @@ const AccountVerificationDialog = () => {
     formData.append("id_document", file);
     formData.append("company_name", companyName);
 
-    toast.success("File submitted successfully!");
+    onSubmit();
   };
 
-    return (
+  return (
         <div className="max-h-[600px] overflow-scroll">
         <h2 className="text-[#192540] text-2xl font-medium">Account Verification</h2>
         <p className="text-[#717171] text-lg font-medium mt-4">
