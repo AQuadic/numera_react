@@ -4,12 +4,12 @@ import Profile from "../icons/header/Profile";
 import Verified from "../icons/plates/Verified";
 import ChangePassword from "../icons/profile/Change_password";
 // import Crown from "../icons/profile/Crown";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../ui/accordion";
+// import {
+//   Accordion,
+//   AccordionContent,
+//   AccordionItem,
+//   AccordionTrigger,
+// } from "../ui/accordion";
 import { changePassword } from "../../lib/api/auth";
 import { getAdsCounts } from "../../lib/api/analytics/getAnalytics";
 import { useAuthStore } from "../../store/useAuthStore";
@@ -190,7 +190,19 @@ const MyProfileComponent = () => {
       </Link>
       </div>
 
-      <div className="mt-8 flex flex-col gap-6">
+      <div className="border border-[#F0F0F0] rounded-md px-6 py-4 mt-6">
+        <Link to='/profile/change_password' className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+                <ChangePassword />
+                <p className="text-[#192540] text-base font-medium">
+                  Change Password
+                </p>
+              </div>
+            <ArrowLeft />
+      </Link>
+      </div>
+
+      {/* <div className="mt-8 flex flex-col gap-6">
         <Accordion type="single" collapsible>
           <AccordionItem
             value="item-2"
@@ -276,7 +288,7 @@ const MyProfileComponent = () => {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-      </div>
+      </div> */}
 
       <div className="mt-6 border border-[#F0F0F0] rounded-md px-6 py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-2">
