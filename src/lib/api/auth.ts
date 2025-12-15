@@ -305,6 +305,9 @@ export interface UpdateUserRequest {
   name?: string;
   email?: string;
   phone?: string;
+  phone_country?: string;
+  type?: "personal" | "company";
+  company_name?: string;
 }
 
 export interface UpdateUserResponse {

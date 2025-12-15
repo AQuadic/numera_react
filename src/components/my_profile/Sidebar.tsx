@@ -1,3 +1,4 @@
+import { useLocation } from "react-router";
 import Profile from "../icons/header/Profile";
 import Ads from "../icons/profile/Ads";
 import Analytical from "../icons/profile/Analytical";
@@ -5,31 +6,42 @@ import Logout from "../icons/profile/Logout";
 import Plans from "../icons/profile/Plans";
 
 interface SidebarProps {
-    onSelect: (id: string) => void;
-    selected: string;
+  onSelect: (id: string) => void;
 }
 
-const Sidebar = ({ onSelect, selected }: SidebarProps) => {
+const Sidebar = ({ onSelect }: SidebarProps) => {
+  const location = useLocation();
 
-    const sidebar_links = [
-        { title: "My Profile", icon: <Profile />, id: "profile" },
-        { title: "My ADs", icon: <Ads />, id: "ads" },
-        { title: "Analytical Dashboard", icon: <Analytical />, id: "analytics" },
-        { title: "My Plan", icon: <Plans />, id: "plan" }
-    ];
+  const pathname = location.pathname;
 
-    const logout_item = { title: "Log out", icon: <Logout />, id: "logout" };
+  const isActive = (id: string) => {
+    if (id === "profile") return pathname === "/profile";
+    return pathname.startsWith(`/profile/${id}`);
+  };
+
+  const sidebarLinks = [
+    { title: "My Profile", icon: <Profile />, id: "profile" }, // /profile
+    { title: "My ADs", icon: <Ads />, id: "ads" },              // /profile/ads
+    { title: "Analytical Dashboard", icon: <Analytical />, id: "analytics" },
+    { title: "My Plan", icon: <Plans />, id: "plan" },
+  ];
+
+  const logoutItem = {
+    title: "Log out",
+    icon: <Logout />,
+    id: "logout",
+  };
 
     return (
         <section className="w-[260px] md:w-[300px] h-full bg-[#F0F0F0] pl-6 lg:py-12 flex flex-col justify-between">
             <div>
-                {sidebar_links.map((item) => (
+                {sidebarLinks.map((item) => (
                     <div
                         key={item.id}
                         onClick={() => onSelect(item.id)}
                         className={`
-                            flex items-center gap-3 py-3 cursor-pointer rounded-tl-[20px] rounded-bl-[20px] mt-6 px-2
-                            ${selected === item.id ? "bg-[#FEFEFE]" : "hover:bg-[#E5E5E5]"}
+                            flex items-center gap-3 py-3 cursor-pointer rounded-tl-[20px] rounded-bl-[20px] mt-6 px-2 transition
+                            ${isActive(item.id) ? "bg-[#FEFEFE]" : "hover:bg-[#E5E5E5]"}
                         `}
                     >
                         {item.icon}
@@ -41,15 +53,12 @@ const Sidebar = ({ onSelect, selected }: SidebarProps) => {
             </div>
 
             <div
-                onClick={() => onSelect(logout_item.id)}
-                className={`
-                    flex items-center gap-3 py-3 cursor-pointer rounded-tl-[20px] rounded-bl-[20px] mt-6 px-2
-                    ${selected === logout_item.id ? "bg-[#FEFEFE]" : "hover:bg-[#E5E5E5]"}
-                `}
+                onClick={() => onSelect(logoutItem.id)}
+                className="flex items-center gap-3 py-3 cursor-pointer rounded-tl-[20px] rounded-bl-[20px] mt-6 px-2 hover:bg-[#E5E5E5]"
             >
-                {logout_item.icon}
+                {logoutItem.icon}
                 <span className="text-[#192540] text-base font-medium">
-                    {logout_item.title}
+                    {logoutItem.title}
                 </span>
             </div>
         </section>

@@ -10,31 +10,22 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion";
-import { changePassword, updateUser } from "../../lib/api/auth";
+import { changePassword } from "../../lib/api/auth";
 import { getAdsCounts } from "../../lib/api/analytics/getAnalytics";
 import { useAuthStore } from "../../store/useAuthStore";
 import type { AdsCounts } from "../../lib/api/analytics/getAnalytics";
+import { Link } from "react-router";
+import ArrowLeft from "../icons/profile/ArrowLeft";
 
 const MyProfileComponent = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isUpdating, setIsUpdating] = useState(false);
   const [adsCounts, setAdsCounts] = useState<AdsCounts | null>(null);
   const [adsLoading, setAdsLoading] = useState(false);
 
   const user = useAuthStore((s) => s.user);
-  const refetchUser = useAuthStore((s) => s.refetchUser);
-
-  // form state for editable profile fields - initialize from current user
-  const [name, setName] = useState(() => user?.name ?? "");
-
-  useEffect(() => {
-    if (user) {
-      setName(user.name || "");
-    }
-  }, [user]);
 
   // Fetch ads counts
   useEffect(() => {
@@ -187,70 +178,19 @@ const MyProfileComponent = () => {
         </button>
       </div> */}
 
+      <div className="border border-[#F0F0F0] rounded-md px-6 py-4 mt-6">
+        <Link to='/profile/personal_info' className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+              <Profile />
+              <p className="text-[#192540] text-base font-medium">
+                Personal Information{" "}
+              </p>
+            </div>
+            <ArrowLeft />
+      </Link>
+      </div>
+
       <div className="mt-8 flex flex-col gap-6">
-        <Accordion type="single" collapsible>
-          <AccordionItem
-            value="item-1"
-            className="border border-[#F0F0F0] rounded-md px-6"
-          >
-            <AccordionTrigger>
-              <div className="flex items-center gap-2">
-                <Profile />
-                <p className="text-[#192540] text-base font-medium">
-                  Personal Information{" "}
-                </p>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>
-              <form
-                onSubmit={async (e) => {
-                  e.preventDefault();
-
-                  if (!name || name.trim().length < 2) {
-                    toast.error("Please enter a valid name");
-                    return;
-                  }
-
-                  setIsUpdating(true);
-                  try {
-                    await updateUser({ name: name.trim() });
-                    // Refetch user to get fresh data from server
-                    await refetchUser();
-                  } catch {
-                    // axios interceptor will show toast; no-op here
-                  } finally {
-                    setIsUpdating(false);
-                  }
-                }}
-                autoComplete="off"
-              >
-                <div className="px-2">
-                  <label htmlFor="name" className="text-[#192540] text-base">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full h-12 border rounded-md mt-2 px-2"
-                    placeholder="Enter your name"
-                  />
-                </div>
-                <div className="px-2 mt-6">
-                  <button
-                    type="submit"
-                    disabled={isUpdating}
-                    className="w-full h-12 bg-[#EBAF29] rounded-md text-[#192540] text-base font-semibold cursor-pointer hover:bg-[#d9a025] transition disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isUpdating ? "Saving..." : "Save"}
-                  </button>
-                </div>
-              </form>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-
         <Accordion type="single" collapsible>
           <AccordionItem
             value="item-2"

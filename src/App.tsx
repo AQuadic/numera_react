@@ -22,6 +22,10 @@ import GuestRoute from "./components/auth/GuestRoute";
 import PlatesFilter from "./pages/PlatesFilter";
 import SimsPage from "./pages/SimsPage";
 import PageDetails from "./pages/PageDetails";
+import PersonalInformation from "./components/my_profile/PersonalInformation";
+import MyProfileComponent from "./components/my_profile/MyProfileComponent";
+import MyAdsComponent from "./components/my_profile/MyAdsComponent";
+import AnalyticalDashboard from "./components/my_profile/AnalyticalDashboard/AnalyticalDashboard";
 
 function App() {
   return (
@@ -54,7 +58,15 @@ function App() {
               />
               <Route path="sell_plates" element={<SellPlatesPage />} />
               <Route path="confirm_plate" element={<ConfirmPlate />} />
-              <Route path="profile" element={<MyProfile />} />
+              <Route path="profile" element={<MyProfile />}>
+                  <Route index element={<MyProfileComponent />} />
+                  <Route path="personal_info" element={<PersonalInformation />} />
+                  <Route path="ads" element={<MyAdsComponent />} />
+                  <Route
+                    path="analytics"
+                    element={<AnalyticalDashboard />}
+                  />
+                </Route>
             </Route>
           </Route>
 
