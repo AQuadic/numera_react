@@ -3,6 +3,7 @@ import { useState } from "react";
 import Heart from "../icons/home/Heart";
 import type { Plate } from "../../lib/api";
 import { toggleFavorite } from "../../lib/api/toggleFavorite";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface PlateCardProps {
   plate: Plate;
@@ -12,12 +13,12 @@ const PlateCard = ({ plate }: PlateCardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isFavorited, setIsFavorited] = useState(plate.is_favorite ?? false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const queryClient = useQueryClient();
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-AE").format(price);
   };
 
-  const packageName = plate.package_user.package.name.en;
+  const packageName = plate.package_user?.package?.name?.en ?? "Free";
 
   const badgeStyle =
     packageName === "Gold"
@@ -35,12 +36,12 @@ const PlateCard = ({ plate }: PlateCardProps) => {
       ? "linear-gradient(90deg, rgba(138,138,138,0.5) 23.87%, #F0F0F0 100%)"
       : "#8A8A8A";
 
-    const handleToggleFavorite = async (e: MouseEvent) => {
+  const handleToggleFavorite = async (e: MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
 
       if (isLoading) return;
-      setIsFavorited(prev => !prev);
+      setIsFavorited((prev) => !prev);
 
       try {
         setIsLoading(true);
@@ -49,8 +50,9 @@ const PlateCard = ({ plate }: PlateCardProps) => {
           favorable_type: "plate",
         });
         setIsFavorited(res.is_favorited);
+        queryClient.invalidateQueries({ queryKey: ["favorites"] });
       } catch (error) {
-        setIsFavorited(prev => !prev);
+        setIsFavorited((prev) => !prev);
         console.error("Failed to toggle favorite", error);
       } finally {
         setIsLoading(false);
