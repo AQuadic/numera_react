@@ -1,0 +1,70 @@
+import TotalAds from "../icons/profile/TotalAds";
+import Active from "../icons/profile/Active";
+import Sold from "../icons/profile/Sold";
+import Paused from "../icons/profile/Paused";
+import { Skeleton } from "../ui/skeleton";
+import type { Plate } from "../../lib/api";
+
+interface AdsStatsProps {
+  data?: {
+    total: number;
+    data: Plate[];
+  };
+  isLoading: boolean;
+}
+
+const AdsStats = ({ data, isLoading }: AdsStatsProps) => {
+    return (
+        <div className="flex flex-wrap items-center justify-center md:gap-[68px] gap-4 mb-8">
+        {isLoading ? (
+            [...Array(4)].map((_, i) => (
+            <Skeleton key={i} className="md:w-60 w-40 h-[90px] rounded-lg" />
+            ))
+        ) : (
+            <>
+            <div className="w-[187px] md:px-6 px-2 py-5 bg-[#EEF6FF] rounded-lg flex items-center gap-3">
+                <TotalAds />
+                <div>
+                <h2 className="text-[#155DFD] text-2xl font-semibold">
+                    {data?.total ?? "-"}
+                </h2>
+                <p className="text-[#717171] text-base font-medium mt-2">Total Ads</p>
+                </div>
+            </div>
+
+            <div className="w-[187px] md:px-6 px-2 py-5 bg-[#ECF5F1] rounded-lg flex items-center gap-3">
+                <Active />
+                <div>
+                <h2 className="text-[#19AA3D] text-2xl font-semibold">
+                    {data?.data?.filter((p) => p.is_active).length ?? 0}
+                </h2>
+                <p className="text-[#717171] text-base font-medium mt-2">Active</p>
+                </div>
+            </div>
+
+            <div className="w-[187px] md:px-6 px-2 py-5 bg-[#FFF9E0] rounded-lg flex items-center gap-3">
+                <Sold />
+                <div>
+                <h2 className="text-[#B48110] text-2xl font-semibold">
+                    {data?.data?.filter((p) => p.is_sold).length ?? 0}
+                </h2>
+                <p className="text-[#717171] text-base font-medium mt-2">Sold</p>
+                </div>
+            </div>
+
+            <div className="w-[187px] md:px-6 px-2 py-5 bg-[#F0F0F080] rounded-lg flex items-center gap-3">
+                <Paused />
+                <div>
+                <h2 className="text-[#717171] text-2xl font-semibold">
+                    {data?.data?.filter((p) => p.paused_at !== null).length ?? 0}
+                </h2>
+                <p className="text-[#717171] text-base font-medium mt-2">Paused</p>
+                </div>
+            </div>
+            </>
+        )}
+        </div>
+    );
+};
+
+export default AdsStats;

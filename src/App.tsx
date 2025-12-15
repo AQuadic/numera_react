@@ -28,6 +28,7 @@ import MyAdsComponent from "./components/my_profile/MyAdsComponent";
 import AnalyticalDashboard from "./components/my_profile/AnalyticalDashboard/AnalyticalDashboard";
 import ChangePassword from "./components/my_profile/ChangePassword";
 import FavPlates from "./components/my_profile/FavPlates";
+import AllAds from "./components/my_profile/AllAds";
 
 function App() {
   return (
@@ -66,6 +67,7 @@ function App() {
                   <Route path="change_password" element={<ChangePassword />} />
                   <Route path="favorite_plates" element={<FavPlates />} />
                   <Route path="ads" element={<MyAdsComponent />} />
+                  <Route path="allAds" element={<AllAds />} />
                   <Route
                     path="analytics"
                     element={<AnalyticalDashboard />}
