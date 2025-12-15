@@ -35,13 +35,13 @@ const PlateCard = ({ plate }: PlateCardProps) => {
   return (
     <Link
       to={`/plate_details/${plate.id}`}
-      className="md:w-[274px] w-full rounded-2xl hover:shadow-lg transition-shadow relative"
+      className="md:w-[274px] w-full rounded-md hover:shadow-lg transition-shadow relative"
     >
       <div
-        className="rounded-2xl p-[1px]"
+        className="rounded-md p-[1px]"
         style={{ background: borderGradient }}
       >
-        <div className="bg-white rounded-2xl h-full w-full py-4 px-2 relative">
+        <div className="bg-white rounded-md h-full w-full py-4 px-2 relative">
           {packageName !== "Free" && badgeStyle && (
             <div
               style={badgeStyle}
