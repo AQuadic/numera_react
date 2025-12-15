@@ -6,6 +6,7 @@ import { getPlates } from "../../lib/api";
 import type { Plate } from "../../lib/api";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import FilterComponent from "../general/FilterComponent";
+import RightArrow from "../icons/plates/RightArrow";
 
 const FilterYourPlates = () => {
   const [plates, setPlates] = useState<Plate[]>([]);
@@ -76,9 +77,10 @@ const FilterYourPlates = () => {
           <div className="mt-8 flex items-center justify-center">
             <Link
               to="/plates_filter"
-              className="px-8 py-3 bg-[#EBAF29] text-[#192540] font-semibold rounded-lg hover:bg-[#d9a01f] transition-colors"
+              className="flex items-center gap-2 px-8 py-3  text-[#EBAF29] font-semibold rounded-lg"
             >
-              See All Plates
+              See All
+              <RightArrow />
             </Link>
           </div>
         </>

@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router";
 import PlateCard from "../components/home/PlateCard";
 import { getPlates, getCities } from "../lib/api";
 import type { Plate, City, PlateFilters as ApiPlateFilters } from "../lib/api";
+import FilterIcon from "../components/icons/draw_plates/Filter";
 
 const PlatesFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -127,12 +128,15 @@ const PlatesFilter = () => {
 
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Filters Sidebar */}
-        <div className="lg:w-[280px] w-full bg-[#FDFAF3] rounded-lg p-6 h-fit">
+        <div className="lg:w-[280px] w-full bg-[#F0F0F0] rounded-lg p-6 h-fit">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold text-[#192540]">Filters</h3>
+            <div className="flex items-center gap-3">
+              <FilterIcon />
+              <h3 className="text-lg font-semibold text-[#192540]">Filters</h3>
+            </div>
             <button
               onClick={clearFilters}
-              className="text-sm text-[#966A08] hover:underline"
+              className="text-sm text-[#966A08] hover:underline cursor-pointer"
             >
               Clear All
             </button>
