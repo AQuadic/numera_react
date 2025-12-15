@@ -86,7 +86,7 @@ const FilterYourPlates = () => {
                 ))}
               </div>
 
-              {plates.length > 8 && (
+              {plates.length > 4 && (
                 <div className="mt-8 flex items-center justify-center">
                   <Link
                     to={`/plates_filter?package=${packageName}`}
