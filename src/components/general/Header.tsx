@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 import { navLinks } from "../../constants/navLinks";
 // import Chat from "../icons/header/Chat";
 import Notifications from "../icons/header/Notifications";
@@ -47,33 +47,44 @@ const Header = () => {
             alt="Numra logo"
           />
         </Link>
+    
+  <div className="hidden lg:flex items-center gap-6">
+    {navLinks.map((link) =>
+      link.dialog ? (
+        <Dialog key={link.title}>
+          <DialogTrigger asChild>
+            <button className="text-[#192540] text-lg font-medium hover:text-[#EBAF29] transition cursor-pointer">
+              {link.title}
+            </button>
+          </DialogTrigger>
 
-        <div className="hidden lg:flex items-center gap-6">
-          {navLinks.map((link) =>
-            link.dialog ? (
-                <Dialog key={link.title}>
-                  <DialogTrigger asChild>
-                    <button className="text-[#192540] text-lg font-medium hover:text-[#EBAF29] transition cursor-pointer">
-                      {link.title}
-                    </button>
-                  </DialogTrigger>
-
-                  <DialogContent className="w-[860px] max-w-full px-0">
-                    <DialogHeader>
-                      <DialogTitle></DialogTitle>
-                      <DialogDescription>
-                        <DownloadApp />
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              ) : (
-              <Link key={link.title} to={link.href ?? "/"} className="text-[#192540] text-lg font-medium hover:text-[#EBAF29] transition">
-                {link.title}
-              </Link>
-            )
-          )}
-        </div>
+          <DialogContent className="w-[860px] max-w-full px-0">
+            <DialogHeader>
+              <DialogTitle />
+              <DialogDescription>
+                <DownloadApp />
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      ) : (
+        <NavLink
+          key={link.title}
+          to={link.href ?? "/"}
+          end={link.href === "/"} 
+          className={({ isActive }) =>
+            `text-lg font-medium transition ${
+              isActive
+                ? "text-[#EBAF29]"
+                : "text-[#192540] hover:text-[#EBAF29]"
+            }`
+          }
+        >
+          {link.title}
+        </NavLink>
+      )
+    )}
+  </div>
 
         <div className="flex items-center gap-6">
           {/* <Chat /> */}
