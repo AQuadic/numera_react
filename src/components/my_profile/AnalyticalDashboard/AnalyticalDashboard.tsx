@@ -6,9 +6,16 @@ import ViewsOverview from "./ViewsOverview"
 import Spinner from "../../icons/general/Spinner";
 
 const AnalyticalDashboard = () => {
+  const today = new Date();
+  const to_date = today.toISOString().split("T")[0];
+
+  const from = new Date();
+  from.setDate(today.getDate() - 30);
+  const from_date = from.toISOString().split("T")[0];
+
     const { data, isLoading } = useQuery<AnalyticsData>({
-        queryKey: ["analytics"],
-        queryFn: getAnalytics,
+        queryKey: ["analytics", from_date, to_date],
+        queryFn: () => getAnalytics({ from_date, to_date }),
         staleTime: 1000 * 60 * 5,
         retry: 2,
     });
@@ -20,7 +27,7 @@ const AnalyticalDashboard = () => {
         <section>
             <Stats analytics={data}/>
             <TopPerformingAds analytics={data}/>
-            <ViewsOverview />
+            <ViewsOverview analytics={data} />
         </section>
     )
 }

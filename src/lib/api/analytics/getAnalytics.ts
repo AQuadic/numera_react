@@ -25,8 +25,13 @@ export interface AdsCounts {
   total_ads: number;
 }
 
-export const getAnalytics = async (): Promise<AnalyticsData> => {
-  const response = await axios.get<AnalyticsData>("/analytics");
+export interface GetAnalyticsParams {
+  from_date: string;
+  to_date: string;
+}
+
+export const getAnalytics = async (params: GetAnalyticsParams): Promise<AnalyticsData> => {
+  const response = await axios.get<AnalyticsData>("/analytics", { params });
   return response.data;
 };
 
