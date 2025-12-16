@@ -4,7 +4,7 @@ import { continuePlate } from "../../lib/api/plates/continuePlate";
 import { republishPlate } from "../../lib/api/plates/republishPlate";
 import Chat from "../icons/profile/Chat";
 import Delete from "../icons/profile/Delete";
-import Edit from "../icons/profile/Edit";
+// import Edit from "../icons/profile/Edit";
 import Heart from "../icons/profile/Heart";
 import MeatballsMenu from "../icons/profile/MeatballsMenu";
 import PlatePaused from "../icons/profile/PlatePaused";
@@ -106,10 +106,10 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
               <MeatballsMenu />
             </PopoverTrigger>
             <PopoverContent className="w-[155px]">
-              <div className="flex items-center gap-2 cursor-pointer">
+              {/* <div className="flex items-center gap-2 cursor-pointer">
                 <Edit />
                 <p className="text-[#192540] text-lg font-medium">Edit</p>
-              </div>
+              </div> */}
               <div className="flex items-center gap-2 cursor-pointer mt-4">
                 <Share />
                 <p className="text-[#192540] text-lg font-medium">Share</p>
