@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import PlateCard from "../home/PlateCard";
+import SimCard from "../home/SimCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { getFavorites } from "../../lib/api/getFavorites";
 import FavEmpty from "./FavEmpty";
@@ -10,6 +11,14 @@ const FavPlates = () => {
     queryKey: ["favorites"],
     queryFn: getFavorites,
   });
+
+  const favoritePhoneNumbers = favoritePlates.filter(
+    (fav) => fav.favorable_type === "sim"
+  );
+
+  const favoritePlatesOnly = favoritePlates.filter(
+    (fav) => fav.favorable_type === "plate"
+  );
 
   return (
     <section className="py-12">
@@ -31,19 +40,14 @@ const FavPlates = () => {
         <TabsContent value="plates">
           {isLoading ? (
             <Spinner />
-          ) : favoritePlates.length === 0 ? (
+          ) : favoritePlatesOnly.length === 0 ? (
             <FavEmpty />
           ) : (
             <div className="grid xl:grid-cols-4 md:grid-cols-2 gap-6">
-              {favoritePlates.map((fav) => (
+              {favoritePlatesOnly.map((fav) => (
                 <PlateCard
                   key={fav.id}
-                  plate={
-                    {
-                      ...fav.favorable,
-                      is_favorite: true,
-                    } as any
-                  }
+                  plate={{ ...fav.favorable, is_favorite: true } as any}
                 />
               ))}
             </div>
@@ -51,9 +55,20 @@ const FavPlates = () => {
         </TabsContent>
 
         <TabsContent value="phone_number">
-          <div className="text-center text-gray-500">
-            No favorite phone numbers yet.
-          </div>
+          {isLoading ? (
+            <Spinner />
+          ) : favoritePhoneNumbers.length === 0 ? (
+            <FavEmpty />
+          ) : (
+            <div className="grid xl:grid-cols-4 md:grid-cols-2 gap-6">
+              {favoritePhoneNumbers.map((fav) => (
+                <SimCard
+                  key={fav.id}
+                  sim={{ ...fav.favorable, is_favorite: true } as any}
+                />
+              ))}
+            </div>
+          )}
         </TabsContent>
       </Tabs>
     </section>
