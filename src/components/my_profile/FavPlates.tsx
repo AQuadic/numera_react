@@ -15,7 +15,7 @@ const FavPlates = () => {
         <section className="py-12">
         <h2 className="text-[#192540] text-2xl font-medium">Favorite</h2>
 
-        <Tabs className="flex items-center justify-center rounded-[74px]">
+        <Tabs defaultValue="plates" className="flex items-center justify-center rounded-[74px]">
             <TabsList className="bg-transparent flex items-center justify-center mt-13 md:gap-[68px] mb-12">
             <TabsTrigger value="plates" className="lg:w-[494px] w-full">
                 Plates
