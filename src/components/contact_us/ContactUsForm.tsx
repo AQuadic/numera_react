@@ -65,13 +65,20 @@ const   ContactUsForm: React.FC = () => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e as any);
+    }
+  };
+
   return (
     <section className="container w-full h-[737px] lg:bg-[#FFFAEF] rounded-[42px] md:my-14 px-8 py-10 mb-10 relative">
       <h2 className="text-[#192540] text-[32px] font-medium">
         Contact Support
       </h2>
       <p className="text-[#717171] text-xl font-medium mt-4">
-        We’re here to help! Send us your questions or issues, and we’ll respond
+        We're here to help! Send us your questions or issues, and we'll respond
         as <br /> soon as possible.
       </p>
 
@@ -101,6 +108,7 @@ const   ContactUsForm: React.FC = () => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              onKeyDown={handleKeyDown}
               className="lg:w-[760px] w-full h-14 border border-[#D9D9D9] rounded-md mt-3 px-3"
               placeholder="Enter your name"
               disabled={isLoading}
@@ -119,6 +127,7 @@ const   ContactUsForm: React.FC = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={handleKeyDown}
               className="lg:w-[760px] w-full h-14 border border-[#D9D9D9] rounded-md mt-3 px-3"
               placeholder="Enter your email"
               disabled={isLoading}
@@ -136,8 +145,9 @@ const   ContactUsForm: React.FC = () => {
               id="message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={handleKeyDown}
               className="lg:w-[760px] w-full h-[143px] border border-[#D9D9D9] rounded-md mt-3 p-3"
-              placeholder="Enter your message"
+              placeholder="Enter your message (Shift+Enter for new line)"
               disabled={isLoading}
             />
           </div>
@@ -195,46 +205,46 @@ const   ContactUsForm: React.FC = () => {
           </h2>
 
           <div className="flex items-center gap-2 mt-2">
-              {socials?.facebook && (
-                  <a href={socials.facebook} target="_blank" rel="noreferrer">
-                  <Facebook />
-                  </a>
-              )}
-              {socials?.whatsapp && (
-                  <a href={`https://wa.me/${socials.whatsapp}`} target="_blank" rel="noreferrer">
-                  <Whatsapp />
-                  </a>
-              )}
-              {socials?.instagram && (
-                  <a href={socials.instagram} target="_blank" rel="noreferrer">
-                  <Instagram />
-                  </a>
-              )}
-              {socials?.snapchat && (
-                  <a href={socials.snapchat} target="_blank" rel="noreferrer">
-                  <Snapchat />
-                  </a>
-              )}
-              {socials?.tiktok && (
-                  <a href={socials.tiktok} target="_blank" rel="noreferrer">
-                  <Tiktok />
-                  </a>
-              )}
-              {socials?.linkedin && (
-                  <a href={socials.linkedin} target="_blank" rel="noreferrer">
-                  <LinkedIn />
-                  </a>
-              )}
-              {socials?.youtube && (
-                  <a href={socials.youtube} target="_blank" rel="noreferrer">
-                  <Youtube />
-                  </a>
-              )}
-              {socials?.twitter && (
-                  <a href={socials.twitter} target="_blank" rel="noreferrer">
-                  <X />
-                  </a>
-              )}
+            {socials?.facebook && (
+              <a href={socials.facebook} target="_blank" rel="noreferrer">
+                <Facebook />
+              </a>
+            )}
+            {socials?.whatsapp && (
+              <a href={`https://wa.me/${socials.whatsapp}`} target="_blank" rel="noreferrer">
+                <Whatsapp />
+              </a>
+            )}
+            {socials?.instagram && (
+              <a href={socials.instagram} target="_blank" rel="noreferrer">
+                <Instagram />
+              </a>
+            )}
+            {socials?.snapchat && (
+              <a href={socials.snapchat} target="_blank" rel="noreferrer">
+                <Snapchat />
+              </a>
+            )}
+            {socials?.tiktok && (
+              <a href={socials.tiktok} target="_blank" rel="noreferrer">
+                <Tiktok />
+              </a>
+            )}
+            {socials?.linkedin && (
+              <a href={socials.linkedin} target="_blank" rel="noreferrer">
+                <LinkedIn />
+              </a>
+            )}
+            {socials?.youtube && (
+              <a href={socials.youtube} target="_blank" rel="noreferrer">
+                <Youtube />
+              </a>
+            )}
+            {socials?.twitter && (
+              <a href={socials.twitter} target="_blank" rel="noreferrer">
+                <X />
+              </a>
+            )}
           </div>
         </div>
       </div>
