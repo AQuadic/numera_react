@@ -4,6 +4,7 @@ import Axios, {
   type AxiosError,
 } from "axios";
 import toast from "react-hot-toast";
+import { useAuthStore } from "../store/useAuthStore";
 
 const TOKEN_KEY = "numra_token";
 const API_BASE_URL =
@@ -125,15 +126,24 @@ axios.interceptors.response.use(
     const errorMessage = getErrorMessageFromResponse(error);
     toast.error(errorMessage);
 
-    // Handle 401 Unauthorized - but DON'T auto-remove token
-    // The token might be valid but a different endpoint failed
-    // Only remove token if it's explicitly an auth endpoint failure
+    // Handle 401 Unauthorized: logout and redirect to signin
     if (error.response?.status === 401) {
-      const url = error.config?.url || "";
-      // Only clear token if it's a user-fetch call that failed with 401
-      // This means the token itself is invalid
-      if (url.includes("/user/user") || url.includes("/user/me")) {
-        console.warn("Token appears invalid, clearing...");
+      try {
+        // Clear auth state (removes token and clears user)
+        // Use getState().logout() so we can call it outside of React components
+        useAuthStore.getState().logout();
+
+        // Notify user and redirect to sign-in page (replace history so back won't return to protected pages)
+        if (typeof window !== "undefined") {
+          // Avoid redundant navigation if already on signin
+          if (window.location.pathname !== "/signin") {
+            toast.error("Session expired. Please sign in again.");
+            window.location.replace("/signin");
+          }
+        }
+      } catch (e) {
+        // If anything goes wrong, ensure token is removed as a fallback
+        console.warn("Failed to perform automatic logout on 401:", e);
         removeToken();
       }
     }
