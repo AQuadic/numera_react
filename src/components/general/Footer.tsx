@@ -158,7 +158,7 @@ const Footer = () => {
 
             <div className="flex flex-wrap items-center justify-center md:gap-4 gap-2 mt-1">
                 <h2 className="text-[#192540] text-xl font-medium">Follow Us</h2>
-                <div className="flex items-center gap-2 mt-2">
+                <div className="flex items-center gap-2">
                     {socials?.facebook && (
                         <a href={socials.facebook} target="_blank" rel="noreferrer">
                         <Facebook />
