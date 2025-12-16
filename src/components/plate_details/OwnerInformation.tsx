@@ -7,12 +7,12 @@ import Whatsapp from "../icons/plates/Whatsapp";
 interface User {
   id: number;
   name: string;
-  email: string;
+  email?: string;
   phone: string | null;
   phone_e164?: string | null;
   type: string;
   company_name: string | null;
-  created_at: string;
+  created_at?: string;
   verification_status: string | null;
 }
 

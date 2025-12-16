@@ -13,7 +13,14 @@ import Share from "../icons/profile/Share";
 import SoldActions from "../icons/profile/SoldActions";
 import Views from "../icons/profile/Views";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 import { markPlateSold } from "../../lib/api/markPlateSold";
 import toast from "react-hot-toast";
 
@@ -30,7 +37,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   const [isSoldDialogOpen, setIsSoldDialogOpen] = useState(false);
   const [isMarkingSold, setIsMarkingSold] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleting] = useState(false);
 
   useEffect(() => {
     setIsPaused(!plate.paused_at);
@@ -111,7 +118,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                 ? "Sold"
                 : plate.paused_at
                 ? "Paused"
-                : "Continue"} 
+                : "Continue"}
             </div>
             <p className="text-[#717171] text-[10px]">Expires in 25 days</p>
           </div>
@@ -129,7 +136,10 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                 <Share />
                 <p className="text-[#192540] text-lg font-medium">Share</p>
               </div>
-              <Dialog open={isSoldDialogOpen} onOpenChange={setIsSoldDialogOpen}>
+              <Dialog
+                open={isSoldDialogOpen}
+                onOpenChange={setIsSoldDialogOpen}
+              >
                 <DialogTrigger className="w-full">
                   <div className="flex items-center gap-2 cursor-pointer mt-4">
                     <SoldActions />
@@ -174,7 +184,10 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                   </DialogHeader>
                 </DialogContent>
               </Dialog>
-              <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+              <Dialog
+                open={isDeleteDialogOpen}
+                onOpenChange={setIsDeleteDialogOpen}
+              >
                 <DialogTrigger className="w-full">
                   <div className="flex items-center gap-2 cursor-pointer mt-4">
                     <Delete />
@@ -196,7 +209,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                             Delete Your Ad?
                           </h2>
                           <p className="text-[#717171] text-lg font-medium mt-4">
-                            Are you sure you want to delete this ad? 
+                            Are you sure you want to delete this ad?
                           </p>
                           <p className="text-[#717171] text-lg font-medium">
                             This action is permanent and cannot be undone.
@@ -239,7 +252,6 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                 <span className="text-sm relative top-1">AED</span>
               </h2>
             )}
-
           </div>
         </div>
 
@@ -247,143 +259,146 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
           {/* <img src="/images/plates/available_img.png" alt="bg" /> */}
           {/* Removed 'Available' overlay text from profile card */}
         </div>
-      <div className="flex flex-col gap-4">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex flex-col gap-2">
-            <p className="text-[#192540] text-2xl font-semibold">
-              {plate.price} <span className="text-base font-medium">AED</span>
-            </p>
-            {plate.old_price && (
-              <p className="text-[#8E8E93] text-xl font-medium line-through">
-                {plate.old_price} <span className="text-sm">AED</span>
+        <div className="flex flex-col gap-4">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex flex-col gap-2">
+              <p className="text-[#192540] text-2xl font-semibold">
+                {plate.price} <span className="text-base font-medium">AED</span>
               </p>
-            )}
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-1">
-            <Views />
-            <p className="text-[#192540] text-base font-normal">
-              {plate.views_count} Views
-            </p>
-          </div>
-          <div className="flex items-center gap-1">
-            <Heart />
-            <p className="text-[#192540] text-base font-normal">
-              {plate.favorites_count} Favorites
-            </p>
-          </div>
-          <div className="flex items-center gap-1">
-            <Chat />
-            <p className="text-[#192540] text-base font-normal">
-              {plate.chats_count} Chats
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-4">
-          <Dialog>
-            <DialogTrigger className="w-full">
-              <button className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#EBAF29] flex items-center justify-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
-                <Republish />
-                <p className="text-[#192540] text-base font-medium">
-                  Republish
+              {plate.old_price && (
+                <p className="text-[#8E8E93] text-xl font-medium line-through">
+                  {plate.old_price} <span className="text-sm">AED</span>
                 </p>
-              </button>
-            </DialogTrigger>
-            <DialogContent className="w-[860px] px-0!">
-              <DialogHeader>
-                <DialogTitle></DialogTitle>
-                <DialogDescription>
-                  <div>
-                    <div className="flex flex-col items-center justify-center">
-                      <img
-                        src="../../../public/images/republish.png"
-                        alt="republish"
-                      />
-                      <h2 className="text-[#192540] text-2xl font-semibold mt-4">
-                        Republish Your Ad ?
-                      </h2>
-                      <p className="text-[#717171] text-lg font-medium mt-4">
-                        Would you like to republish it to keep it active and
-                        visible to buyers?
-                      </p>
+              )}
+            </div>
+          </div>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-1">
+              <Views />
+              <p className="text-[#192540] text-base font-normal">
+                {plate.views_count} Views
+              </p>
+            </div>
+            <div className="flex items-center gap-1">
+              <Heart />
+              <p className="text-[#192540] text-base font-normal">
+                {plate.favorites_count} Favorites
+              </p>
+            </div>
+            <div className="flex items-center gap-1">
+              <Chat />
+              <p className="text-[#192540] text-base font-normal">
+                {plate.chats_count} Chats
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center justify-between gap-4">
+            <Dialog>
+              <DialogTrigger className="w-full">
+                <button className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#EBAF29] flex items-center justify-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+                  <Republish />
+                  <p className="text-[#192540] text-base font-medium">
+                    Republish
+                  </p>
+                </button>
+              </DialogTrigger>
+              <DialogContent className="w-[860px] px-0!">
+                <DialogHeader>
+                  <DialogTitle></DialogTitle>
+                  <DialogDescription>
+                    <div>
+                      <div className="flex flex-col items-center justify-center">
+                        <img
+                          src="../../../public/images/republish.png"
+                          alt="republish"
+                        />
+                        <h2 className="text-[#192540] text-2xl font-semibold mt-4">
+                          Republish Your Ad ?
+                        </h2>
+                        <p className="text-[#717171] text-lg font-medium mt-4">
+                          Would you like to republish it to keep it active and
+                          visible to buyers?
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between gap-6 mt-7 px-8">
+                        <button className="w-full h-14 border border-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer">
+                          Cancel
+                        </button>
+                        <button
+                          onClick={handleRepublish}
+                          disabled={isRepublishing}
+                          className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer"
+                        >
+                          {isRepublishing ? "Publishing..." : "Republish Now"}
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex items-center justify-between gap-6 mt-7 px-8">
-                      <button className="w-full h-14 border border-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer">
-                        Cancel
-                      </button>
-                      <button
-                        onClick={handleRepublish}
-                        disabled={isRepublishing}
-                        className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer"
-                      >
-                        {isRepublishing ? "Publishing..." : "Republish Now"}
-                      </button>
-                    </div>
-                  </div>
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
 
-          <Dialog open={isPauseDialogOpen} onOpenChange={setIsPauseDialogOpen}>
-            <DialogTrigger className="w-full">
-              <button className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#E4E4E4] flex items-center justify-center gap-1 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-                <PlatePaused />
-                <p className="text-[#192540] text-base font-medium">
-                  {isPaused ? "Continue" : "Pause"}
-                </p>
-              </button>
-            </DialogTrigger>
-            <DialogContent className="w-[860px] px-0!">
-              <DialogHeader>
-                <DialogTitle></DialogTitle>
-                <DialogDescription>
-                  <div>
-                    <div className="flex flex-col items-center justify-center">
-                      <img
-                        src="../../../public/images/pause.png"
-                        alt="pause"
-                        className="w-[245px] h-[245px]"
-                      />
-                      <h2 className="text-[#192540] text-2xl font-semibold mt-4">
-                        {isPaused ? "Continue Your Ad?" : "Pause Your Ad?"}
-                      </h2>
-                      <p className="text-[#717171] text-lg font-medium mt-4 text-center px-8">
-                        {isPaused
-                          ? "Are you sure you want to continue this ad?"
-                          : "Are you sure you want to pause this ad? It will no longer appear to buyers until you reactivate it."}
-                      </p>
+            <Dialog
+              open={isPauseDialogOpen}
+              onOpenChange={setIsPauseDialogOpen}
+            >
+              <DialogTrigger className="w-full">
+                <button className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#E4E4E4] flex items-center justify-center gap-1 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                  <PlatePaused />
+                  <p className="text-[#192540] text-base font-medium">
+                    {isPaused ? "Continue" : "Pause"}
+                  </p>
+                </button>
+              </DialogTrigger>
+              <DialogContent className="w-[860px] px-0!">
+                <DialogHeader>
+                  <DialogTitle></DialogTitle>
+                  <DialogDescription>
+                    <div>
+                      <div className="flex flex-col items-center justify-center">
+                        <img
+                          src="../../../public/images/pause.png"
+                          alt="pause"
+                          className="w-[245px] h-[245px]"
+                        />
+                        <h2 className="text-[#192540] text-2xl font-semibold mt-4">
+                          {isPaused ? "Continue Your Ad?" : "Pause Your Ad?"}
+                        </h2>
+                        <p className="text-[#717171] text-lg font-medium mt-4 text-center px-8">
+                          {isPaused
+                            ? "Are you sure you want to continue this ad?"
+                            : "Are you sure you want to pause this ad? It will no longer appear to buyers until you reactivate it."}
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between gap-6 mt-7 px-8">
+                        <button
+                          onClick={() => setIsPauseDialogOpen(false)}
+                          className="w-full h-14 border border-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={() => handleTogglePause(plate.id)}
+                          disabled={isLoading}
+                          className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {isLoading
+                            ? "Loading..."
+                            : isPaused
+                            ? "Continue Now"
+                            : "Pause Now"}
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex items-center justify-between gap-6 mt-7 px-8">
-                      <button
-                        onClick={() => setIsPauseDialogOpen(false)}
-                        className="w-full h-14 border border-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        onClick={() => handleTogglePause(plate.id)}
-                        disabled={isLoading}
-                        className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        {isLoading
-                          ? "Loading..."
-                          : isPaused
-                          ? "Continue Now"
-                          : "Pause Now"}
-                      </button>
-                    </div>
-                  </div>
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
       </div>
-    </div>
     </section>
   );
 };
 
-export default ProfilePlates; 
+export default ProfilePlates;
