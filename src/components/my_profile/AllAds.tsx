@@ -1,7 +1,10 @@
 import { useState, useMemo } from "react";
 import { useSearchParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import { getPlateAds, type GetPlateAdsParams } from "../../lib/api/plates/getPlateAds";
+import {
+  getPlateAds,
+  type GetPlateAdsParams,
+} from "../../lib/api/plates/getPlateAds";
 import AdsStats from "./AdsStats";
 import ProfilePlates from "./ProfilePlates";
 import AdsEmptyState from "../general/AdsEmptyState";
@@ -14,11 +17,20 @@ const AllAds = () => {
 
   const vehicleTypes = useMemo(() => {
     const typesFromUrl = searchParams.get("types");
-    if (!typesFromUrl) return ["cars", "fun", "bikes", "classic"];
+    if (!typesFromUrl)
+      return [...["cars", "fun", "bikes", "classic"]] as (
+        | "cars"
+        | "fun"
+        | "bikes"
+        | "classic"
+      )[];
     return typesFromUrl.split(",") as ("cars" | "fun" | "bikes" | "classic")[];
   }, [searchParams]);
 
-  const filterMap: Record<"all" | "active" | "sold" | "paused", GetPlateAdsParams["filter_type"]> = {
+  const filterMap: Record<
+    "all" | "active" | "sold" | "paused",
+    GetPlateAdsParams["filter_type"]
+  > = {
     all: "none",
     active: "active",
     sold: "sold",
@@ -40,7 +52,11 @@ const AllAds = () => {
       <AdsStats data={data} isLoading={isLoading} />
 
       <div className="flex items-center justify-center">
-        <Tabs value={tab} onValueChange={(val) => setTab(val as any)} className="flex items-center justify-center">
+        <Tabs
+          value={tab}
+          onValueChange={(val) => setTab(val as any)}
+          className="flex items-center justify-center"
+        >
           <TabsList className="bg-transparent flex md:gap-[68px] mb-12">
             <TabsTrigger value="all">All ADs</TabsTrigger>
             <TabsTrigger value="active">Active</TabsTrigger>
@@ -58,7 +74,11 @@ const AllAds = () => {
             ) : data?.data && data.data.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                 {data.data.map((plate) => (
-                  <ProfilePlates key={plate.id} plate={plate} refetch={refetch} />
+                  <ProfilePlates
+                    key={plate.id}
+                    plate={plate}
+                    refetch={refetch}
+                  />
                 ))}
               </div>
             ) : (

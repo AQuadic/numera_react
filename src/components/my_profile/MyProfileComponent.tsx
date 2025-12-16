@@ -1,4 +1,4 @@
-import { useEffect, useState, type FC } from "react";
+import { useEffect, useState } from "react";
 import Profile from "../icons/header/Profile";
 import Verified from "../icons/plates/Verified";
 import ChangePassword from "../icons/profile/Change_password";
