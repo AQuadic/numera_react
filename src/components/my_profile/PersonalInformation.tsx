@@ -23,9 +23,20 @@ const PersonalInformation = () => {
     number: "",
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>(
-    user?.image?.responsive_urls?.[0] ?? "/images/plates/owner_img.jpg"
+  const [imagePreview, setImagePreview] = useState<string | null>(
+    user?.image?.responsive_urls?.[0] ?? null
   );
+
+  // helper to derive initials from name
+  const getInitials = (fullName?: string) => {
+    const parts = (fullName || name || user?.name || "")
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+    if (parts.length === 0) return "";
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  };
 
   useEffect(() => {
     if (user) {
@@ -39,7 +50,7 @@ const PersonalInformation = () => {
         user.type === "company" ? "company" : "personal";
       setMemberType(type);
       setCompanyName(user.company_name || "");
-      setImagePreview(user?.image?.responsive_urls?.[0] ?? "/images/plates/owner_img.jpg");
+      setImagePreview(user?.image?.responsive_urls?.[0] ?? null);
     }
   }, [user]);
 
@@ -56,6 +67,9 @@ const PersonalInformation = () => {
       return;
     }
 
+    // keep the user's currently saved image so we can revert to it if upload fails
+    const previousSavedImage = user?.image?.responsive_urls?.[0] ?? null;
+
     setIsUpdating(true);
     try {
       const formData = new FormData();
@@ -64,14 +78,18 @@ const PersonalInformation = () => {
       formData.append("phone", phone.number);
       formData.append("phone_country", phone.code);
       formData.append("type", memberType);
-      if (memberType === "company") formData.append("company_name", companyName.trim());
+      if (memberType === "company")
+        formData.append("company_name", companyName.trim());
       if (imageFile) formData.append("image", imageFile);
 
       await updateUser(formData);
       await refetchUser();
       toast.success("Profile updated successfully");
-    } catch {
-      // axios interceptor handles toast
+    } catch (err) {
+      // axios interceptor handles toast; revert the image preview and clear the selected file
+      setImageFile(null);
+      // revert to the previously saved image (or null to show initials)
+      setImagePreview(previousSavedImage);
     } finally {
       setIsUpdating(false);
     }
@@ -79,14 +97,23 @@ const PersonalInformation = () => {
 
   return (
     <div className="py-10">
-      <h2 className="text-[#192540] text-2xl font-medium">Personal Information</h2>
+      <h2 className="text-[#192540] text-2xl font-medium">
+        Personal Information
+      </h2>
       <form onSubmit={handleSubmit} autoComplete="off">
         <div className="mt-10 flex items-center justify-center relative">
-          <img
-            src={imagePreview}
-            alt="owner image"
-            className="w-[193px] h-[193px] rounded-full object-cover"
-          />
+          {imagePreview ? (
+            <img
+              src={imagePreview}
+              alt="owner image"
+              className="w-[193px] h-[193px] rounded-full object-cover"
+            />
+          ) : (
+            <div className="w-[193px] h-[193px] rounded-full bg-[#F3F4F6] flex items-center justify-center text-4xl font-semibold text-[#192540]">
+              {getInitials()}
+            </div>
+          )}
+
           <div className="absolute top-40 left-[670px] cursor-pointer">
             <input
               type="file"
@@ -99,7 +126,8 @@ const PersonalInformation = () => {
                   setImageFile(file);
 
                   const reader = new FileReader();
-                  reader.onload = (ev) => setImagePreview(ev.target?.result as string);
+                  reader.onload = (ev) =>
+                    setImagePreview(ev.target?.result as string);
                   reader.readAsDataURL(file);
                 }
               }}
@@ -152,19 +180,26 @@ const PersonalInformation = () => {
           <RadioGroup
             value={memberType}
             onValueChange={(value) => {
-              if (value === "personal" || value === "company") setMemberType(value);
+              if (value === "personal" || value === "company")
+                setMemberType(value);
             }}
             className="flex md:gap-60 mt-4"
           >
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="personal" id="option-one" />
-              <label htmlFor="option-one" className="text-[#192540] text-lg font-medium">
+              <label
+                htmlFor="option-one"
+                className="text-[#192540] text-lg font-medium"
+              >
                 Individuals
               </label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="company" id="option-two" />
-              <label htmlFor="option-two" className="text-[#192540] text-lg font-medium">
+              <label
+                htmlFor="option-two"
+                className="text-[#192540] text-lg font-medium"
+              >
                 Companies
               </label>
             </div>
@@ -173,7 +208,10 @@ const PersonalInformation = () => {
 
         {memberType === "company" && (
           <div className="px-2 mt-6">
-            <label htmlFor="companyName" className="text-[#192540] text-xl font-medium">
+            <label
+              htmlFor="companyName"
+              className="text-[#192540] text-xl font-medium"
+            >
               Company Name
             </label>
             <input

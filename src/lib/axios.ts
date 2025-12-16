@@ -36,7 +36,13 @@ function authRequestInterceptor(
 
   config.headers = config.headers || {};
   config.headers["Accept"] = "application/json";
-  config.headers["Content-Type"] = "application/json";
+  // If the request body is FormData, let Axios set the correct multipart Content-Type
+  // (including the boundary). Do not override it here.
+  if (config.data instanceof FormData) {
+    if ("Content-Type" in config.headers) delete config.headers["Content-Type"];
+  } else {
+    config.headers["Content-Type"] = "application/json";
+  }
 
   if (token) {
     config.headers["Authorization"] = `Bearer ${token}`;

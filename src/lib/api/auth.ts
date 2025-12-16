@@ -319,9 +319,18 @@ export interface UpdateUserResponse {
  * Update current authenticated user's data (e.g. name, email, phone)
  */
 export const updateUser = async (
-  data: UpdateUserRequest
+  data: UpdateUserRequest | FormData
 ): Promise<UpdateUserResponse> => {
-  const response = await axios.post<UpdateUserResponse>("/user/update", data);
+  // If caller passed FormData we want to send it as multipart/form-data
+  const config =
+    data instanceof FormData
+      ? { headers: { "Content-Type": "multipart/form-data" } }
+      : undefined;
+  const response = await axios.post<UpdateUserResponse>(
+    "/user/update",
+    data as any,
+    config
+  );
   return response.data;
 };
 
