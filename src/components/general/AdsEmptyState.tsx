@@ -5,7 +5,7 @@ const AdsEmptyState = () => {
                 src="/images/ads_empty.png"
                 alt="empty"
             />
-            <p className="text-[#192540] text-base font-medium">Your ads list is empty</p>
+            <p className="text-[#192540] text-base font-medium mt-10">Your ads list is empty. Create a new ad to get started.</p>
         </div>
     )
 }
