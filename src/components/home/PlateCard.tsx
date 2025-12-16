@@ -4,6 +4,7 @@ import Heart from "../icons/home/Heart";
 import type { Plate } from "../../lib/api";
 import { toggleFavorite } from "../../lib/api/toggleFavorite";
 import { useQueryClient } from "@tanstack/react-query";
+import { useAuthStore } from "../../store";
 
 interface PlateCardProps {
   plate: Plate;
@@ -19,6 +20,7 @@ const PlateCard = ({ plate }: PlateCardProps) => {
   };
 
   const packageName = plate.package_user?.package?.name?.en ?? "Free";
+  const user = useAuthStore((s) => s.user);
 
   const badgeStyle =
     packageName === "Gold"
@@ -94,13 +96,15 @@ const PlateCard = ({ plate }: PlateCardProps) => {
               {plate.is_sold ? "Sold" : "Available"}
             </div>
 
-            <button
-              onClick={handleToggleFavorite}
-              disabled={isLoading}
-              className="cursor-pointer"
-            >
-              <Heart active={isFavorited} />
-            </button>
+            {user && (
+              <button
+                onClick={handleToggleFavorite}
+                disabled={isLoading}
+                className="cursor-pointer"
+              >
+            <Heart active={isFavorited} />
+          </button>
+          )}
           </div>
 
           <div className="mt-6 w-full h-[54px] bg-white rounded relative">
