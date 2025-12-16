@@ -17,6 +17,7 @@ import X from "../icons/footer/X";
 import { postSubscribe } from "../../lib/api/subscribe";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import Email from "../icons/footer/Email";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -120,6 +121,17 @@ const Footer = () => {
                             >
                             <Whatsapp />
                             <p className="text-[#192540] text-base">{socials.phone}</p>
+                        </a>
+                    )}
+                    {socials?.email && (
+                        <a
+                            href={`mailto:${socials.email}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex md:justify-start justify-center gap-2 mt-4"
+                            >
+                            <Email />
+                            <p className="text-[#192540] text-base">{socials.email}</p>
                         </a>
                     )}
                 </div>
