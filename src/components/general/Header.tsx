@@ -169,7 +169,7 @@ const Header = () => {
           ) : (
             <Link
               to="/signin"
-              className="bg-[#EBAF29] w-[180px] h-14 rounded-[20px] text-[#192540] text-lg font-semibold flex items-center justify-center gap-2"
+              className="bg-[#EBAF29] w-[180px] h-14 rounded-[20px] text-[#192540] text-lg font-semibold lg:flex hidden items-center justify-center gap-2"
             >
               <Profile />
               Log In
