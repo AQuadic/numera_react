@@ -25,6 +25,8 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   const [isRepublishing, setIsRepublishing] = useState(false);
   const [isPaused, setIsPaused] = useState(!plate.paused_at);
   const [isPauseDialogOpen, setIsPauseDialogOpen] = useState(false);
+  const [isSoldDialogOpen, setIsSoldDialogOpen] = useState(false);
+  const [isMarkingSold, setIsMarkingSold] = useState(false);
 
   useEffect(() => {
     setIsPaused(!plate.paused_at);
@@ -69,6 +71,19 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
     }
   };
 
+  const handleMarkAsSold = async () => {
+    setIsMarkingSold(true);
+    try {
+      console.log("Plate marked as sold");
+      setIsSoldDialogOpen(false);
+      refetch?.();
+    } catch (error) {
+      console.error("Failed to mark plate as sold:", error);
+    } finally {
+      setIsMarkingSold(false);
+    }
+  };
+
   return (
     <section>
       <div className="md:w-[348px] w-full bg-[#F0F0F0] rounded-md px-4 py-3 bg-[url('/images/plates/plate_stars.png')] bg-no-repeat bg-position-[center_-0px]">
@@ -99,10 +114,51 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                 <Share />
                 <p className="text-[#192540] text-lg font-medium">Share</p>
               </div>
-              <div className="flex items-center gap-2 cursor-pointer mt-4">
-                <SoldActions />
-                <p className="text-[#192540] text-lg font-medium">Sold</p>
-              </div>
+              <Dialog open={isSoldDialogOpen} onOpenChange={setIsSoldDialogOpen}>
+                <DialogTrigger className="w-full">
+                  <div className="flex items-center gap-2 cursor-pointer mt-4">
+                    <SoldActions />
+                    <p className="text-[#192540] text-lg font-medium">Sold</p>
+                  </div>
+                </DialogTrigger>
+                <DialogContent className="w-[860px] px-0!">
+                  <DialogHeader>
+                    <DialogTitle></DialogTitle>
+                    <DialogDescription>
+                      <div>
+                        <div className="flex flex-col items-center justify-center">
+                          <img
+                            src="../../../public/images/sold.png"
+                            alt="sold"
+                            className="w-[245px] h-[245px]"
+                          />
+                          <h2 className="text-[#192540] text-2xl font-semibold mt-4">
+                            Mark as Sold?
+                          </h2>
+                          <p className="text-[#717171] text-lg font-medium mt-4">
+                            Are you sure you want to mark this ad as sold?
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-between gap-6 mt-7 px-8">
+                          <button
+                            onClick={() => setIsSoldDialogOpen(false)}
+                            className="w-full h-14 border border-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            onClick={handleMarkAsSold}
+                            disabled={isMarkingSold}
+                            className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {isMarkingSold ? "Processing..." : "Mark as Sold"}
+                          </button>
+                        </div>
+                      </div>
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
               <div className="flex items-center gap-2 cursor-pointer mt-4">
                 <Delete />
                 <p className="text-[#D71F1F] text-lg font-medium">Delete</p>
@@ -272,4 +328,4 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   );
 };
 
-export default ProfilePlates;
+export default ProfilePlates; 
