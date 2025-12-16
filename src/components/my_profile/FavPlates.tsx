@@ -13,12 +13,13 @@ const FavPlates = () => {
   });
 
   const favoritePhoneNumbers = favoritePlates.filter(
-    (fav) => fav.favorable_type === "sim"
+    (fav) => (fav.favorable_type as string) === "sim"
   );
 
   const favoritePlatesOnly = favoritePlates.filter(
-    (fav) => fav.favorable_type === "plate"
+    (fav) => (fav.favorable_type as string) === "plate"
   );
+
 
   return (
     <section className="py-12">
