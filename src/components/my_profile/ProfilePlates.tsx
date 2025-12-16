@@ -71,10 +71,10 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
 
   return (
     <section>
-    <div className="bg-white p-3 rounded-[20px] shadow-custom-sm flex flex-col gap-4">
-      <div className="w-full flex items-center justify-between gap-4">
-        <div className="bg-[#EBAF29] px-3 py-1 rounded-[5px]">
-          <p className="text-xs font-medium text-[#192540]">
+      <div className="md:w-[348px] w-full bg-[#F0F0F0] rounded-md px-4 py-3 bg-[url('/images/plates/plate_stars.png')] bg-no-repeat bg-position-[center_-0px]">
+        <div className="flex flew items-center justify-between">
+          <div className="flex items-center gap-2">
+            <p className="text-xs font-medium text-[#192540]">
             {plate.is_active
               ? "Active"
               : plate.is_sold
