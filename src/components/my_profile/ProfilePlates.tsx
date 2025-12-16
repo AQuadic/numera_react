@@ -13,6 +13,7 @@ import Share from "../icons/profile/Share";
 import SoldActions from "../icons/profile/SoldActions";
 import Views from "../icons/profile/Views";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 
 interface ProfilePlatesProps {
   plate: any;
@@ -154,16 +155,50 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
         </div>
 
         <div className="flex items-center gap-3 mt-4">
-          <button
-            onClick={handleRepublish}
-            disabled={isRepublishing}
-            className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#EBAF29] flex items-center justify-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-          >
-            <Republish />
-            <p className="text-[#192540] text-base font-medium">
-              {isRepublishing ? "Publishing..." : "Republish"}
-            </p>
-          </button>
+            <Dialog>
+              <DialogTrigger className="w-full">
+                <button
+                  
+                  className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#EBAF29] flex items-center justify-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                >
+                  <Republish />
+                  <p className="text-[#192540] text-base font-medium">
+                    Republish
+                  </p>
+                </button>
+              </DialogTrigger>
+              <DialogContent className="w-[860px] px-0!">
+                  <DialogHeader>
+                  <DialogTitle ></DialogTitle>
+                  <DialogDescription>
+                      <div>
+                        <div className="flex flex-col items-center justify-center">
+                          <img 
+                          src="../../../public/images/republish.png"
+                          alt="republish"  
+                        />
+                        <h2 className="text-[#192540] text-2xl font-semibold mt-4">Republish Your Ad ?</h2>
+                        <p className="text-[#717171] text-lg font-medium mt-4">Would you like to republish it to keep it active and visible to buyers?</p>
+                        </div>
+                        <div className="flex items-center justify-between gap-6 mt-7 px-8">
+                          <button
+                            className="w-full h-14 border border- [#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer"
+                          >
+                            Cancel  
+                          </button>
+                          <button
+                            onClick={handleRepublish}
+                            disabled={isRepublishing}
+                            className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer"
+                          >
+                            {isRepublishing ? "Publishing..." : "Republish Now"}
+                          </button>
+                        </div>
+                      </div>
+                  </DialogDescription>
+                  </DialogHeader>
+              </DialogContent>
+          </Dialog>
 
           <button
             onClick={() => handleTogglePause(plate.id)}
