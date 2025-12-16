@@ -1,4 +1,5 @@
 import ResetPassForm from "./RestPassForm";
+import BackButton from "../BackButton";
 
 const ResetPassPage = () => {
   return (
@@ -11,7 +12,8 @@ const ResetPassPage = () => {
         />
       </div>
 
-      <div className="flex-1 flex items-center justify-center px-6 md:px-12 lg:px-24">
+      <div className="flex-1 flex items-center justify-center px-6 md:px-12 lg:px-24 relative">
+        <BackButton />
         <div className="w-full max-w-[684px]">
           <img
             src="/images/header/numra_logo.png"
