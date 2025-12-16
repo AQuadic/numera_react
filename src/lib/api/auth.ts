@@ -2,6 +2,15 @@ import { axios, setToken, removeToken } from "../axios";
 import type { AxiosError } from "axios";
 
 // Types for API responses
+export interface UserImage {
+  id: number;
+  uuid?: string;
+  size?: number;
+  url?: string;
+  responsive_urls?: string[];
+  [key: string]: any;
+}
+
 export interface User {
   id: number;
   name: string;
@@ -14,7 +23,8 @@ export interface User {
   email?: string | null;
   email_verified_at?: string | null;
   language?: string;
-  image?: string | null;
+  // API sometimes returns a string URL or an image object with `responsive_urls`
+  image?: string | UserImage | null;
   created_at?: string;
   updated_at?: string;
   city_id?: number | null;
@@ -259,9 +269,8 @@ export const verifyResetCode = async (
     body
   );
 
-  const raw = response.data as
-    | VerifyResetCodeResponse
-    | { data?: VerifyResetCodeResponse };
+  // Response shapes vary; use `any` to safely extract user and reset_token
+  const raw = response.data as any;
 
   const user = (raw as VerifyResetCodeResponse).user ?? raw?.data?.user;
   const reset_token =

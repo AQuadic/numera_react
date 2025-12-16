@@ -1,12 +1,19 @@
 import toast from "react-hot-toast";
 import { updateUser } from "../../lib/api/auth";
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+  type FC,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
 import { useAuthStore } from "../../store";
+import type { UserImage } from "../../lib/api/auth";
 import { PhoneInput, type PhoneValue } from "../compound/PhoneInput";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import Photo from "../icons/profile/Photo";
 
-const PersonalInformation = () => {
+const PersonalInformation: FC = () => {
   const [isUpdating, setIsUpdating] = useState(false);
 
   const user = useAuthStore((s) => s.user);
@@ -22,9 +29,27 @@ const PersonalInformation = () => {
     code: "EG",
     number: "",
   });
+
+  // Safely extract an image URL from the API's `image` field which may be a string or an object
+  const getUserImage = (img?: string | UserImage | null): string | null => {
+    if (!img) return null;
+    if (typeof img === "string") return img;
+
+    const ui = img as UserImage;
+    if (Array.isArray(ui.responsive_urls)) {
+      return ui.responsive_urls[0] ?? null;
+    }
+
+    if (typeof ui.url === "string") {
+      return ui.url;
+    }
+
+    return null;
+  };
+
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(
-    user?.image?.responsive_urls?.[0] ?? null
+    getUserImage(user?.image)
   );
 
   // helper to derive initials from name
@@ -50,11 +75,11 @@ const PersonalInformation = () => {
         user.type === "company" ? "company" : "personal";
       setMemberType(type);
       setCompanyName(user.company_name || "");
-      setImagePreview(user?.image?.responsive_urls?.[0] ?? null);
+      setImagePreview(getUserImage(user?.image));
     }
   }, [user]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!name || name.trim().length < 2) {
@@ -68,7 +93,7 @@ const PersonalInformation = () => {
     }
 
     // keep the user's currently saved image so we can revert to it if upload fails
-    const previousSavedImage = user?.image?.responsive_urls?.[0] ?? null;
+    const previousSavedImage = getUserImage(user?.image);
 
     setIsUpdating(true);
     try {
@@ -86,6 +111,7 @@ const PersonalInformation = () => {
       await refetchUser();
       toast.success("Profile updated successfully");
     } catch (err) {
+      console.log("Error updating profile:", err);
       // axios interceptor handles toast; revert the image preview and clear the selected file
       setImageFile(null);
       // revert to the previously saved image (or null to show initials)
@@ -120,14 +146,16 @@ const PersonalInformation = () => {
               accept="image/*"
               className="hidden"
               id="uploadPhoto"
-              onChange={(e) => {
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 const file = e.target.files?.[0];
                 if (file) {
                   setImageFile(file);
 
                   const reader = new FileReader();
-                  reader.onload = (ev) =>
-                    setImagePreview(ev.target?.result as string);
+                  reader.onload = (ev) => {
+                    const res = ev.target?.result;
+                    if (typeof res === "string") setImagePreview(res);
+                  };
                   reader.readAsDataURL(file);
                 }
               }}
