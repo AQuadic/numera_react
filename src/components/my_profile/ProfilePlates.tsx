@@ -14,6 +14,8 @@ import SoldActions from "../icons/profile/SoldActions";
 import Views from "../icons/profile/Views";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { markPlateSold } from "../../lib/api/markPlateSold";
+import toast from "react-hot-toast";
 
 interface ProfilePlatesProps {
   plate: any;
@@ -76,11 +78,22 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   const handleMarkAsSold = async () => {
     setIsMarkingSold(true);
     try {
-      console.log("Plate marked as sold");
+      const response = await markPlateSold({
+        plate_id: plate.id,
+        is_sold: 1,
+      });
+
+      toast.success(response.message || "Plate marked as sold successfully");
+
       setIsSoldDialogOpen(false);
       refetch?.();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to mark plate as sold:", error);
+
+      const apiMessage =
+        error?.response?.data?.message || "Failed to mark plate as sold";
+
+      toast.error(apiMessage);
     } finally {
       setIsMarkingSold(false);
     }
@@ -336,7 +349,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                       <h2 className="text-[#192540] text-2xl font-semibold mt-4">
                         {isPaused ? "Continue Your Ad?" : "Pause Your Ad?"}
                       </h2>
-                      <p className="text-[#717171] text-lg font-medium mt-4">
+                      <p className="text-[#717171] text-lg font-medium mt-4 text-center px-8">
                         {isPaused
                           ? "Are you sure you want to continue this ad?"
                           : "Are you sure you want to pause this ad? It will no longer appear to buyers until you reactivate it."}
