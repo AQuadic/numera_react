@@ -5,9 +5,8 @@ import Phone from "../icons/home/Phone";
 
 const categories = [
   { type: "cars", label: "Cars Plates", icon: <Car />, style: "bg-[#ECEDEF] text-[#192540] h-[310px]" },
-  { type: "fun", label: "Fun & Motorcycle", icon: <Bike />, style: "bg-[#FCF8ED] text-[#966A08] h-[135px]" },
-  { type: "bikes", label: "Bikes", icon: <Bike />, style: "bg-[#FCF8ED] text-[#966A08] h-[135px]" },
-  { type: "classic", label: "Classic", icon: <Phone />, style: "bg-[#F1FCEE] text-[#154D23] h-[135px]" },
+  { type: "bikes", label: "Fun & Motorcycle", icon: <Bike />, style: "bg-[#FCF8ED] text-[#966A08] h-[135px]" },
+  { type: "sims", label: "Phone Numbers", icon: <Phone />, style: "bg-[#F1FCEE] text-[#154D23] h-[135px]" },
 ];
 
 const ADsCategories = () => {
