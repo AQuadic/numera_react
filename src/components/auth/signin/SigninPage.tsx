@@ -1,4 +1,5 @@
 import SignInForm from "./SignInForm";
+import BackButton from "../BackButton";
 
 const SigninPage = () => {
   return (
@@ -13,7 +14,8 @@ const SigninPage = () => {
       </div>
 
       {/* right column: centered form area */}
-      <div className="flex-1 flex items-center justify-center px-6 md:px-12 lg:px-24">
+      <div className="flex-1 flex items-center justify-center px-6 md:px-12 lg:px-24 relative">
+        <BackButton />
         <div className="w-full max-w-[684px]">
           {/* mobile logo - keeps design from feeling empty on small screens */}
           <img
