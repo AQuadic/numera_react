@@ -13,7 +13,7 @@ import Tiktok from "../icons/footer/Tiktok";
 import LinkedIn from "../icons/footer/LinkedIn";
 import Youtube from "../icons/footer/Youtube";
 
-const ContactUsForm: React.FC = () => {
+const   ContactUsForm: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -66,7 +66,7 @@ const ContactUsForm: React.FC = () => {
   };
 
   return (
-    <section className="container w-full h-[737px] lg:bg-[#FFFAEF] rounded-[42px] md:my-14 px-8 py-10 relative">
+    <section className="container w-full h-[737px] lg:bg-[#FFFAEF] rounded-[42px] md:my-14 px-8 py-10 mb-10 relative">
       <h2 className="text-[#192540] text-[32px] font-medium">
         Contact Support
       </h2>
