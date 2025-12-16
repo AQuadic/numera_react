@@ -27,6 +27,8 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   const [isPauseDialogOpen, setIsPauseDialogOpen] = useState(false);
   const [isSoldDialogOpen, setIsSoldDialogOpen] = useState(false);
   const [isMarkingSold, setIsMarkingSold] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     setIsPaused(!plate.paused_at);
@@ -159,10 +161,53 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                   </DialogHeader>
                 </DialogContent>
               </Dialog>
-              <div className="flex items-center gap-2 cursor-pointer mt-4">
-                <Delete />
-                <p className="text-[#D71F1F] text-lg font-medium">Delete</p>
-              </div>
+              <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+                <DialogTrigger className="w-full">
+                  <div className="flex items-center gap-2 cursor-pointer mt-4">
+                    <Delete />
+                    <p className="text-[#D71F1F] text-lg font-medium">Delete</p>
+                  </div>
+                </DialogTrigger>
+                <DialogContent className="w-[860px] px-0!">
+                  <DialogHeader>
+                    <DialogTitle></DialogTitle>
+                    <DialogDescription>
+                      <div>
+                        <div className="flex flex-col items-center justify-center">
+                          <img
+                            src="../../../public/images/delete_account.png"
+                            alt="delete"
+                            className="w-[245px] h-[245px]"
+                          />
+                          <h2 className="text-[#192540] text-2xl font-semibold mt-4">
+                            Delete Your Ad?
+                          </h2>
+                          <p className="text-[#717171] text-lg font-medium mt-4">
+                            Are you sure you want to delete this ad? 
+                          </p>
+                          <p className="text-[#717171] text-lg font-medium">
+                            This action is permanent and cannot be undone.
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-between gap-6 mt-7 px-8">
+                          <button
+                            onClick={() => setIsDeleteDialogOpen(false)}
+                            className="w-full h-14 border border-[#F0F0F0] rounded-md text-[#192540] text-lg font-semibold cursor-pointer"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            disabled={isDeleting}
+                            className="w-full h-14 bg-[#D71F1F] rounded-md text-white text-lg font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {isDeleting ? "Deleting..." : "Delete"}
+                          </button>
+                        </div>
+                      </div>
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
             </PopoverContent>
           </Popover>
         </div>
