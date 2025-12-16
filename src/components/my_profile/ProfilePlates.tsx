@@ -74,48 +74,65 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
       <div className="md:w-[348px] w-full bg-[#F0F0F0] rounded-md px-4 py-3 bg-[url('/images/plates/plate_stars.png')] bg-no-repeat bg-position-[center_-0px]">
         <div className="flex flew items-center justify-between">
           <div className="flex items-center gap-2">
-            <p className="text-xs font-medium text-[#192540]">
-            {plate.is_active
-              ? "Active"
-              : plate.is_sold
-              ? "Sold"
-              : plate.paused_at
-              ? "Paused"
-              : "Continue"}
-          </p>
-        </div>
-        <p className="text-sm font-normal text-[#717171]">
-          Expires in 25 days
-        </p>
-        <Popover>
-          <PopoverTrigger>
-            <MeatballsMenu />
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
-            <div className="bg-white flex flex-col gap-4 px-6 py-5 rounded-md w-52">
-              <button className="flex items-center gap-2">
-                <Edit />
-                <p className="text-[#192540] text-base font-medium">Edit</p>
-              </button>
-              <button className="flex items-center gap-2">
-                <Share />
-                <p className="text-[#192540] text-base font-medium">Share</p>
-              </button>
-              <button className="flex items-center gap-2">
-                <SoldActions />
-                <p className="text-[#192540] text-base font-medium">Sold</p>
-              </button>
-              <button className="flex items-center gap-2">
-                <Delete />
-                <p className="text-[#F53535] text-base font-medium">Delete</p>
-              </button>
+            <div className="px-6 py-2 bg-[#B2E3C4] rounded-[20px] text-[#1E7634] font-medium">
+              {plate.is_active
+                ? "Active"
+                : plate.is_sold
+                ? "Sold"
+                : plate.paused_at
+                ? "Paused"
+                : "Continue"} 
             </div>
-          </PopoverContent>
-        </Popover>
-      </div>
-      <div className="w-full relative">
-       <img src={plate.image_url} alt="plate" />
-      </div>
+            <p className="text-[#717171] text-[10px]">Expires in 25 days</p>
+          </div>
+
+          <Popover>
+            <PopoverTrigger className="cursor-pointer">
+              <MeatballsMenu />
+            </PopoverTrigger>
+            <PopoverContent className="w-[155px]">
+              <div className="flex items-center gap-2 cursor-pointer">
+                <Edit />
+                <p className="text-[#192540] text-lg font-medium">Edit</p>
+              </div>
+              <div className="flex items-center gap-2 cursor-pointer mt-4">
+                <Share />
+                <p className="text-[#192540] text-lg font-medium">Share</p>
+              </div>
+              <div className="flex items-center gap-2 cursor-pointer mt-4">
+                <SoldActions />
+                <p className="text-[#192540] text-lg font-medium">Sold</p>
+              </div>
+              <div className="flex items-center gap-2 cursor-pointer mt-4">
+                <Delete />
+                <p className="text-[#D71F1F] text-lg font-medium">Delete</p>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
+
+        <div className="mt-3 flex flex-wrap gap-4">
+          <img src={plate.image_url} alt="plate" />
+          <div>
+            <h2 className="text-[#192540] text-base font-medium">
+              {plate.price}{" "}
+              <span className="text-base relative top-1">AED</span>
+            </h2>
+
+            {plate.old_price && (
+              <h2 className="text-[#A3A3A3] text-sm font-medium">
+                {plate.old_price}{" "}
+                <span className="text-sm relative top-1">AED</span>
+              </h2>
+            )}
+
+          </div>
+        </div>
+
+        <div className="mt-2 relative">
+          {/* <img src="/images/plates/available_img.png" alt="bg" /> */}
+          {/* Removed 'Available' overlay text from profile card */}
+        </div>
       <div className="flex flex-col gap-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-col gap-2">
