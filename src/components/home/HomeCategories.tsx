@@ -13,7 +13,7 @@ const HomeCategories = () => {
       link: "/plates_filter?vehicle_types[]=cars&vehicle_types[]=classic",
     },
     {
-      title: "Boats Plates",
+      title: "Fun & Motorcycle",
       bg: "#FCF8ED",
       textColor: "#966A08",
       icon: <Bike />,
