@@ -140,7 +140,7 @@ const PersonalInformation: FC = () => {
             </div>
           )}
 
-          <div className="absolute top-40 left-[670px] cursor-pointer">
+          <div className="relative cursor-pointer">
             <input
               type="file"
               accept="image/*"
@@ -160,7 +160,7 @@ const PersonalInformation: FC = () => {
                 }
               }}
             />
-            <label htmlFor="uploadPhoto">
+            <label htmlFor="uploadPhoto" className="absolute top-16 -left-14">
               <Photo />
             </label>
           </div>
