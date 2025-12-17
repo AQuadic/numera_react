@@ -77,6 +77,11 @@ const PlatesFilter = () => {
     fetchPlates();
   }, [filters, currentPage]);
 
+  // Scroll to top when page changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
+
   const handleFilterChange = (key: keyof ApiPlateFilters, value: unknown) => {
     setFilters((prev) => ({
       ...prev,
