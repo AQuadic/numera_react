@@ -20,7 +20,7 @@ const ADsCategories = () => {
           className={`w-full rounded-md flex flex-col items-center justify-center gap-3 ${categories[0].style}`}
         >
           {categories[0].icon}
-          <p className="text-2xl font-semibold">{categories[0].label}</p>
+          <p className="md:text-2xl font-semibold">{categories[0].label}</p>
         </Link>
 
         <div className="flex flex-col gap-10 w-full">
@@ -31,7 +31,7 @@ const ADsCategories = () => {
               className={`w-full rounded-md flex flex-col items-center justify-center gap-3 ${cat.style}`}
             >
               {cat.icon}
-              <p className="text-2xl font-semibold">{cat.label}</p>
+              <p className="md:text-2xl font-semibold">{cat.label}</p>
             </Link>
           ))}
         </div>
