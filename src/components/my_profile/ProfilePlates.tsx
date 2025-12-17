@@ -23,6 +23,7 @@ import {
 } from "../ui/dialog";
 import { markPlateSold } from "../../lib/api/markPlateSold";
 import toast from "react-hot-toast";
+import { deletePlate } from "../../lib/api/deletePlate";
 
 interface ProfilePlatesProps {
   plate: any;
@@ -37,7 +38,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   const [isSoldDialogOpen, setIsSoldDialogOpen] = useState(false);
   const [isMarkingSold, setIsMarkingSold] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isDeleting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     setIsPaused(!plate.paused_at);
@@ -105,6 +106,29 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
       setIsMarkingSold(false);
     }
   };
+
+  const handleDeletePlate = async () => {
+  setIsDeleting(true);
+
+  try {
+    const response = await deletePlate(plate.id);
+
+    toast.success(response.message || "Plate deleted successfully");
+
+    setIsDeleteDialogOpen(false);
+    refetch?.();
+  } catch (error: any) {
+    console.error("Failed to delete plate:", error);
+
+    const apiMessage =
+      error?.response?.data?.message || "Failed to delete plate";
+    toast.dismiss()
+    toast.error(apiMessage);
+  } finally {
+    setIsDeleting(false);
+  }
+};
+
 
   return (
     <section>
@@ -223,6 +247,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                             Cancel
                           </button>
                           <button
+                            onClick={handleDeletePlate}
                             disabled={isDeleting}
                             className="w-full h-14 bg-[#D71F1F] rounded-md text-white text-lg font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                           >
