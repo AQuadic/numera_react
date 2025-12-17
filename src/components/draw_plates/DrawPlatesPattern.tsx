@@ -8,7 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { generatePlate } from "../../lib/api/plates/generatePlate";
+// Note: removed API validation call; the component now uses the plate image URL
+// directly as the <img src="..." />. See generatePlate API usage removal.
 
 const DrawPlatesPattern = () => {
   const plateContainerRef = useRef<HTMLDivElement>(null);
@@ -70,7 +71,7 @@ const DrawPlatesPattern = () => {
   };
 
   useEffect(() => {
-    // Don't call API unless all 3 fields are filled (non-empty after trimming)
+    // Only set the image URL when all fields are provided.
     if (
       !emirate?.toString().trim() ||
       !numbers?.toString().trim() ||
@@ -80,22 +81,9 @@ const DrawPlatesPattern = () => {
       return;
     }
 
-    // Validate plate using API before setting the image. If API fails, show error toast.
-    const validate = async () => {
-      try {
-        const data = await generatePlate(letters, numbers, emirate);
-        // If API responds with data, set image URL and price (if provided)
-        const imgUrl = getPlateImageUrl(letters, numbers, emirate);
-        setPlateImg(imgUrl);
-        if (!price && data?.price) setPrice(String(data.price));
-      } catch (err) {
-        // If API returned an error, inform the user
-        toast.error("Plate data is invalid");
-        setPlateImg("");
-      }
-    };
-
-    validate();
+    // Use the generated plate URL directly as the image src (no API call).
+    const imgUrl = getPlateImageUrl(letters, numbers, emirate);
+    setPlateImg(imgUrl);
   }, [emirate, letters, numbers]);
 
   const handleDownload = async () => {
@@ -122,26 +110,30 @@ const DrawPlatesPattern = () => {
     <section className="px-4 container">
       <div
         ref={plateContainerRef}
-        className="w-96 h-72 border flex flex-col justify-end mx-auto mb-2"
+        className="w-96 h-72 border mx-auto mb-2 flex flex-col justify-between"
         style={{ backgroundColor: bgColor }}
       >
-        {plateImg && (
-          <img
-            src={plateImg}
-            alt="plate image"
-            className="w-full h-auto object-contain"
-          />
-        )}
+        <div className="flex-1 flex items-center justify-center flex-col px-4">
+          {plateImg ? (
+            <img
+              src={plateImg}
+              alt="plate image"
+              className="max-w-[80%] h-auto object-contain"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center" />
+          )}
 
-        {price && (
-          <p
-            className={`${getContrastTextClass(
-              bgColor
-            )} text-lg font-medium text-center my-4`}
-          >
-            Price: {price}
-          </p>
-        )}
+          {price && (
+            <p
+              className={`${getContrastTextClass(
+                bgColor
+              )} text-lg font-medium text-center mt-2`}
+            >
+              Price: {price}
+            </p>
+          )}
+        </div>
 
         <h2
           className={`${getContrastTextClass(

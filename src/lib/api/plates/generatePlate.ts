@@ -1,23 +1,9 @@
-import axios from "axios";
+// Deprecated: the UI now uses the plate image URL directly as the <img src="..." />
+// and does not perform API validation. Keeping a stub here to avoid accidental
+// network calls elsewhere.
 
-export interface PlateGenerateResponse {
-  price: number;
-  type: string;
-  vehicle: string;
-  letters: string;
-  numbers: string;
-  emirate: string;
-  formatted_number: string;
-}
-
-
-export const generatePlate = async (
-  letters: string,
-  numbers: string,
-  emirate: string
-) => {
-  const { data } = await axios.get(
-    `https://numra.motofy.io/plate-generate/cars/${letters}/${numbers}/${emirate}`
+export const generatePlate = async () => {
+  throw new Error(
+    "generatePlate is deprecated: use the plate image URL directly instead of calling the API"
   );
-  return data;
 };
