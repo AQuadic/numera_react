@@ -8,7 +8,7 @@ export const deletePlate = async (
   plateId: number | string
 ): Promise<DeletePlateResponse> => {
   const response = await axios.delete<DeletePlateResponse>(
-    `/plates/${plateId}`
+    `/plate/${plateId}`
   );
 
   return response.data;
