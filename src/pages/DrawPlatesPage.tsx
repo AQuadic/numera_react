@@ -1,18 +1,16 @@
-import WhyChooseNumra from "../components/home/WhyChooseNumra"
-import DrawPlatesPattern from "../components/draw_plates/DrawPlatesPattern"
+import WhyChooseNumra from "../components/home/WhyChooseNumra";
+import DrawPlatesPattern from "../components/draw_plates/DrawPlatesPattern";
 
 const DrawPlatesPage = () => {
+  return (
+    <div className="md:py-[35px]">
+      <div className="flex gap-6 relative">
+        <DrawPlatesPattern />
+      </div>
 
-    return (
-        <div className="md:py-[35px]">
-            <div className="flex gap-6 relative">
+      <WhyChooseNumra />
+    </div>
+  );
+};
 
-                <DrawPlatesPattern />
-            </div>
-
-            <WhyChooseNumra />
-        </div>
-    )
-}
-
-export default DrawPlatesPage
+export default DrawPlatesPage;
