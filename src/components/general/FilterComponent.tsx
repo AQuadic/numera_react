@@ -120,7 +120,7 @@ const FilterComponent = ({ onApply }: FilterComponentProps) => {
             numbers: numbers || undefined,
           })
         }
-        className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold mt-4"
+        className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold mt-4 cursor-pointer"
       >
         Apply
       </button>
