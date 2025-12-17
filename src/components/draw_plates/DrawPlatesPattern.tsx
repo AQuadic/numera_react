@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
+import html2canvas from "html2canvas";
 import {
   Select,
   SelectContent,
@@ -10,6 +11,7 @@ import {
 import { generatePlate } from "../../lib/api/plates/generatePlate";
 
 const DrawPlatesPattern = () => {
+  const plateContainerRef = useRef<HTMLDivElement>(null);
   const [bgColor, setBgColor] = useState("black");
   const [barColor, setBarColor] = useState("white");
   const [details, setDetails] = useState("");
@@ -96,20 +98,30 @@ const DrawPlatesPattern = () => {
     validate();
   }, [emirate, letters, numbers]);
 
-  const handleDownload = () => {
-    if (!plateImg) return;
+  const handleDownload = async () => {
+    if (!plateImg || !plateContainerRef.current) return;
 
-    const link = document.createElement("a");
-    link.href = plateImg;
-    link.download = `plate-${letters}-${numbers}-${emirate}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+      const canvas = await html2canvas(plateContainerRef.current, {
+        backgroundColor: null,
+        scale: 2,
+      });
+      const link = document.createElement("a");
+      link.href = canvas.toDataURL("image/png");
+      link.download = `plate-${letters}-${numbers}-${emirate}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success("Image downloaded successfully");
+    } catch (err) {
+      toast.error("Failed to download image");
+    }
   };
 
   return (
     <section className="px-4 container">
       <div
+        ref={plateContainerRef}
         className="w-96 h-72 border flex flex-col justify-end mx-auto mb-2"
         style={{ backgroundColor: bgColor }}
       >
@@ -262,8 +274,9 @@ const DrawPlatesPattern = () => {
       </div>
 
       <button
-        className="w-full h-12 bg-[#EBAF29] rounded-md mt-8 font-medium cursor-pointer"
+        className="w-full h-12 bg-[#EBAF29] rounded-md mt-8 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
         onClick={handleDownload}
+        disabled={!plateImg}
       >
         Download image
       </button>
