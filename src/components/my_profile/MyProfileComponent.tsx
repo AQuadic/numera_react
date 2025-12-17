@@ -25,7 +25,8 @@ const MyProfileComponent = () => {
   const [adsCounts, setAdsCounts] = useState<AdsCounts | null>(null);
   const [adsLoading, setAdsLoading] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [isSubmittedOpen, setIsSubmittedOpen] = useState(false);
+  const [isRejectedOpen, setIsRejectedOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const user = useAuthStore((s) => s.user);
@@ -75,8 +76,9 @@ const MyProfileComponent = () => {
     return "bg-[#F5F5F5] text-[#717171]";
   };
   const handleVerificationSubmit = () => {
+    // Close the form and show the submitted confirmation dialog
     setIsFormOpen(false);
-    setIsConfirmationOpen(true);
+    setIsSubmittedOpen(true);
   };
 
   // Helper to safely extract image URL from `user.image` which may be a string or an object
@@ -187,29 +189,43 @@ const MyProfileComponent = () => {
         </Link>
       </div>
 
-      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogTrigger className="w-full">
-          <div className="mt-6 border border-[#F0F0F0] rounded-md px-6 py-3 flex items-center justify-between cursor-pointer">
-            <div className="flex items-center gap-2">
-              {user?.verification_status === "verified" && <Verified />}
-              <p className="text-[#192540] text-base font-medium">
-                Account Verification
-              </p>
-            </div>
-
-            <button
-              className={`p-2 text-sm font-medium rounded-xl ${getVerificationStatusStyle()}`}
-            >
-              {getVerificationStatusText()}
-            </button>
+      {/* Clickable area: open form or rejection dialog depending on user status */}
+      <div className="w-full">
+        <div
+          className="mt-6 border border-[#F0F0F0] rounded-md px-6 py-3 flex items-center justify-between cursor-pointer"
+          onClick={() => {
+            if (user?.verification_status === "rejected") {
+              // Show rejection dialog instead of opening the form
+              setIsRejectedOpen(true);
+            } else {
+              setIsFormOpen(true);
+            }
+          }}
+        >
+          <div className="flex items-center gap-2">
+            {user?.verification_status === "verified" && <Verified />}
+            <p className="text-[#192540] text-base font-medium">
+              Account Verification
+            </p>
           </div>
-        </DialogTrigger>
-        <DialogContent className="w-[860px]">
-          <AccountVerificationDialog onSubmit={handleVerificationSubmit} />
-        </DialogContent>
-      </Dialog>
 
-      <Dialog open={isConfirmationOpen} onOpenChange={setIsConfirmationOpen}>
+          <button
+            className={`p-2 text-sm font-medium rounded-xl ${getVerificationStatusStyle()}`}
+          >
+            {getVerificationStatusText()}
+          </button>
+        </div>
+
+        {/* Form dialog (controlled) */}
+        <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+          <DialogContent className="w-[860px]">
+            <AccountVerificationDialog onSubmit={handleVerificationSubmit} />
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      {/* Submitted confirmation dialog */}
+      <Dialog open={isSubmittedOpen} onOpenChange={setIsSubmittedOpen}>
         <DialogContent className="w-[860px]">
           <DialogHeader>
             <DialogTitle className="flex items-center justify-center">
@@ -232,7 +248,7 @@ const MyProfileComponent = () => {
             <Link
               to="/"
               className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold flex items-center justify-center"
-              onClick={() => setIsConfirmationOpen(false)}
+              onClick={() => setIsSubmittedOpen(false)}
             >
               Back to home
             </Link>
@@ -240,7 +256,8 @@ const MyProfileComponent = () => {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={isConfirmationOpen} onOpenChange={setIsConfirmationOpen}>
+      {/* Rejected dialog (open only when user has been rejected and they click verification) */}
+      <Dialog open={isRejectedOpen} onOpenChange={setIsRejectedOpen}>
         <DialogContent className="w-[860px]">
           <DialogHeader>
             <DialogTitle className="flex items-center justify-center">
@@ -269,7 +286,7 @@ const MyProfileComponent = () => {
             <Link
               to="/contact_us"
               className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold flex items-center justify-center"
-              onClick={() => setIsConfirmationOpen(false)}
+              onClick={() => setIsRejectedOpen(false)}
             >
               Contact support
             </Link>

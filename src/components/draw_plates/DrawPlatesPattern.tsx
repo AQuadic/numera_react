@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import {
   Select,
   SelectContent,
@@ -6,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { generatePlate } from "../../lib/api/plates/generatePlate";
 
 const DrawPlatesPattern = () => {
   const [bgColor, setBgColor] = useState("black");
@@ -66,10 +68,32 @@ const DrawPlatesPattern = () => {
   };
 
   useEffect(() => {
-    if (!emirate || !numbers || !letters) return;
+    // Don't call API unless all 3 fields are filled (non-empty after trimming)
+    if (
+      !emirate?.toString().trim() ||
+      !numbers?.toString().trim() ||
+      !letters?.toString().trim()
+    ) {
+      setPlateImg("");
+      return;
+    }
 
-    const imgUrl = getPlateImageUrl(letters, numbers, emirate);
-    setPlateImg(imgUrl);
+    // Validate plate using API before setting the image. If API fails, show error toast.
+    const validate = async () => {
+      try {
+        const data = await generatePlate(letters, numbers, emirate);
+        // If API responds with data, set image URL and price (if provided)
+        const imgUrl = getPlateImageUrl(letters, numbers, emirate);
+        setPlateImg(imgUrl);
+        if (!price && data?.price) setPrice(String(data.price));
+      } catch (err) {
+        // If API returned an error, inform the user
+        toast.error("Plate data is invalid");
+        setPlateImg("");
+      }
+    };
+
+    validate();
   }, [emirate, letters, numbers]);
 
   const handleDownload = () => {
