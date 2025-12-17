@@ -96,7 +96,7 @@ export const getSims = async (
   filters?: SimFilters
 ): Promise<PaginatedResponse<Sim>> => {
   const params: Record<string, string> = {
-    pagination: "simple",
+    pagination: "normal",
   };
 
   if (filters?.numbers) params.numbers = filters.numbers;
