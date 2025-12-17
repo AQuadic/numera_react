@@ -86,7 +86,7 @@ export interface PaginatedResponse<T> {
 }
 
 export interface PlateFilters {
-  emirate_id?: number;
+  emirate_id?: string;
   vehicle_types?: string[];
   package_id?: number;
   letters?: string;

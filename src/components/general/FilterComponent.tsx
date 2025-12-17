@@ -7,16 +7,19 @@ interface FilterComponentProps {
 }
 
 const emirates = [
-  { id: 1, name: "Abu Dhabi" },
-  { id: 2, name: "Dubai" },
-  { id: 3, name: "Sharjah" },
-  { id: 4, name: "Ajman" },
+  { value: "abu_dhuabi", label: "Abu Dhabi" },
+  { value: "dubai", label: "Dubai" },
+  { value: "sharjah", label: "Sharjah" },
+  { value: "ajman", label: "Ajman" },
+  { value: "fujairah", label: "Fujairah" },
+  { value: "om_qauquan", label: "Umm Al Quwain" },
+  { value: "ras_alkhima", label: "Ras Al Khaimah" },
 ];
 
 const vehicleTypes = ["classic", "bikes", "cars", "fun"];
 
 const FilterComponent = ({ onApply }: FilterComponentProps) => {
-  const [selectedEmirate, setSelectedEmirate] = useState<number | undefined>();
+  const [selectedEmirate, setSelectedEmirate] = useState<string | undefined>();
   const [selectedVehicleTypes, setSelectedVehicleTypes] = useState<string[]>([]);
   const [letters, setLetters] = useState("");
   const [numbers, setNumbers] = useState("");
@@ -33,12 +36,17 @@ const FilterComponent = ({ onApply }: FilterComponentProps) => {
             </AccordionTrigger>
             <AccordionContent>
               {emirates.map((emirate) => (
-                <div key={emirate.id} className="flex items-center justify-between mb-4">
-                  <label className="text-[#192540] text-sm">{emirate.name}</label>
+                <div
+                  key={emirate.value}
+                  className="flex items-center justify-between mb-4"
+                >
+                  <label className="text-[#192540] text-sm">
+                    {emirate.label}
+                  </label>
                   <input
                     type="checkbox"
-                    checked={selectedEmirate === emirate.id}
-                    onChange={() => setSelectedEmirate(emirate.id)}
+                    checked={selectedEmirate === emirate.value}
+                    onChange={() => setSelectedEmirate(emirate.value)}
                   />
                 </div>
               ))}
@@ -53,8 +61,13 @@ const FilterComponent = ({ onApply }: FilterComponentProps) => {
             </AccordionTrigger>
             <AccordionContent>
               {vehicleTypes.map((type) => (
-                <div key={type} className="flex items-center justify-between mb-4">
-                  <label className="text-[#192540] text-sm capitalize">{type}</label>
+                <div
+                  key={type}
+                  className="flex items-center justify-between mb-4"
+                >
+                  <label className="text-[#192540] text-sm capitalize">
+                    {type}
+                  </label>
                   <input
                     type="checkbox"
                     checked={selectedVehicleTypes.includes(type)}
@@ -112,7 +125,7 @@ const FilterComponent = ({ onApply }: FilterComponentProps) => {
         Apply
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default FilterComponent
+export default FilterComponent;
