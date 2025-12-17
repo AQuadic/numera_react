@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import Filter from "../icons/home/Filter";
 import PlateCard from "./PlateCard";
@@ -7,13 +7,16 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import FilterComponent from "../general/FilterComponent";
 import RightArrow from "../icons/plates/RightArrow";
 import { Skeleton } from "../ui/skeleton";
+import type { Package } from "../../lib/api/plates";
+import { getPackages } from "../../lib/api/getPackages";
 
 interface PlatesByPackage {
-  [packageName: string]: Plate[];
+  package: Package;
+  plates: Plate[];
 }
 
 const FilterYourPlates = () => {
-  const [plates, setPlates] = useState<Plate[]>([]);
+  const [data, setData] = useState<PlatesByPackage[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [filters, setFilters] = useState<PlateFilters>({
@@ -21,11 +24,26 @@ const FilterYourPlates = () => {
   });
 
   useEffect(() => {
-    const fetchPlates = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await getPlates(filters);
-        setPlates(response.data.slice(0, 8));
+        const packages = await getPackages();
+        const result: PlatesByPackage[] = await Promise.all(
+          packages.map(async (pkg) => {
+            const res = await getPlates({
+              ...filters,
+              package_id: pkg.id,
+              page: 1,
+            });
+
+            return {
+              package: pkg,
+              plates: res.data.slice(0, 8),
+            };
+          })
+        );
+
+        setData(result);
       } catch (error) {
         console.error("Error fetching plates:", error);
       } finally {
@@ -33,15 +51,9 @@ const FilterYourPlates = () => {
       }
     };
 
-    fetchPlates();
+    fetchData();
   }, [filters]);
 
-  const platesByPackage: PlatesByPackage = plates.reduce((acc, plate) => {
-  const packageName = plate.package_user?.package?.name?.en ?? "Free";
-    if (!acc[packageName]) acc[packageName] = [];
-    acc[packageName].push(plate);
-    return acc;
-  }, {} as PlatesByPackage);
 
   if (loading) {
   return (
@@ -70,11 +82,11 @@ const FilterYourPlates = () => {
 
   return (
     <div className="container md:py-[58px] py-10">
-    {Object.entries(platesByPackage).map(([packageName, plates]) => (
-      <div key={packageName} className="mt-10">
+    {data.map(({ package: pkg, plates }) => (
+      <div key={pkg.id} className="mt-10">
       <div className="flex flex-wrap items-center justify-between mb-8">
         <h2 className="text-[#192540] md:text-[32px] text-2xl font-medium">
-          {packageName} ADs
+          {pkg.name.en} ADs
         </h2>
 
         <div className="flex items-center gap-6">
@@ -118,7 +130,7 @@ const FilterYourPlates = () => {
               {plates.length > 4 && (
                 <div className="mt-8 flex items-center justify-center">
                   <Link
-                    to={`/plates_filter?package=${packageName}`}
+                    to={`/plates_filter?package=${pkg.id}`}
                     className="flex items-center gap-2 px-8 py-3 text-[#EBAF29] font-semibold rounded-lg"
                   >
                     See All
