@@ -1,6 +1,26 @@
+import { useState } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
+import type { PlateFilters } from "../../lib/api";
 
-const FilterComponent = () => {
+interface FilterComponentProps {
+  onApply: (filters: PlateFilters) => void;
+}
+
+const emirates = [
+  { id: 1, name: "Abu Dhabi" },
+  { id: 2, name: "Dubai" },
+  { id: 3, name: "Sharjah" },
+  { id: 4, name: "Ajman" },
+];
+
+const vehicleTypes = ["classic", "bikes", "cars", "fun"];
+
+const FilterComponent = ({ onApply }: FilterComponentProps) => {
+  const [selectedEmirate, setSelectedEmirate] = useState<number | undefined>();
+  const [selectedVehicleTypes, setSelectedVehicleTypes] = useState<string[]>([]);
+  const [letters, setLetters] = useState("");
+  const [numbers, setNumbers] = useState("");
+
   return (
     <div className="px-6">
       <h2 className="text-[#192540] text-2xl font-medium">Filter</h2>
@@ -12,12 +32,13 @@ const FilterComponent = () => {
               Select Emirate
             </AccordionTrigger>
             <AccordionContent>
-              {["Abu Dhabi", "Dubai", "Sharjah", "Ajman"].map((emirate) => (
-                <div key={emirate} className="flex items-center justify-between mb-4 last:mb-0">
-                  <label className="text-[#192540] text-sm">{emirate}</label>
+              {emirates.map((emirate) => (
+                <div key={emirate.id} className="flex items-center justify-between mb-4">
+                  <label className="text-[#192540] text-sm">{emirate.name}</label>
                   <input
                     type="checkbox"
-                    className="w-4 h-4 border border-[#D9D9D9] rounded-xs bg-transparent focus:ring-2 focus:ring-brand-soft"
+                    checked={selectedEmirate === emirate.id}
+                    onChange={() => setSelectedEmirate(emirate.id)}
                   />
                 </div>
               ))}
@@ -31,12 +52,19 @@ const FilterComponent = () => {
               Select Plate Type
             </AccordionTrigger>
             <AccordionContent>
-              {["Abu Dhabi", "Dubai", "Sharjah", "Ajman"].map((type) => (
-                <div key={type} className="flex items-center justify-between mb-4 last:mb-0">
-                  <label className="text-[#192540] text-sm">{type}</label>
+              {vehicleTypes.map((type) => (
+                <div key={type} className="flex items-center justify-between mb-4">
+                  <label className="text-[#192540] text-sm capitalize">{type}</label>
                   <input
                     type="checkbox"
-                    className="w-4 h-4 border border-[#D9D9D9] rounded-xs bg-transparent focus:ring-2 focus:ring-brand-soft"
+                    checked={selectedVehicleTypes.includes(type)}
+                    onChange={() =>
+                      setSelectedVehicleTypes((prev) =>
+                        prev.includes(type)
+                          ? prev.filter((t) => t !== type)
+                          : [...prev, type]
+                      )
+                    }
                   />
                 </div>
               ))}
@@ -50,25 +78,41 @@ const FilterComponent = () => {
               Select Code
             </AccordionTrigger>
             <AccordionContent>
-              {["Abu Dhabi", "Dubai", "Sharjah", "Ajman"].map((code) => (
-                <div key={code} className="flex items-center justify-between mb-4 last:mb-0">
-                  <label className="text-[#192540] text-sm">{code}</label>
-                  <input
-                    type="checkbox"
-                    className="w-4 h-4 border border-[#D9D9D9] rounded-xs bg-transparent focus:ring-2 focus:ring-brand-soft"
-                  />
-                </div>
-              ))}
-                        </AccordionContent>
-                    </AccordionItem>
-                </Accordion>
-                </div>
+              <input
+                value={letters}
+                onChange={(e) => setLetters(e.target.value)}
+                placeholder="Letters (e.g. A)"
+                className="w-full border rounded-md p-2 mb-3"
+              />
 
-                <button className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold mt-4">
-                Apply
-                </button>
-        </div>
-    )
+              <input
+                value={numbers}
+                onChange={(e) => setNumbers(e.target.value)}
+                placeholder="Numbers (e.g. 12345)"
+                className="w-full border rounded-md p-2"
+              />
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </div>
+
+      <button
+        onClick={() =>
+          onApply({
+            emirate_id: selectedEmirate,
+            vehicle_types: selectedVehicleTypes.length
+              ? selectedVehicleTypes
+              : undefined,
+            letters: letters || undefined,
+            numbers: numbers || undefined,
+          })
+        }
+        className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold mt-4"
+      >
+        Apply
+      </button>
+    </div>
+  )
 }
 
 export default FilterComponent

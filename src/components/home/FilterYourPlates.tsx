@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import Filter from "../icons/home/Filter";
 import PlateCard from "./PlateCard";
-import { getPlates, type Plate } from "../../lib/api";
+import { getPlates, type Plate, type PlateFilters } from "../../lib/api";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import FilterComponent from "../general/FilterComponent";
 import RightArrow from "../icons/plates/RightArrow";
@@ -16,12 +16,16 @@ const FilterYourPlates = () => {
   const [plates, setPlates] = useState<Plate[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [filters, setFilters] = useState<PlateFilters>({
+    page: 1,
+  });
+
   useEffect(() => {
     const fetchPlates = async () => {
       try {
         setLoading(true);
-        const response = await getPlates({ page: 1 });
-        setPlates(response.data.slice(0, 8)); // Show first 8 plates
+        const response = await getPlates(filters);
+        setPlates(response.data.slice(0, 8));
       } catch (error) {
         console.error("Error fetching plates:", error);
       } finally {
@@ -30,7 +34,7 @@ const FilterYourPlates = () => {
     };
 
     fetchPlates();
-  }, []);
+  }, [filters]);
 
   const platesByPackage: PlatesByPackage = plates.reduce((acc, plate) => {
   const packageName = plate.package_user?.package?.name?.en ?? "Free";
@@ -68,7 +72,15 @@ const FilterYourPlates = () => {
                   <DialogHeader>
                   <DialogTitle ></DialogTitle>
                   <DialogDescription>
-                      <FilterComponent />
+                      <FilterComponent
+                        onApply={(newFilters) =>
+                          setFilters((prev) => ({
+                            ...prev,
+                            ...newFilters,
+                            page: 1,
+                          }))
+                        }
+                      />
                   </DialogDescription>
                   </DialogHeader>
               </DialogContent>
@@ -81,7 +93,7 @@ const FilterYourPlates = () => {
           ) : (
             <>
               <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {plates.slice(0, 8).map((plate) => (
+                {plates.map((plate) => (
                   <PlateCard key={plate.id} plate={plate} />
                 ))}
               </div>
