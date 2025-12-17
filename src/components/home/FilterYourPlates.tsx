@@ -6,7 +6,7 @@ import { getPlates, type Plate, type PlateFilters } from "../../lib/api";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import FilterComponent from "../general/FilterComponent";
 import RightArrow from "../icons/plates/RightArrow";
-import Spinner from "../icons/general/Spinner";
+import { Skeleton } from "../ui/skeleton";
 
 interface PlatesByPackage {
   [packageName: string]: Plate[];
@@ -44,9 +44,26 @@ const FilterYourPlates = () => {
   }, {} as PlatesByPackage);
 
   if (loading) {
-    return (
-      <div className="container flex items-center justify-center md:py-[58px] py-10">
-          <Spinner />
+  return (
+      <div className="container md:py-[58px] py-10">
+        <div className="flex items-center justify-between mb-8">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-14 w-[180px] rounded-md" />
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {Array.from({ length: 8 }).map((_, index) => (
+            <div
+              key={index}
+              className="border border-[#F0F0F0] rounded-xl p-4 space-y-4"
+            >
+              <Skeleton className="h-40 w-full rounded-lg" />
+              <Skeleton className="h-5 w-3/4" />
+              <Skeleton className="h-4 w-1/2" />
+              <Skeleton className="h-6 w-full" />
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
