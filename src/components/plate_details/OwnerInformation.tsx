@@ -37,7 +37,7 @@ const OwnerInformation = ({ user }: OwnerInformationProps) => {
       </h2>
       <div className="mt-9 flex flex-wrap justify-between items-start">
         <div className="flex items-center gap-3">
-          <Link to="/seller_profile" className="flex items-center gap-3">
+          <Link to={`/seller_profile/${user.id}`} className="flex items-center gap-3">
             <div className="w-[78px] h-[78px] rounded-full bg-[#EBAF29] flex items-center justify-center text-white text-2xl font-bold">
               {user.name.charAt(0).toUpperCase()}
             </div>

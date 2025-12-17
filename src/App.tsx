@@ -45,7 +45,7 @@ function App() {
             <Route path="plates_filter" element={<PlatesFilter />} />
             <Route path="sims" element={<SimsPage />} />
             <Route path="page/:id" element={<PageDetails />} />
-            <Route path="seller_profile" element={<SellerProfile />} />
+            <Route path="seller_profile/:userId" element={<SellerProfile />} />
 
             {/* Protected routes - require authentication */}
             <Route element={<ProtectedRoute />}>
