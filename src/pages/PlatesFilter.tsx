@@ -14,19 +14,10 @@ const PlatesFilter = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   // Filter states
-  const [filters, setFilters] = useState<ApiPlateFilters>({
-    emirate_id: undefined,
-    vehicle_types: [],
-    letters: "",
-    numbers: "",
-    price_from: undefined,
-    price_to: undefined,
-  });
-
-  // Initialize filters from URL params
-  useEffect(() => {
+  const [filters, setFilters] = useState<ApiPlateFilters>(() => {
     const vehicleTypesParams = searchParams.getAll("vehicle_types[]");
     const vehicleTypesParam = searchParams.get("vehicle_types");
+    const packageParam = searchParams.get("package");
 
     // Support both formats: vehicle_types[]=x&vehicle_types[]=y OR vehicle_types=x,y
     let vehicleTypes: string[] = [];
@@ -36,18 +27,22 @@ const PlatesFilter = () => {
       vehicleTypes = vehicleTypesParam.split(",").filter(Boolean);
     }
 
-    setFilters((prev) => ({
-      ...prev,
+    return {
+      emirate_id: undefined,
       vehicle_types: vehicleTypes,
-    }));
-  }, [searchParams]);
+      letters: "",
+      numbers: "",
+      price_from: undefined,
+      price_to: undefined,
+      package_id: packageParam ? Number(packageParam) : undefined,
+    };
+  });
 
-  // Fetch cities
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const citiesData = await getCities();
-        setCities(citiesData);
+        const data = await getCities();
+        setCities(data);
       } catch (error) {
         console.error("Error fetching cities:", error);
       }
@@ -97,11 +92,10 @@ const PlatesFilter = () => {
         ? currentTypes.filter((t) => t !== type)
         : [...currentTypes, type];
 
-      // Update URL params with array format
-      const params = new URLSearchParams();
-      if (newTypes.length > 0) {
-        newTypes.forEach((t) => params.append("vehicle_types[]", t));
-      }
+      const params = new URLSearchParams(searchParams);
+      params.delete("vehicle_types[]");
+
+      newTypes.forEach((t) => params.append("vehicle_types[]", t));
       setSearchParams(params);
 
       return {
@@ -120,8 +114,15 @@ const PlatesFilter = () => {
       numbers: "",
       price_from: undefined,
       price_to: undefined,
+      package_id: filters.package_id,
     });
-    setSearchParams({});
+
+    const params = new URLSearchParams();
+    if (filters.package_id) {
+      params.set("package", String(filters.package_id));
+    }
+    setSearchParams(params);
+
     setCurrentPage(1);
   };
 
@@ -262,14 +263,12 @@ const PlatesFilter = () => {
         <div className="flex-1">
           {loading && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.from({ length: 9 }, (_, index) => `skeleton-${index}`).map(
-                (key) => (
-                  <div
-                    key={key}
-                    className="w-full h-[400px] rounded-lg bg-[#F0F0F0] animate-pulse"
-                  />
-                )
-              )}
+              {Array.from({ length: 9 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="h-[400px] rounded-lg bg-[#F0F0F0] animate-pulse"
+                />
+              ))}
             </div>
           )}
 
