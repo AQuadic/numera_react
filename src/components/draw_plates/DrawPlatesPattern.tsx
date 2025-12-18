@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
-import html2canvas from "html2canvas";
 import {
   Select,
   SelectContent,
@@ -8,8 +7,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-// Note: removed API validation call; the component now uses the plate image URL
-// directly as the <img src="..." />. See generatePlate API usage removal.
 
 const DrawPlatesPattern = () => {
   const plateContainerRef = useRef<HTMLDivElement>(null);
@@ -23,13 +20,10 @@ const DrawPlatesPattern = () => {
   const [numbers, setNumbers] = useState("");
   const [letters, setLetters] = useState("");
   const [plateImg, setPlateImg] = useState("");
+  const [isDownloading, setIsDownloading] = useState(false);
 
-  const getPlateImageUrl = (
-    letters: string,
-    numbers: string,
-    emirate: string
-  ) =>
-    `https://numra.motofy.io/plate-generate/cars/${letters}/${numbers}/${emirate}`;
+  // Direct URL to the plate image (cross-origin, for display only)
+  const plateBaseUrl = "https://numra.motofy.io";
 
   const getContrastTextClass = (color: string) => {
     if (!color) return "text-black";
@@ -71,7 +65,6 @@ const DrawPlatesPattern = () => {
   };
 
   useEffect(() => {
-    // Only set the image URL when all fields are provided.
     if (
       !emirate?.toString().trim() ||
       !numbers?.toString().trim() ||
@@ -81,28 +74,141 @@ const DrawPlatesPattern = () => {
       return;
     }
 
-    // Use the generated plate URL directly as the image src (no API call).
-    const imgUrl = getPlateImageUrl(letters, numbers, emirate);
+    // The endpoint returns the image directly, so use the URL as the src
+    const imgUrl = `${plateBaseUrl}/plate-generate/cars/${letters}/${numbers}/${emirate}`;
     setPlateImg(imgUrl);
   }, [emirate, letters, numbers]);
 
   const handleDownload = async () => {
-    if (!plateImg || !plateContainerRef.current) return;
+    if (!plateContainerRef.current) return;
+
+    setIsDownloading(true);
 
     try {
-      const canvas = await html2canvas(plateContainerRef.current, {
-        backgroundColor: null,
-        scale: 2,
-      });
+      // Get dimensions from the container
+      const container = plateContainerRef.current;
+      const rect = container.getBoundingClientRect();
+      const scale = 2; // High resolution
+      const width = rect.width * scale;
+      const height = rect.height * scale;
+
+      // Create canvas
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+
+      if (!ctx) {
+        throw new Error("Could not get canvas context");
+      }
+
+      // Scale for high resolution
+      ctx.scale(scale, scale);
+
+      // Draw background
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, rect.width, rect.height);
+
+      // Draw plate image if we have one - fetch via proxy to avoid CORS
+      if (plateImg) {
+        try {
+          // Fetch the image through the Vite dev proxy (same-origin)
+          const proxyUrl = `/plate-generate/cars/${letters}/${numbers}/${emirate}`;
+          const response = await fetch(proxyUrl);
+
+          if (response.ok) {
+            const blob = await response.blob();
+            const dataUrl = await new Promise<string>((resolve) => {
+              const reader = new FileReader();
+              reader.onloadend = () => resolve(reader.result as string);
+              reader.readAsDataURL(blob);
+            });
+
+            // Create a new image from the data URL (same-origin, no taint)
+            const img = new Image();
+            await new Promise<void>((resolve, reject) => {
+              img.onload = () => resolve();
+              img.onerror = () =>
+                reject(new Error("Failed to load image for canvas"));
+              img.src = dataUrl;
+            });
+
+            const imgWidth = img.naturalWidth;
+            const imgHeight = img.naturalHeight;
+
+            // Calculate centered position (max 80% width as per CSS)
+            const maxWidth = rect.width * 0.8;
+            const aspectRatio = imgWidth / imgHeight;
+            const drawWidth = Math.min(maxWidth, imgWidth);
+            const drawHeight = drawWidth / aspectRatio;
+
+            // Center horizontally
+            const drawX = (rect.width - drawWidth) / 2;
+            // Position in top area (flex-1 area, roughly centered in top 60%)
+            const topAreaHeight = rect.height - 40 - 30;
+            const drawY = (topAreaHeight - drawHeight) / 2 + 16;
+
+            ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+          }
+        } catch (imgErr) {
+          console.warn("Could not include plate image in download:", imgErr);
+          // Continue without the plate image
+        }
+      }
+
+      // Draw price if present
+      if (price) {
+        ctx.fillStyle =
+          bgColor === "black" || bgColor === "#000" || bgColor === "#000000"
+            ? "#ffffff"
+            : "#000000";
+        ctx.font = "500 18px sans-serif";
+        ctx.textAlign = "center";
+        const priceY = plateImg ? rect.height - 70 : rect.height / 2;
+        ctx.fillText(`Price: ${price}`, rect.width / 2, priceY);
+      }
+
+      // Draw details text
+      if (details) {
+        ctx.fillStyle =
+          bgColor === "black" || bgColor === "#000" || bgColor === "#000000"
+            ? "#ffffff"
+            : "#000000";
+        ctx.font = "500 18px sans-serif";
+        ctx.textAlign = "left";
+        ctx.fillText(details, 16, rect.height - 50);
+      }
+
+      // Draw bottom bar
+      ctx.fillStyle = barColor;
+      ctx.fillRect(0, rect.height - 40, rect.width, 40);
+
+      // Draw contact text on bar
+      const barTextColor =
+        barColor === "white" || barColor === "#fff" || barColor === "#ffffff"
+          ? "#000000"
+          : "#ffffff";
+      ctx.fillStyle = barTextColor;
+      ctx.font = "400 16px sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillText(`To contact: ${mobile}`, 16, rect.height - 14);
+
+      // Download
       const link = document.createElement("a");
       link.href = canvas.toDataURL("image/png");
-      link.download = `plate-${letters}-${numbers}-${emirate}.png`;
+      link.download = `plate-${letters || "X"}-${numbers || "0"}-${
+        emirate || "uae"
+      }.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+
       toast.success("Image downloaded successfully");
     } catch (err) {
-      toast.error("Failed to download image");
+      console.error("Download error:", err);
+      toast.error("Failed to download image. Please try again.");
+    } finally {
+      setIsDownloading(false);
     }
   };
 
@@ -268,9 +374,9 @@ const DrawPlatesPattern = () => {
       <button
         className="w-full h-12 bg-[#EBAF29] rounded-md mt-8 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
         onClick={handleDownload}
-        disabled={!plateImg}
+        disabled={isDownloading}
       >
-        Download image
+        {isDownloading ? "Downloading..." : "Download image"}
       </button>
     </section>
   );
