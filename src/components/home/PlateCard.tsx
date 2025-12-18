@@ -74,7 +74,7 @@ const PlateCard = ({ plate }: PlateCardProps) => {
           {packageName !== "Free" && badgeStyle && (
             <div
               style={badgeStyle}
-              className="w-[92px] h-8 rounded-lg py-2 px-4 text-[#192540] text-base font-semibold absolute -top-4 left-22 flex items-center justify-center"
+              className="w-[92px] h-8 rounded-lg py-2 px-4 text-[#192540] text-base font-semibold absolute -top-4 left-1/2 -translate-x-1/2 flex items-center justify-center"
             >
               {packageName}
             </div>

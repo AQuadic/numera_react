@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { getFavorites } from "../../lib/api/getFavorites";
 import FavEmpty from "./FavEmpty";
 import Spinner from "../icons/general/Spinner";
+import { getPlateById } from "../../lib/api";
 
 const FavPlates = () => {
   const { data: favoritePlates = [], isLoading } = useQuery({
@@ -13,13 +14,26 @@ const FavPlates = () => {
   });
 
   const favoritePhoneNumbers = favoritePlates.filter(
-    (fav) => (fav.favorable_type as string) === "sim"
+    (fav) => fav.favorable_type === "sim"
   );
 
   const favoritePlatesOnly = favoritePlates.filter(
-    (fav) => (fav.favorable_type as string) === "plate"
+    (fav) => fav.favorable_type === "plate"
   );
 
+  const { data: fullPlatesData = [], isLoading: isPlatesLoading } = useQuery({
+    queryKey: ["favoritePlatesFull"],
+    queryFn: async () => {
+      const plates = await Promise.all(
+        favoritePlatesOnly.map(async (fav) => {
+          const plate = await getPlateById(fav.favorable.id);
+          return { ...plate, is_favorite: true };
+        })
+      );
+      return plates;
+    },
+    enabled: favoritePlatesOnly.length > 0,
+  });
 
   return (
     <section className="py-12">
@@ -27,29 +41,26 @@ const FavPlates = () => {
 
       <Tabs
         defaultValue="plates"
-        className="flex items-center justify-center rounded-[74px]"
+        className="flex items-center justify-center"
       >
-        <TabsList className="bg-transparent flex items-center justify-center mt-13 md:gap-[68px] mb-12">
-          <TabsTrigger value="plates" className="lg:w-[494px] w-full">
+        <TabsList className="bg-[#FDFAF3] flex items-center justify-center mt-13 md:gap-[68px] mb-12 py-8 px-8 rounded-[74px]">
+          <TabsTrigger value="plates" className="xl:w-[494px] w-full">
             Plates
           </TabsTrigger>
-          <TabsTrigger value="phone_number" className="lg:w-[494px] w-full">
+          <TabsTrigger value="phone_number" className="xl:w-[494px] w-full">
             Phone Number
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="plates">
-          {isLoading ? (
+          {isLoading || isPlatesLoading ? (
             <Spinner />
-          ) : favoritePlatesOnly.length === 0 ? (
+          ) : fullPlatesData.length === 0 ? (
             <FavEmpty />
           ) : (
             <div className="grid xl:grid-cols-4 md:grid-cols-2 gap-6">
-              {favoritePlatesOnly.map((fav) => (
-                <PlateCard
-                  key={fav.id}
-                  plate={{ ...fav.favorable, is_favorite: true } as any}
-                />
+              {fullPlatesData.map((plate) => (
+                <PlateCard key={plate.id} plate={plate} />
               ))}
             </div>
           )}
@@ -65,7 +76,7 @@ const FavPlates = () => {
               {favoritePhoneNumbers.map((fav) => (
                 <SimCard
                   key={fav.id}
-                  sim={{ ...fav.favorable, is_favorite: true } as any}
+                  sim={{ ...fav.favorable, is_favorite: true }}
                 />
               ))}
             </div>
