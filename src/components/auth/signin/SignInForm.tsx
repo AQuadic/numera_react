@@ -127,7 +127,7 @@ const SignInForm = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full h-14 text-[#192540] text-base font-semibold bg-[#EBAF29] rounded-md mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full h-14 text-[#192540] text-base font-semibold bg-[#EBAF29] rounded-md mt-6 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           {isLoading ? "Signing in..." : "Sign in"}
         </button>
