@@ -213,7 +213,7 @@ const DrawPlatesPattern = () => {
   };
 
   return (
-    <section className="px-4 container">
+    <section className="px-4 container ">
       <div
         ref={plateContainerRef}
         className="w-96 h-72 border mx-auto mb-2 flex flex-col justify-between"
