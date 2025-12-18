@@ -1,12 +1,5 @@
 import { axios } from "../axios";
-
-export interface FavoritePlate {
-  id: number;
-  user_id: number;
-  favorable_type: "plate";
-  favorable_id: number;
-  favorable: Plate;
-}
+import type { Sim } from "./sims";
 
 export interface Plate {
   id: number;
@@ -25,7 +18,23 @@ export interface Plate {
   };
 }
 
-export const getFavorites = async (): Promise<FavoritePlate[]> => {
+export type Favorite =
+  | {
+      id: number;
+      user_id: number;
+      favorable_type: "plate";
+      favorable_id: number;
+      favorable: Plate;
+    }
+  | {
+      id: number;
+      user_id: number;
+      favorable_type: "sim";
+      favorable_id: number;
+      favorable: Sim;
+    };
+
+export const getFavorites = async (): Promise<Favorite[]> => {
   const res = await axios.get("/favorites");
   return res.data;
 };
