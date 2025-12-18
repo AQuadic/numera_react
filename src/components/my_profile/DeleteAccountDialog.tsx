@@ -4,6 +4,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { deleteUser } from "../../lib/api/deleteAccount";
 import { useNavigate } from "react-router";
+import { useAuthStore } from "../../store";
 
 interface DeleteAccountDialogProps {
   onClose: () => void;
@@ -15,16 +16,12 @@ const DeleteAccountDialog: React.FC<DeleteAccountDialogProps> = ({ onClose }) =>
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      const result = await deleteUser();
-      if (result.success) {
-        toast.success("Account deleted successfully!");
-        onClose();
-        navigate("/signin");
-      } else {
-        toast.error(result.message || "Failed to delete account");
-      }
-    } catch {
-      toast.error("An error occurred while deleting your account");
+      await deleteUser();
+      useAuthStore.getState().logout();
+      onClose();
+      navigate("/signin", { replace: true });
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || "An error occurred while deleting your account");
     } finally {
       setIsDeleting(false);
     }

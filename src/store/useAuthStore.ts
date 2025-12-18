@@ -4,7 +4,7 @@ import {
   getCurrentUser,
   type User,
 } from "../lib/api/auth";
-import { getToken } from "../lib/axios";
+import { axios, getToken } from "../lib/axios";
 
 interface AuthState {
   // State
@@ -70,6 +70,8 @@ export const useAuthStore = create<AuthState>()((set) => ({
    */
   logout: () => {
     logoutApi();
+    localStorage.removeItem("token");
+    delete axios.defaults.headers.common["Authorization"];
     set({ user: null, error: null });
   },
 }));
