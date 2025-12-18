@@ -57,23 +57,33 @@ const MyProfileComponent = () => {
 
   // Get verification status badge
   const getVerificationStatusText = () => {
-    if (user?.verification_status === "verified") {
-      return "Verified";
+    switch (user?.verification_status) {
+      case "verified":
+        return "Verified";
+      case "pending":
+        return "Pending";
+      case "submitted":
+        return "Submitted";
+      case "rejected":
+        return "Rejected";
+      default:
+        return "Not Verified";
     }
-    if (user?.verification_status === "pending") {
-      return "Pending";
-    }
-    return "Not Verified";
   };
 
   const getVerificationStatusStyle = () => {
-    if (user?.verification_status === "verified") {
-      return "bg-[#D5DCF2] text-[#002083]";
+    switch (user?.verification_status) {
+      case "verified":
+        return "bg-[#D5DCF2] text-[#002083]";
+      case "pending":
+        return "bg-[#FFF4E6] text-[#FF9800]";
+      case "submitted":
+        return "bg-[#E6F4FF] text-[#0B5ED7]";
+      case "rejected":
+        return "bg-[#FDECEC] text-[#D71F1F]";
+      default:
+        return "bg-[#F5F5F5] text-[#717171]";
     }
-    if (user?.verification_status === "pending") {
-      return "bg-[#FFF4E6] text-[#FF9800]";
-    }
-    return "bg-[#F5F5F5] text-[#717171]";
   };
   const handleVerificationSubmit = () => {
     // Close the form and show the submitted confirmation dialog
