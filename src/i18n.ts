@@ -6,6 +6,8 @@ import homeEn from "./locales/en/home.json";
 import homeAr from "./locales/ar/home.json";
 import authEn from "./locales/en/auth.json";
 import authAr from "./locales/ar/auth.json";
+import contactEn from "./locales/en/contact.json";
+import contactAr from "./locales/ar/contact.json";
 import faqEn from "./locales/en/faq.json";
 import faqAr from "./locales/ar/faq.json";
 
@@ -17,11 +19,13 @@ i18n
       en: {
         home: homeEn,
         auth: authEn,
+        contact: contactEn,
         faq: faqEn,
       },
       ar: {
         home: homeAr,
         auth: authAr,
+        contact: contactAr,
         faq: faqAr,
       },
     },
