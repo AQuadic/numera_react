@@ -2,7 +2,7 @@ import SimpleSlider from "./Slider"
 
 const HomeHero = () => {
     return (
-        <div className="container mx-auto lg:py-[95px] py-5">
+        <div className="container mx-auto lg:py-6 py-5">
             <SimpleSlider />
         </div>
     )
