@@ -1,0 +1,21 @@
+{
+  "title": "دعم الاتصال",
+  "description": "نحن هنا لمساعدتك! أرسل لنا استفساراتك أو مشاكلك وسنرد في أقرب وقت ممكن.",
+  "nameLabel": "الاسم",
+  "namePlaceholder": "أدخل اسمك",
+  "emailLabel": "البريد الإلكتروني",
+  "emailPlaceholder": "أدخل بريدك الإلكتروني",
+  "messageLabel": "الرسالة",
+  "messagePlaceholder": "أدخل رسالتك (Shift+Enter لسطر جديد)",
+  "send": "إرسال الرسالة",
+  "sending": "جارٍ الإرسال...",
+  "getInTouch": "تواصل معنا",
+  "phoneNumber": "رقم الهاتف",
+  "connectWithUs": "تابعنا",
+  "successDefault": "شكرًا — تم إرسال رسالتك.",
+  "errors": {
+    "nameRequired": "الرجاء إدخال اسمك",
+    "emailRequired": "الرجاء إدخال بريد إلكتروني صالح",
+    "messageRequired": "الرجاء إدخال رسالة"
+  }
+}

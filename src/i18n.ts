@@ -8,6 +8,10 @@ import authEn from "./locales/en/auth.json";
 import authAr from "./locales/ar/auth.json";
 import profileEn from "./locales/en/profile.json";
 import profileAr from "./locales/ar/profile.json";
+import contactEn from "./locales/en/contact.json";
+import contactAr from "./locales/ar/contact.json";
+import faqEn from "./locales/en/faq.json";
+import faqAr from "./locales/ar/faq.json";
 
 i18n
   .use(LanguageDetector)
@@ -18,11 +22,15 @@ i18n
         home: homeEn,
         auth: authEn,
         profile: profileEn,
+        contact: contactEn,
+        faq: faqEn,
       },
       ar: {
         home: homeAr,
         auth: authAr,
         profile: profileAr,
+        contact: contactAr,
+        faq: faqAr,
       },
     },
     lng: "en",

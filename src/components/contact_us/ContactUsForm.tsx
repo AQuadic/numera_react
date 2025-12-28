@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Email from "../icons/contact/Email";
 import Facebook from "../icons/contact/Facebook";
 import Phone from "../icons/contact/Phone";
@@ -13,7 +14,8 @@ import Tiktok from "../icons/footer/Tiktok";
 import LinkedIn from "../icons/footer/LinkedIn";
 import Youtube from "../icons/footer/Youtube";
 
-const   ContactUsForm: React.FC = () => {
+const ContactUsForm: React.FC = () => {
+  const { t, i18n } = useTranslation("contact");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -24,7 +26,7 @@ const   ContactUsForm: React.FC = () => {
   const { data: socials } = useQuery<SocialLinks, Error>({
     queryKey: ["socials"],
     queryFn: getSocials,
-});
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,17 +34,17 @@ const   ContactUsForm: React.FC = () => {
     setSuccess(null);
 
     if (!name.trim()) {
-      setError("Please enter your name");
+      setError(t("errors.nameRequired"));
       return;
     }
 
     if (!email.trim() || !email.includes("@")) {
-      setError("Please enter a valid email address");
+      setError(t("errors.emailRequired"));
       return;
     }
 
     if (!message.trim()) {
-      setError("Please enter a message");
+      setError(t("errors.messageRequired"));
       return;
     }
 
@@ -54,7 +56,7 @@ const   ContactUsForm: React.FC = () => {
         email: email.trim(),
         message: message.trim(),
       });
-      setSuccess(res?.message ?? "Thanks — your message was sent.");
+      setSuccess(res?.message ?? t("successDefault"));
       setName("");
       setEmail("");
       setMessage("");
@@ -65,7 +67,9 @@ const   ContactUsForm: React.FC = () => {
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSubmit(e as any);
@@ -74,12 +78,9 @@ const   ContactUsForm: React.FC = () => {
 
   return (
     <section className="container w-full h-[737px] lg:bg-[#FFFAEF] rounded-[42px] md:my-14 px-8 py-10 mb-10 relative">
-      <h2 className="text-[#192540] text-[32px] font-medium">
-        Contact Support
-      </h2>
+      <h2 className="text-[#192540] text-[32px] font-medium">{t("title")}</h2>
       <p className="text-[#717171] text-xl font-medium mt-4">
-        We're here to help! Send us your questions or issues, and we'll respond
-        as <br /> soon as possible.
+        {t("description")}
       </p>
 
       <div className="flex items-center justify-between">
@@ -101,7 +102,7 @@ const   ContactUsForm: React.FC = () => {
               htmlFor="name"
               className="text-[#192540] text-xl font-medium"
             >
-              Name
+              {t("nameLabel")}
             </label>
             <input
               id="name"
@@ -110,7 +111,7 @@ const   ContactUsForm: React.FC = () => {
               onChange={(e) => setName(e.target.value)}
               onKeyDown={handleKeyDown}
               className="lg:w-[760px] w-full h-14 border border-[#D9D9D9] rounded-md mt-3 px-3"
-              placeholder="Enter your name"
+              placeholder={t("namePlaceholder")}
               disabled={isLoading}
             />
           </div>
@@ -120,7 +121,7 @@ const   ContactUsForm: React.FC = () => {
               htmlFor="email"
               className="text-[#192540] text-xl font-medium"
             >
-              Email
+              {t("emailLabel")}
             </label>
             <input
               id="email"
@@ -129,7 +130,7 @@ const   ContactUsForm: React.FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               onKeyDown={handleKeyDown}
               className="lg:w-[760px] w-full h-14 border border-[#D9D9D9] rounded-md mt-3 px-3"
-              placeholder="Enter your email"
+              placeholder={t("emailPlaceholder")}
               disabled={isLoading}
             />
           </div>
@@ -139,7 +140,7 @@ const   ContactUsForm: React.FC = () => {
               htmlFor="message"
               className="text-[#192540] text-xl font-medium"
             >
-              Message
+              {t("messageLabel")}
             </label>
             <textarea
               id="message"
@@ -147,7 +148,7 @@ const   ContactUsForm: React.FC = () => {
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
               className="lg:w-[760px] w-full h-[143px] border border-[#D9D9D9] rounded-md mt-3 p-3"
-              placeholder="Enter your message (Shift+Enter for new line)"
+              placeholder={t("messagePlaceholder")}
               disabled={isLoading}
             />
           </div>
@@ -157,27 +158,36 @@ const   ContactUsForm: React.FC = () => {
             disabled={isLoading}
             className="lg:w-[760px] w-full h-14 bg-[#EBAF29] rounded-md mt-6 text-[#192540] text-lg font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? "Sending..." : "Send Message"}
+            {isLoading ? t("sending") : t("send")}
           </button>
         </form>
 
-        <div className="w-[336px] h-[432px] bg-[#F8EBD0] rounded-[42px] px-6 py-14 absolute -right-20 lg:block hidden">
-          <h2 className="text-[#192540] text-2xl font-medium">Get in Touch</h2>
+        {/** In Arabic (RTL) place the contact box on the left */}
+        <div
+          className={`w-[336px] h-[432px] bg-[#F8EBD0] rounded-[42px] px-6 py-14 absolute lg:block hidden ${
+            (i18n.language || "").toLowerCase().startsWith("ar")
+              ? "-left-20"
+              : "-right-20"
+          }`}
+        >
+          <h2 className="text-[#192540] text-2xl font-medium">
+            {t("getInTouch")}
+          </h2>
           <div className="flex items-center gap-3 mt-10">
             <Phone />
             <div>
               <p className="text-[#192540] text-base font-medium">
-                Phone Number
+                {t("phoneNumber")}
               </p>
               {socials?.phone && (
-                  <a
-                      href={`tel:${socials.phone}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[#192540] text-xl font-medium"
-                    >
-                      <p className="text-[#192540] text-base">{socials.phone}</p>
-                  </a>
+                <a
+                  href={`tel:${socials.phone}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#192540] text-xl font-medium"
+                >
+                  <p className="text-[#192540] text-base">{socials.phone}</p>
+                </a>
               )}
             </div>
           </div>
@@ -185,7 +195,9 @@ const   ContactUsForm: React.FC = () => {
           <div className="flex items-center gap-3 mt-6">
             <Email />
             <div>
-              <p className="text-[#192540] text-base font-medium">Email</p>
+              <p className="text-[#192540] text-base font-medium">
+                {t("emailLabel")}
+              </p>
 
               {socials?.email && (
                 <a
@@ -201,7 +213,7 @@ const   ContactUsForm: React.FC = () => {
           <div className="w-full h-px mt-8 border-t border-dashed border-[#A6A6A6]"></div>
 
           <h2 className="text-[#192540] text-base font-medium mt-8">
-            Connect With Us
+            {t("connectWithUs")}
           </h2>
 
           <div className="flex items-center gap-2 mt-2">
@@ -211,7 +223,11 @@ const   ContactUsForm: React.FC = () => {
               </a>
             )}
             {socials?.whatsapp && (
-              <a href={`https://wa.me/${socials.whatsapp}`} target="_blank" rel="noreferrer">
+              <a
+                href={`https://wa.me/${socials.whatsapp}`}
+                target="_blank"
+                rel="noreferrer"
+              >
                 <Whatsapp />
               </a>
             )}

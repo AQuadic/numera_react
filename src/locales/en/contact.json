@@ -1,0 +1,21 @@
+{
+  "title": "Contact Support",
+  "description": "We're here to help! Send us your questions or issues, and we'll respond as soon as possible.",
+  "nameLabel": "Name",
+  "namePlaceholder": "Enter your name",
+  "emailLabel": "Email",
+  "emailPlaceholder": "Enter your email",
+  "messageLabel": "Message",
+  "messagePlaceholder": "Enter your message (Shift+Enter for new line)",
+  "send": "Send Message",
+  "sending": "Sending...",
+  "getInTouch": "Get in Touch",
+  "phoneNumber": "Phone Number",
+  "connectWithUs": "Connect With Us",
+  "successDefault": "Thanks — your message was sent.",
+  "errors": {
+    "nameRequired": "Please enter your name",
+    "emailRequired": "Please enter a valid email address",
+    "messageRequired": "Please enter a message"
+  }
+}
