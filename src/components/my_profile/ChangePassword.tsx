@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { changePassword } from "../../lib/api/auth";
 
 const ChangePassword = () => {
 
+    const { t } = useTranslation("profile");
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -13,17 +15,17 @@ const ChangePassword = () => {
 
         // Validation
         if (!currentPassword || !newPassword || !confirmPassword) {
-        toast.error("All fields are required");
+        toast.error(t("errors_all_fields_required"));
         return;
         }
 
         if (newPassword !== confirmPassword) {
-        toast.error("New password and confirmation do not match");
+        toast.error(t("errors_password_mismatch"));
         return;
         }
 
         if (newPassword.length < 6) {
-        toast.error("New password must be at least 6 characters");
+        toast.error(t("errors_password_min_length"));
         return;
         }
 
@@ -48,14 +50,14 @@ const ChangePassword = () => {
     };
     return (
         <div className="py-10">
-            <h2 className="text-[#192540] text-2xl font-medium mb-12">Change Password</h2>
+            <h2 className="text-[#192540] text-2xl font-medium mb-12">{t("change_password")}</h2>
             <form onSubmit={handleChangePassword} autoComplete="off">
                 <div className="px-2">
                   <label
                     htmlFor="current_password"
                     className="text-[#192540] text-xl font-medium"
                   >
-                    Current Password
+                    {t("current_password")}
                   </label>
                   <input
                     type="password"
@@ -65,7 +67,7 @@ const ChangePassword = () => {
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
                     className="w-full h-12 border rounded-md mt-2 px-2"
-                    placeholder="Enter your current password"
+                    placeholder={t("enter_current_password")}
                   />
                 </div>
 
@@ -74,7 +76,7 @@ const ChangePassword = () => {
                     htmlFor="new_password"
                     className="text-[#192540] text-xl font-medium"
                   >
-                    New Password
+                    {t("new_password")}
                   </label>
                   <input
                     type="password"
@@ -84,7 +86,7 @@ const ChangePassword = () => {
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     className="w-full h-12 border rounded-md mt-2 px-2"
-                    placeholder="Enter your new password"
+                    placeholder={t("enter_new_password")}
                   />
                 </div>
 
@@ -93,7 +95,7 @@ const ChangePassword = () => {
                     htmlFor="confirm_password"
                     className="text-[#192540] text-xl font-medium"
                   >
-                    Confirm New Password
+                    {t("confirm_new_password")}
                   </label>
                   <input
                     type="password"
@@ -103,7 +105,7 @@ const ChangePassword = () => {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     className="w-full h-12 border rounded-md mt-2 px-2"
-                    placeholder="Confirm your new password"
+                    placeholder={t("enter_confirm_new_password")}
                   />
                 </div>
 
@@ -113,7 +115,7 @@ const ChangePassword = () => {
                     disabled={isLoading}
                     className="w-full h-12 bg-[#EBAF29] rounded-md text-[#192540] text-base font-semibold cursor-pointer hover:bg-[#d9a025] transition disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {isLoading ? "Saving..." : "Save Changes"}
+                    {isLoading ? t("saving") : t("save_changes")}
                   </button>
                 </div>
               </form>

@@ -14,6 +14,12 @@
     "active_years": "Active Years",
     "personal_info": "Personal Information",
     "change_password": "Change Password",
+    "current_password": "Current Password",
+    "enter_current_password": "Enter your current password",
+    "new_password": "New Password",
+    "enter_new_password": "Enter your new password",
+    "confirm_new_password": "Confirm New Password",
+    "enter_confirm_new_password": "Confirm your new password",
     "account_verification": "Account Verification",
     "fav_plate": "Favorite Plate",
     "delete_account": "Delete Account",
@@ -48,5 +54,8 @@
     "companies": "Companies",
     "saving": "Saving...",
     "save_changes": "Save Changes",
-    "profile_updated": "Profile updated successfully"
+    "profile_updated": "Profile updated successfully",
+    "errors_all_fields_required": "All fields are required",
+    "errors_password_mismatch": "New password and confirmation do not match",
+    "errors_password_min_length": "New password must be at least 6 characters"
 }
