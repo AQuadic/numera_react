@@ -92,6 +92,7 @@ const FilterYourPlates = () => {
         </h2>
 
         <div className="flex items-center gap-6">
+          
           <Dialog>
               <DialogTrigger className="w-full">
                 <div className="lg:w-[180px] w-full h-14 border border-[#F0F0F0] rounded-md flex items-center justify-center gap-3">

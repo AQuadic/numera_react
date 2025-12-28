@@ -33,16 +33,6 @@ const ChangeLanguage = ({ isHome = false }: Props) => {
       className="flex items-center justify-center gap-2 transition-colors duration-300 hover:opacity-80"
       aria-label={isEnglish ? "Switch to Arabic" : "Switch to English"}
     >
-      <img
-        src={
-          isHome
-            ? "/layout/language_white.svg"
-            : "/layout/language_black.svg"
-        }
-        alt=""
-        className="transition-opacity duration-300 w-5 h-5"
-        aria-hidden="true"
-      />
       <span
         className={`${
           isHome ? "text-white" : "text-foreground"
