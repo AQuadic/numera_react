@@ -18,6 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getBroadcastNotifications } from "../../lib/api/notifications/getNotifications";
 import NotificationsEmptyState from "./NotificationsEmptyState";
 import Spinner from "../icons/general/Spinner";
+import ChangeLanguage from "./ChangeLanguage";
 
 const Header = () => {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -92,6 +93,7 @@ const Header = () => {
           
         </div>
 
+          <ChangeLanguage />
           <div className="flex items-center gap-8">
             {hasUser && (
           <button onClick={() => setNotificationsOpen(true)} className="relative cursor-pointer">
