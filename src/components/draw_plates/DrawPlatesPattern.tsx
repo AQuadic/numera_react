@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import {
   Select,
   SelectContent,
@@ -23,6 +24,8 @@ const DrawPlatesPattern = () => {
   const [isDownloading, setIsDownloading] = useState(false);
 
   // Direct URL to the plate image (cross-origin, for display only)
+  const { t } = useTranslation("draw");
+
   const plateBaseUrl = "https://numra.motofy.io";
 
   const getContrastTextClass = (color: string) => {
@@ -165,7 +168,7 @@ const DrawPlatesPattern = () => {
         ctx.font = "500 18px sans-serif";
         ctx.textAlign = "center";
         const priceY = plateImg ? rect.height - 70 : rect.height / 2;
-        ctx.fillText(`Price: ${price}`, rect.width / 2, priceY);
+        ctx.fillText(`${t("priceLabel")} ${price}`, rect.width / 2, priceY);
       }
 
       // Draw details text
@@ -191,7 +194,7 @@ const DrawPlatesPattern = () => {
       ctx.fillStyle = barTextColor;
       ctx.font = "400 16px sans-serif";
       ctx.textAlign = "left";
-      ctx.fillText(`To contact: ${mobile}`, 16, rect.height - 14);
+      ctx.fillText(`${t("toContact")} ${mobile}`, 16, rect.height - 14);
 
       // Download
       const link = document.createElement("a");
@@ -203,10 +206,10 @@ const DrawPlatesPattern = () => {
       link.click();
       document.body.removeChild(link);
 
-      toast.success("Image downloaded successfully");
+      toast.success(t("imageDownloaded"));
     } catch (err) {
       console.error("Download error:", err);
-      toast.error("Failed to download image. Please try again.");
+      toast.error(t("imageDownloadFailed"));
     } finally {
       setIsDownloading(false);
     }
@@ -236,7 +239,7 @@ const DrawPlatesPattern = () => {
                 bgColor
               )} text-lg font-medium text-center mt-2`}
             >
-              Price: {price}
+              {t("priceLabel")} {price}
             </p>
           )}
         </div>
@@ -255,35 +258,39 @@ const DrawPlatesPattern = () => {
               barColor
             )}`}
           >
-            To contact: {mobile}
+            {t("toContact")} {mobile}
           </p>
         </div>
       </div>
 
       <h2 className="text-[#192540] md:text-[32px] text-xl font-medium">
-        Choose Plate Number Pattern
+        {t("choosePatternTitle")}
       </h2>
 
       <div className="flex flex-wrap items-center gap-4 mt-4 w-full">
         <Select onValueChange={setEmirate}>
           <SelectTrigger className="lg:w-72 w-full h-12!">
-            <SelectValue placeholder="Emirate" />
+            <SelectValue placeholder={t("emiratePlaceholder")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="dubai">Dubai</SelectItem>
-            <SelectItem value="abu-dhabi">Abu Dhabi</SelectItem>
-            <SelectItem value="sharjah">Sharjah</SelectItem>
-            <SelectItem value="ajman">Ajman</SelectItem>
-            <SelectItem value="fujairah">Fujairah</SelectItem>
-            <SelectItem value="ras_alkhima">Ras Al Khaimah</SelectItem>
-            <SelectItem value="om_qauquan">Umm Al Quwain</SelectItem>
+            <SelectItem value="dubai">{t("emirates.dubai")}</SelectItem>
+            <SelectItem value="abu-dhabi">{t("emirates.abu_dhabi")}</SelectItem>
+            <SelectItem value="sharjah">{t("emirates.sharjah")}</SelectItem>
+            <SelectItem value="ajman">{t("emirates.ajman")}</SelectItem>
+            <SelectItem value="fujairah">{t("emirates.fujairah")}</SelectItem>
+            <SelectItem value="ras_alkhima">
+              {t("emirates.ras_alkhima")}
+            </SelectItem>
+            <SelectItem value="om_qauquan">
+              {t("emirates.om_qauquan")}
+            </SelectItem>
           </SelectContent>
         </Select>
 
         <input
           type="text"
           className="lg:w-72 w-full h-12 border rounded-md px-4"
-          placeholder="Letters"
+          placeholder={t("lettersPlaceholder")}
           value={letters}
           onChange={(e) => setLetters(e.target.value)}
         />
@@ -291,7 +298,7 @@ const DrawPlatesPattern = () => {
         <input
           type="text"
           className="lg:w-72 w-full h-12 border rounded-md px-4"
-          placeholder="Number"
+          placeholder={t("numberPlaceholder")}
           value={numbers}
           onChange={(e) => setNumbers(e.target.value)}
         />
@@ -299,7 +306,7 @@ const DrawPlatesPattern = () => {
         <input
           type="number"
           className="lg:w-72 w-full h-12 border rounded-md px-4"
-          placeholder="Price"
+          placeholder={t("pricePlaceholder")}
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
@@ -307,12 +314,12 @@ const DrawPlatesPattern = () => {
 
       <div className="mt-4">
         <label className="text-[#192540] text-base font-medium">
-          Contact number
+          {t("contactNumberLabel")}
         </label>
         <input
           type="text"
           className="w-full h-12 border rounded-md mt-2 px-4"
-          placeholder="Mobile"
+          placeholder={t("mobilePlaceholder")}
           value={mobile}
           onChange={(e) => {
             const onlyNumbers = e.target.value.replace(/\D/g, "");
@@ -323,19 +330,21 @@ const DrawPlatesPattern = () => {
 
       <div className="mt-4">
         <label className="text-[#192540] text-base font-medium">
-          Additional details
+          {t("additionalDetailsLabel")}
         </label>
         <input
           type="text"
           className="w-full h-12 border rounded-md mt-2 px-4"
-          placeholder="Comment"
+          placeholder={t("commentPlaceholder")}
           value={details}
           onChange={(e) => setDetails(e.target.value)}
         />
       </div>
 
       <div className="mt-4">
-        <p className="text-[#192540] text-base font-medium">Background color</p>
+        <p className="text-[#192540] text-base font-medium">
+          {t("backgroundColorLabel")}
+        </p>
         <div className="mt-2 flex items-center gap-4">
           <div
             className="w-full h-12 border bg-white rounded-md cursor-pointer"
@@ -351,7 +360,7 @@ const DrawPlatesPattern = () => {
 
       <div className="mt-4">
         <p className="text-[#192540] text-base font-medium">
-          Communication bar color
+          {t("communicationBarLabel")}
         </p>
         <div className="mt-2 flex items-center gap-4">
           <div
@@ -376,7 +385,7 @@ const DrawPlatesPattern = () => {
         onClick={handleDownload}
         disabled={isDownloading}
       >
-        {isDownloading ? "Downloading..." : "Download image"}
+        {isDownloading ? t("downloading") : t("downloadImage")}
       </button>
     </section>
   );

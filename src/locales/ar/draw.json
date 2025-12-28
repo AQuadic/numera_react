@@ -1,0 +1,28 @@
+{
+  "choosePatternTitle": "اختر نمط رقم اللوحة",
+  "emiratePlaceholder": "الإمارة",
+  "lettersPlaceholder": "حروف",
+  "numberPlaceholder": "رقم",
+  "pricePlaceholder": "السعر",
+  "contactNumberLabel": "رقم التواصل",
+  "mobilePlaceholder": "الجوال",
+  "additionalDetailsLabel": "تفاصيل إضافية",
+  "commentPlaceholder": "تعليق",
+  "backgroundColorLabel": "لون الخلفية",
+  "communicationBarLabel": "لون شريط التواصل",
+  "priceLabel": "السعر:",
+  "toContact": "للتواصل:",
+  "downloadImage": "تحميل الصورة",
+  "downloading": "جاري التنزيل...",
+  "imageDownloaded": "تم تنزيل الصورة بنجاح",
+  "imageDownloadFailed": "فشل تنزيل الصورة. الرجاء المحاولة مرة أخرى.",
+  "emirates": {
+    "dubai": "دبي",
+    "abu_dhabi": "أبو ظبي",
+    "sharjah": "الشارقة",
+    "ajman": "عجمان",
+    "fujairah": "الفجيرة",
+    "ras_alkhima": "رأس الخيمة",
+    "om_qauquan": "أم القيوين"
+  }
+}

@@ -12,6 +12,8 @@ import contactEn from "./locales/en/contact.json";
 import contactAr from "./locales/ar/contact.json";
 import faqEn from "./locales/en/faq.json";
 import faqAr from "./locales/ar/faq.json";
+import drawEn from "./locales/en/draw.json";
+import drawAr from "./locales/ar/draw.json";
 
 i18n
   .use(LanguageDetector)
@@ -23,6 +25,7 @@ i18n
         auth: authEn,
         profile: profileEn,
         contact: contactEn,
+        draw: drawEn,
         faq: faqEn,
       },
       ar: {
@@ -30,6 +33,7 @@ i18n
         auth: authAr,
         profile: profileAr,
         contact: contactAr,
+        draw: drawAr,
         faq: faqAr,
       },
     },

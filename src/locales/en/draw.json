@@ -1,0 +1,28 @@
+{
+  "choosePatternTitle": "Choose Plate Number Pattern",
+  "emiratePlaceholder": "Emirate",
+  "lettersPlaceholder": "Letters",
+  "numberPlaceholder": "Number",
+  "pricePlaceholder": "Price",
+  "contactNumberLabel": "Contact number",
+  "mobilePlaceholder": "Mobile",
+  "additionalDetailsLabel": "Additional details",
+  "commentPlaceholder": "Comment",
+  "backgroundColorLabel": "Background color",
+  "communicationBarLabel": "Communication bar color",
+  "priceLabel": "Price:",
+  "toContact": "To contact:",
+  "downloadImage": "Download image",
+  "downloading": "Downloading...",
+  "imageDownloaded": "Image downloaded successfully",
+  "imageDownloadFailed": "Failed to download image. Please try again.",
+  "emirates": {
+    "dubai": "Dubai",
+    "abu_dhabi": "Abu Dhabi",
+    "sharjah": "Sharjah",
+    "ajman": "Ajman",
+    "fujairah": "Fujairah",
+    "ras_alkhima": "Ras Al Khaimah",
+    "om_qauquan": "Umm Al Quwain"
+  }
+}
