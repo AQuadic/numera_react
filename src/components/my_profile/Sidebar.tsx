@@ -14,6 +14,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from "../ui/dialog";
+import Settings from "../icons/profile/Settings";
 
 interface SidebarProps {
   onSelect: (id: string) => void;
@@ -31,6 +32,7 @@ const Sidebar = ({ onSelect }: SidebarProps) => {
     { title: "My Profile", icon: <Profile />, id: "profile" },
     { title: "My ADs", icon: <Ads />, id: "ads" },
     { title: "Analytical Dashboard", icon: <Analytical />, id: "analytics" },
+    { title: "App Setting", icon: <Settings />, id: "settings" },
     { title: "My Plan", icon: <Plans />, id: "plan" },
   ];
 

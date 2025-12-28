@@ -29,6 +29,7 @@ import AnalyticalDashboard from "./components/my_profile/AnalyticalDashboard/Ana
 import ChangePassword from "./components/my_profile/ChangePassword";
 import FavPlates from "./components/my_profile/FavPlates";
 import AllAds from "./components/my_profile/AllAds";
+import Settings from "./components/my_profile/Settings";
 
 function App() {
   return (
@@ -68,6 +69,7 @@ function App() {
                   <Route path="favorite_plates" element={<FavPlates />} />
                   <Route path="ads" element={<MyAdsComponent />} />
                   <Route path="allAds" element={<AllAds />} />
+                  <Route path="settings" element={<Settings />} />
                   <Route
                     path="analytics"
                     element={<AnalyticalDashboard />}
