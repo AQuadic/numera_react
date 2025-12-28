@@ -31,15 +31,6 @@ const ResetPassForm = () => {
 
   // Guard: require valid reset token
   React.useEffect(() => {
-    const nav = performance.getEntriesByType("navigation")[0] as
-      | PerformanceNavigationTiming
-      | undefined;
-    if (nav?.type === "reload") {
-      usePasswordResetStore.getState().clear();
-      navigate("/forget_password", { replace: true });
-      return;
-    }
-
     if (!phone || !phone_country) {
       navigate("/forget_password", { replace: true });
       return;

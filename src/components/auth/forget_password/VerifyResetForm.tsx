@@ -43,15 +43,6 @@ const VerifyResetForm = () => {
 
   // Guard: require phone info from previous step
   React.useEffect(() => {
-    const nav = performance.getEntriesByType("navigation")[0] as
-      | PerformanceNavigationTiming
-      | undefined;
-    if (nav?.type === "reload") {
-      usePasswordResetStore.getState().clear();
-      navigate("/forget_password", { replace: true });
-      return;
-    }
-
     if (!phone || !phone_country || step === "request") {
       navigate("/forget_password", { replace: true });
       return;
