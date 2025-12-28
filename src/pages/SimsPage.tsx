@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import SimCard from "../components/home/SimCard";
 import { getSims } from "../lib/api";
 import type { Sim, SimFilters as ApiSimFilters } from "../lib/api";
@@ -59,46 +60,48 @@ const SimsPage = () => {
     setCurrentPage(1);
   };
 
+  const { t } = useTranslation("sims");
+
   return (
     <section className="container md:py-[58px] py-5">
       <h2 className="text-[#192540] md:text-[32px] text-2xl font-medium mb-8">
-        Mobile Numbers
+        {t("title")}
       </h2>
 
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Filters Sidebar */}
         <div className="lg:w-[280px] w-full bg-[#FDFAF3] rounded-lg p-6 h-fit">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold text-[#192540]">Filters</h3>
+            <h3 className="text-lg font-semibold text-[#192540]">
+              {t("filters")}
+            </h3>
             <button
               onClick={clearFilters}
               className="text-sm text-[#966A08] hover:underline"
             >
-              Clear All
+              {t("clearAll")}
             </button>
           </div>
 
           {/* Numbers */}
           <div className="mb-6">
             <h4 className="text-sm font-semibold text-[#192540] mb-3">
-              Search Numbers
+              {t("searchNumbers")}
             </h4>
             <input
               type="text"
               value={filters.numbers || ""}
               onChange={(e) => handleFilterChange("numbers", e.target.value)}
-              placeholder="e.g., 050"
+              placeholder={t("searchPlaceholder")}
               className="w-full px-3 py-2 border border-[#F0F0F0] rounded-md text-sm"
             />
-            <p className="text-xs text-[#717171] mt-1">
-              Enter partial number to search
-            </p>
+            <p className="text-xs text-[#717171] mt-1">{t("searchHelper")}</p>
           </div>
 
           {/* Price Range */}
           <div className="mb-6">
             <h4 className="text-sm font-semibold text-[#192540] mb-3">
-              Price Range (AED)
+              {t("priceRange")}
             </h4>
             <div className="space-y-3">
               <input
@@ -110,7 +113,7 @@ const SimsPage = () => {
                     e.target.value ? Number(e.target.value) : undefined
                   )
                 }
-                placeholder="Min Price"
+                placeholder={t("minPrice")}
                 className="w-full px-3 py-2 border border-[#F0F0F0] rounded-md text-sm"
               />
               <input
@@ -122,7 +125,7 @@ const SimsPage = () => {
                     e.target.value ? Number(e.target.value) : undefined
                   )
                 }
-                placeholder="Max Price"
+                placeholder={t("maxPrice")}
                 className="w-full px-3 py-2 border border-[#F0F0F0] rounded-md text-sm"
               />
             </div>
@@ -148,10 +151,8 @@ const SimsPage = () => {
 
           {!loading && sims.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-[#717171] text-lg">No mobile numbers found</p>
-              <p className="text-[#717171] text-sm mt-2">
-                Try adjusting your filters
-              </p>
+              <p className="text-[#717171] text-lg">{t("noSims")}</p>
+              <p className="text-[#717171] text-sm mt-2">{t("tryAdjust")}</p>
             </div>
           )}
 
@@ -173,11 +174,11 @@ const SimsPage = () => {
                     disabled={currentPage === 1}
                     className="px-4 py-2 bg-[#F0F0F0] text-[#192540] rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#e0e0e0]"
                   >
-                    Previous
+                    {t("previous")}
                   </button>
 
                   <span className="text-sm text-[#717171]">
-                    Page {currentPage} of {totalPages}
+                    {t("pageOf", { current: currentPage, total: totalPages })}
                   </span>
 
                   <button
@@ -187,7 +188,7 @@ const SimsPage = () => {
                     disabled={currentPage === totalPages}
                     className="px-4 py-2 bg-[#EBAF29] text-[#192540] rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#d9a01f]"
                   >
-                    Next
+                    {t("next")}
                   </button>
                 </div>
               )}

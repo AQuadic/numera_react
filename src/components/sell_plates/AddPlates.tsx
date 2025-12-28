@@ -1,13 +1,23 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import DeleteIcon from "../icons/plates/DeleteIcon";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 import AddPlatesHeader from "./AddPlatesHeader";
 import Warning from "../icons/plates/Warning";
 import { Switch } from "../ui/switch";
 import PlusIcon from "../icons/plates/PlusIcon";
 import { Link } from "react-router";
-import { getCityPlateLetters, type CityPlateLettersResponse } from "../../lib/api/plates/getCityPlateLetters";
+import {
+  getCityPlateLetters,
+  type CityPlateLettersResponse,
+} from "../../lib/api/plates/getCityPlateLetters";
+import { useTranslation } from "react-i18next";
 
 const options = ["Private", "Bike", "Classic", "Fun"];
 const cities = [
@@ -21,6 +31,7 @@ const cities = [
 ];
 
 const AddPlates = () => {
+  const { t } = useTranslation("home");
   const [plates, setPlates] = useState([{}]);
   const [selectedTypes, setSelectedTypes] = useState(["Private"]);
   const [selectedCities, setSelectedCities] = useState(["dubai"]);
@@ -58,152 +69,179 @@ const AddPlates = () => {
     setSelectedCodes(updatedCodes);
   };
 
-    return (
-        <div>
-        <AddPlatesHeader />
-        <div className="mt-8 container space-y-8">
-            {plates.map((_, index) => {
-            const { data: lettersData, isLoading } = useQuery<CityPlateLettersResponse>({
-                queryKey: ["cityPlateLetters", selectedCities[index], selectedTypes[index]],
-                queryFn: () => getCityPlateLetters(selectedCities[index], selectedTypes[index]),
-                enabled: !!selectedCities[index] && !!selectedTypes[index],
-                });
+  return (
+    <div>
+      <AddPlatesHeader />
+      <div className="mt-8 container space-y-8">
+        {plates.map((_, index) => {
+          const { data: lettersData, isLoading } =
+            useQuery<CityPlateLettersResponse>({
+              queryKey: [
+                "cityPlateLetters",
+                selectedCities[index],
+                selectedTypes[index],
+              ],
+              queryFn: () =>
+                getCityPlateLetters(
+                  selectedCities[index],
+                  selectedTypes[index]
+                ),
+              enabled: !!selectedCities[index] && !!selectedTypes[index],
+            });
 
-
-        return (
+          return (
             <div key={index} className="pb-6">
-                <div className="flex items-center justify-between">
-                <h2 className="text-[#192540] text-[32px] font-medium">Plate #{index + 1}</h2>
-                <DeleteIcon className="cursor-pointer" onClick={() => removePlate(index)} />
-                </div>
+              <div className="flex items-center justify-between">
+                <h2 className="text-[#192540] text-[32px] font-medium">
+                  Plate #{index + 1}
+                </h2>
+                <DeleteIcon
+                  className="cursor-pointer"
+                  onClick={() => removePlate(index)}
+                />
+              </div>
 
-                <div className="mt-6">
+              <div className="mt-6">
                 <label className="text-[#192540] text-base font-medium">
-                    Origin <span className="text-[#D71F1F]">*</span>
+                  Origin <span className="text-[#D71F1F]">*</span>
                 </label>
                 <Select>
-                    <SelectTrigger className="w-full mt-4 h-12!">
+                  <SelectTrigger className="w-full mt-4 h-12!">
                     <SelectValue placeholder={selectedCities[index]} />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {cities.map((city) => (
-                        <SelectItem
-                            key={city}
-                            value={city}
-                            onClick={() => selectCity(index, city)}
-                        >
-                            {city.charAt(0).toUpperCase() + city.slice(1)}
-                        </SelectItem>
-                        ))}
-                    </SelectContent>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {cities.map((city) => (
+                      <SelectItem
+                        key={city}
+                        value={city}
+                        onClick={() => selectCity(index, city)}
+                      >
+                        {city.charAt(0).toUpperCase() + city.slice(1)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
-                </div>
+              </div>
 
-                <div className="mt-6">
+              <div className="mt-6">
                 <label className="text-[#192540] text-base font-medium">
-                    Type <span className="text-[#D71F1F]">*</span>
+                  Type <span className="text-[#D71F1F]">*</span>
                 </label>
                 <div className="mt-4 flex flex-wrap items-center justify-between">
-                    {options.map((option) => (
+                  {options.map((option) => (
                     <div
-                        key={option}
-                        className={`w-[255px] h-12 rounded-[10px] text-[#192540] text-base font-medium flex items-center justify-center cursor-pointer ${
-                        selectedTypes[index] === option ? "bg-[#EBAF29]" : "bg-[#FDFAF3]"
-                        }`}
-                        onClick={() => selectType(index, option)}
+                      key={option}
+                      className={`w-[255px] h-12 rounded-[10px] text-[#192540] text-base font-medium flex items-center justify-center cursor-pointer ${
+                        selectedTypes[index] === option
+                          ? "bg-[#EBAF29]"
+                          : "bg-[#FDFAF3]"
+                      }`}
+                      onClick={() => selectType(index, option)}
                     >
-                        {option}
+                      {option}
                     </div>
-                    ))}
+                  ))}
                 </div>
-                </div>
+              </div>
 
-                <div className="flex gap-6 w-full mt-6">
+              <div className="flex gap-6 w-full mt-6">
                 <div className="w-full">
-                    <label className="text-[#192540] text-base font-medium">Code</label>
-                    <Select>
+                  <label className="text-[#192540] text-base font-medium">
+                    Code
+                  </label>
+                  <Select>
                     <SelectTrigger className="w-full mt-4 h-12!">
-                        <SelectValue placeholder={selectedCodes[index] || "Select code"} />
+                      <SelectValue
+                        placeholder={selectedCodes[index] || "Select code"}
+                      />
                     </SelectTrigger>
                     <SelectContent>
-                    {isLoading ? (
-                            <SelectItem value="loading" disabled>
-                            Loading...
-                            </SelectItem>
-                        ) : lettersData?.letters && lettersData.letters.length > 0 ? (
-                            lettersData.letters.map((letter) => (
-                            <SelectItem
-                                key={letter}
-                                value={letter}
-                                onClick={() => selectCode(index, letter)}
-                            >
-                                {letter}
-                            </SelectItem>
-                            ))
-                        ) : (
-                            <SelectItem value="no-letters" disabled>
-                            No letters available
-                            </SelectItem>
-                        )}
-                        </SelectContent>
-                    </Select>
+                      {isLoading ? (
+                        <SelectItem value="loading" disabled>
+                          Loading...
+                        </SelectItem>
+                      ) : lettersData?.letters &&
+                        lettersData.letters.length > 0 ? (
+                        lettersData.letters.map((letter) => (
+                          <SelectItem
+                            key={letter}
+                            value={letter}
+                            onClick={() => selectCode(index, letter)}
+                          >
+                            {letter}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem value="no-letters" disabled>
+                          No letters available
+                        </SelectItem>
+                      )}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div className="flex flex-col w-full">
-                    <label className="text-[#192540] text-base font-medium">
+                  <label className="text-[#192540] text-base font-medium">
                     Number <span className="text-[#D71F1F]">*</span>
-                    </label>
-                    <input
+                  </label>
+                  <input
                     type="text"
                     className="w-full h-12 border border-[#F0F0F0] rounded-[10px] mt-4"
-                    />
+                  />
                 </div>
-                </div>
+              </div>
 
-                <div className="mt-6 flex flex-col w-full">
+              <div className="mt-6 flex flex-col w-full">
                 <label className="text-[#192540] text-base font-medium">
-                    Price <span className="text-[#D71F1F]">*</span>
+                  Price <span className="text-[#D71F1F]">*</span>
                 </label>
                 <input
-                    type="text"
-                    className="w-full h-12 border border-[#F0F0F0] rounded-[10px] mt-4 px-2"
-                    placeholder="AED 4000"
+                  type="text"
+                  className="w-full h-12 border border-[#F0F0F0] rounded-[10px] mt-4 px-2"
+                  placeholder="AED 4000"
                 />
                 <div className="flex items-center gap-2 mt-3">
-                    <Warning />
-                    <p className="text-[#192540] text-base font-medium">
-                    A price of 0 means Price on Request
-                    </p>
+                  <Warning />
+                  <p className="text-[#192540] text-base font-medium">
+                    {t("price_zero_meaning")}
+                  </p>
                 </div>
-                </div>
+              </div>
 
-                <div className="mt-10 flex items-center justify-between w-1/2">
-                    <p className="text-[#192540] text-base font-medium">Negotiable</p>
-                    <Switch />
-                </div>
+              <div className="mt-10 flex items-center justify-between w-1/2">
+                <p className="text-[#192540] text-base font-medium">
+                  Negotiable
+                </p>
+                <Switch />
+              </div>
 
-                <div
-                    className="w-full h-14 border border-[#F0F0F0] rounded-[10px] flex items-center justify-center gap-2 cursor-pointer mt-4"
-                    onClick={addPlate}
-                    >
-                    <PlusIcon />
-                    <p className="text-[#717171] text-lg font-semibold">Add another plate</p>
-                </div>
+              <div
+                className="w-full h-14 border border-[#F0F0F0] rounded-[10px] flex items-center justify-center gap-2 cursor-pointer mt-4"
+                onClick={addPlate}
+              >
+                <PlusIcon />
+                <p className="text-[#717171] text-lg font-semibold">
+                  Add another plate
+                </p>
+              </div>
 
-                <div className="mt-6 flex items-center justify-between gap-6">
-                    <Link to="/confirm_plate" className="w-1/2 h-14 bg-[#EBAF29] rounded-md text-[#192540] text-base font-semibold flex items-center justify-center">
-                        Continue to review
-                    </Link>
-                    <div className="w-1/2 h-14 border border-[#EBAF29] rounded-md text-[#192540] text-base font-semibold flex items-center justify-center">
-                        Save Draft
-                    </div>
+              <div className="mt-6 flex items-center justify-between gap-6">
+                <Link
+                  to="/confirm_plate"
+                  className="w-1/2 h-14 bg-[#EBAF29] rounded-md text-[#192540] text-base font-semibold flex items-center justify-center"
+                >
+                  Continue to review
+                </Link>
+                <div className="w-1/2 h-14 border border-[#EBAF29] rounded-md text-[#192540] text-base font-semibold flex items-center justify-center">
+                  Save Draft
                 </div>
+              </div>
             </div>
-            )})}
-
-        </div>
-        </div>
-    );
+          );
+        })}
+      </div>
+    </div>
+  );
 };
 
 export default AddPlates;

@@ -24,6 +24,7 @@ import {
 import { markPlateSold } from "../../lib/api/markPlateSold";
 import toast from "react-hot-toast";
 import { deletePlate } from "../../lib/api/deletePlate";
+import { useTranslation } from "react-i18next";
 
 interface ProfilePlatesProps {
   plate: any;
@@ -39,6 +40,8 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   const [isMarkingSold, setIsMarkingSold] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const { t } = useTranslation("home");
 
   useEffect(() => {
     setIsPaused(!plate.paused_at);
@@ -108,27 +111,26 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   };
 
   const handleDeletePlate = async () => {
-  setIsDeleting(true);
+    setIsDeleting(true);
 
-  try {
-    const response = await deletePlate(plate.id);
+    try {
+      const response = await deletePlate(plate.id);
 
-    toast.success(response.message || "Plate deleted successfully");
+      toast.success(response.message || "Plate deleted successfully");
 
-    setIsDeleteDialogOpen(false);
-    refetch?.();
-  } catch (error: any) {
-    console.error("Failed to delete plate:", error);
+      setIsDeleteDialogOpen(false);
+      refetch?.();
+    } catch (error: any) {
+      console.error("Failed to delete plate:", error);
 
-    const apiMessage =
-      error?.response?.data?.message || "Failed to delete plate";
-    toast.dismiss()
-    toast.error(apiMessage);
-  } finally {
-    setIsDeleting(false);
-  }
-};
-
+      const apiMessage =
+        error?.response?.data?.message || "Failed to delete plate";
+      toast.dismiss();
+      toast.error(apiMessage);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <section>
@@ -267,8 +269,14 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
           <img src={plate.image_url} alt="plate" />
           <div>
             <h2 className="text-[#192540] text-base font-medium">
-              {plate.price}{" "}
-              <span className="text-base relative top-1">AED</span>
+              {plate.price != null ? (
+                <>
+                  {plate.price}{" "}
+                  <span className="text-base relative top-1">AED</span>
+                </>
+              ) : (
+                t("price_on_request")
+              )}
             </h2>
 
             {plate.old_price && (
@@ -288,7 +296,14 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
           <div className="flex items-start justify-between gap-4">
             <div className="flex flex-col gap-2">
               <p className="text-[#192540] text-2xl font-semibold">
-                {plate.price} <span className="text-base font-medium">AED</span>
+                {plate.price != null ? (
+                  <>
+                    {plate.price}{" "}
+                    <span className="text-base font-medium">AED</span>
+                  </>
+                ) : (
+                  t("price_on_request")
+                )}
               </p>
               {plate.old_price && (
                 <p className="text-[#8E8E93] text-xl font-medium line-through">

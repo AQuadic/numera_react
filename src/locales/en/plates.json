@@ -1,0 +1,25 @@
+{
+  "title": "All Plates",
+  "filters": "Filters",
+  "clearAll": "Clear All",
+  "vehicleType": "Vehicle Type",
+  "vehicleTypes": {
+    "cars": "Cars",
+    "classic": "Classic",
+    "bikes": "Bikes",
+    "fun": "Fun"
+  },
+  "emirate": "Emirate",
+  "allEmirates": "All Emirates",
+  "letters": "Letters",
+  "lettersPlaceholder": "e.g., A",
+  "numbers": "Numbers",
+  "numbersPlaceholder": "e.g., 123",
+  "priceRange": "Price Range",
+  "minPrice": "Min Price",
+  "maxPrice": "Max Price",
+  "noPlates": "No plates found",
+  "previous": "Previous",
+  "next": "Next",
+  "pageOf": "Page {{current}} of {{total}}"
+}

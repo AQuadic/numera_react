@@ -36,5 +36,7 @@
     "title": "Get the App Now !",
     "description": "Enjoy quick access to exclusive car plates, motorcycle plate and premium phone numbers. All right from your phone with a smooth and fast app experience.",
     "getApp": "Get App"
-  }
+  },
+  "price_on_request": "Price on request",
+  "price_zero_meaning": "A price of 0 means Price on request"
 }
