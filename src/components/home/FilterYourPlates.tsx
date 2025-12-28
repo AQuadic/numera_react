@@ -9,6 +9,7 @@ import RightArrow from "../icons/plates/RightArrow";
 import { Skeleton } from "../ui/skeleton";
 import type { Package } from "../../lib/api/plates";
 import { getPackages } from "../../lib/api/getPackages";
+import { useTranslation } from "react-i18next";
 
 interface PlatesByPackage {
   package: Package;
@@ -16,6 +17,7 @@ interface PlatesByPackage {
 }
 
 const FilterYourPlates = () => {
+  const {t, i18n } = useTranslation("home");
   const [data, setData] = useState<PlatesByPackage[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -86,7 +88,7 @@ const FilterYourPlates = () => {
       <div key={pkg.id} className="mt-10">
       <div className="flex flex-wrap items-center justify-between mb-8">
         <h2 className="text-[#192540] md:text-[32px] text-2xl font-medium">
-          {pkg.name.en} ADs
+          {t('ads')} {i18n.language === "ar" ? pkg.name.ar : pkg.name.en}
         </h2>
 
         <div className="flex items-center gap-6">
@@ -133,7 +135,7 @@ const FilterYourPlates = () => {
                     to={`/plates_filter?package=${pkg.id}`}
                     className="flex items-center gap-2 px-8 py-3 text-[#EBAF29] font-semibold rounded-lg"
                   >
-                    See All
+                    {t('see_all')}
                     <RightArrow />
                   </Link>
                 </div>

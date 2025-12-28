@@ -18,8 +18,10 @@ import { postSubscribe } from "../../lib/api/subscribe";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import Email from "../icons/footer/Email";
+import { useTranslation } from "react-i18next";
 
 const Footer = () => {
+  const { t, i18n } = useTranslation("home");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -58,42 +60,45 @@ const Footer = () => {
 
                 <div className="">
                     <img src="/images/header/numra_logo.png" alt="log" className="mx-auto md:mx-0"/>
-                    <p className="text-[#192540] font-medium mt-3 text-center md:text-start">Your trusted platform to buy and <br /> sell custom car plates.</p>
+                    <p className="text-[#192540] font-medium mt-3 text-center md:text-start">
+                        {t('footer_desc')}
+                    </p>
                 </div>
 
                 <div>
-                    <h2 className="text-[#192540] text-xl font-semibold md:text-start text-center">Company</h2>
+                    <h2 className="text-[#192540] text-xl font-semibold md:text-start text-center">{t('company')}</h2>
                     <div className="flex flex-col items-center md:items-start md:gap-4 gap-2 mt-4">
-                    {navLinks.map((link) => {
+                        {navLinks.map((link) => {
                         if (link.dialog) {
-                        return (
-                            <Dialog key={link.title}>
-                            <DialogTrigger asChild>
+                            return (
+                            <Dialog key={link.titleKey}>
+                                <DialogTrigger asChild>
                                 <button className="text-[#192540] text-lg font-medium hover:text-[#192540] transition cursor-pointer">
-                                {link.title}
+                                    {t(link.titleKey)}
                                 </button>
-                            </DialogTrigger>
-                            <DialogContent className="w-[860px] max-w-full px-0">
+                                </DialogTrigger>
+                                <DialogContent className="w-[860px] max-w-full px-0">
                                 <DialogHeader>
-                                <DialogTitle></DialogTitle>
-                                <DialogDescription>
+                                    <DialogTitle></DialogTitle>
+                                    <DialogDescription>
                                     <DownloadApp />
-                                </DialogDescription>
+                                    </DialogDescription>
                                 </DialogHeader>
-                            </DialogContent>
+                                </DialogContent>
                             </Dialog>
-                        );
+                            );
                         }
 
                         return (
-                        <Link
-                        key={link.title}
-                        to={link.href ?? "/"}
-                        className="text-[#192540] text-lg font-medium"
-                        >
-                        {link.title}
-                        </Link>
-                    )})}
+                            <Link
+                            key={link.titleKey}
+                            to={link.href ?? "/"}
+                            className="text-[#192540] text-lg font-medium"
+                            >
+                            {t(link.titleKey)}
+                            </Link>
+                        );
+                        })}
 
                     <div className="flex flex-col items-center md:items-start md:gap-4 gap-2">
                         {isLoading && <Spinner />}
@@ -103,7 +108,7 @@ const Footer = () => {
                             to={`/page/${page.id}`}
                             className="text-[#192540] text-lg font-medium"
                         >
-                            {page.title.en}
+                            {i18n.language === "ar" ?page.title.ar : page.title.en}
                         </Link>
                         ))}
                     </div>
@@ -111,7 +116,7 @@ const Footer = () => {
                 </div>
 
                 <div className="md:mt-0 mt-4">
-                    <h2 className="text-[#192540] text-xl font-semibold md:text-start text-center">Contact Us</h2>
+                    <h2 className="text-[#192540] text-xl font-semibold md:text-start text-center">{t('contact_us')}</h2>
                     {socials?.phone && (
                         <a
                             href={`tel:${socials.phone}`}
@@ -137,29 +142,31 @@ const Footer = () => {
                 </div>
 
                 <div className="md:mt-0 mt-4">
-                    <h2 className="text-[#192540] text-xl font-semibold md:text-start text-center">Subscribe</h2>
-                    <p className="md:w-[379px] w-full text-[#4A4949] text-base leading-[150%] mt-3">Subscribe to get the latest updates, fitness tips, and exclusive offers — straight to your inbox.</p>
+                    <h2 className="text-[#192540] text-xl font-semibold md:text-start text-center">{t('subscribe')}</h2>
+                    <p className="md:w-[379px] w-full text-[#4A4949] text-base leading-[150%] mt-3">
+                        {t('subscribe_desc')}
+                    </p>
                     <div className="mt-4 relative">
                         <input 
                             type="text"
                             className="lg:w-[379px] w-full h-14 border border-[#192540] rounded-2xl px-4 placeholder:text-[#4A4949] "
-                            placeholder="Write your email"
+                            placeholder={t('write_email')}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             disabled={loading}
                         />
                         <button
                         onClick={handleSubscribe}
-                        className={`w-[103px] h-14 bg-[#192540] rounded-tr-2xl rounded-br-2xl absolute right-0 xl:-right-17 lg:right-28 md:top-0 
+                        className={`w-[103px] h-14 bg-[#192540] ltr:rounded-tr-2xl rtl:rounded-tl-2xl ltr:rounded-br-2xl rtl:rounded-bl-2xl absolute ltr:right-0 ltr:xl:-right-17 ltr:lg:right-28 rtl:xl:-left-18 rtl:lg:left-20 rtl:left-0 md:top-0 
                             ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
                         disabled={loading} 
                         >
                         {loading ? (
                             <div className="flex justify-center items-center h-full">
-                                <p className="text-[#EBAF29] text-lg font-bold">sending ...</p>
+                                <p className="text-[#EBAF29] text-lg font-bold">{t('sending')}</p>
                             </div>
                         ) : (
-                            <p className="text-[#EBAF29] text-lg font-bold">Send</p>
+                            <p className="text-[#EBAF29] text-lg font-bold">{t('send')}</p>
                         )}
                         </button>
                     </div>
@@ -169,7 +176,9 @@ const Footer = () => {
             <div className="w-full h-px mt-14 border-t border-dashed border-[#FEFEFE80]"></div>
 
             <div className="flex flex-wrap items-center justify-center md:gap-4 gap-2 mt-1">
-                <h2 className="text-[#192540] text-xl font-medium">Follow Us</h2>
+                <h2 className="text-[#192540] text-xl font-medium">
+                    {t('follow_us')}
+                </h2>
                 <div className="flex items-center gap-2">
                     {socials?.facebook && (
                         <a href={socials.facebook} target="_blank" rel="noreferrer">
