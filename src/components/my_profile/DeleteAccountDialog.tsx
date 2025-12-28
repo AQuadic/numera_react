@@ -5,12 +5,14 @@ import toast from "react-hot-toast";
 import { deleteUser } from "../../lib/api/deleteAccount";
 import { useNavigate } from "react-router";
 import { useAuthStore } from "../../store";
+import { useTranslation } from "react-i18next";
 
 interface DeleteAccountDialogProps {
   onClose: () => void;
 }
 
 const DeleteAccountDialog: React.FC<DeleteAccountDialogProps> = ({ onClose }) => {
+  const { t } = useTranslation("profile");
   const [isDeleting, setIsDeleting] = useState(false);
   const navigate = useNavigate();
   const handleDelete = async () => {
@@ -29,15 +31,15 @@ const DeleteAccountDialog: React.FC<DeleteAccountDialogProps> = ({ onClose }) =>
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <img 
+      <img
         src="/images/delete_account.png"
-        alt="delete account"
+        alt={t("delete_account_image_alt")}
       />
       <h2 className="text-[#192540] text-2xl font-semibold mt-4">
-        Are you sure you want to delete your account?
+        {t("delete_confirm_title")}
       </h2>
       <p className="text-[#717171] text-lg font-medium mt-4 text-center">
-        By this action all your data and profile information will be removed.
+        {t("delete_confirm_desc")}
       </p>
 
       <div className="mt-7 flex items-center justify-between w-full gap-6">
@@ -46,7 +48,7 @@ const DeleteAccountDialog: React.FC<DeleteAccountDialogProps> = ({ onClose }) =>
           className="w-full h-14 border border-[#F0F0F0] rounded-md text-[#192540] text-lg font-semibold cursor-pointer"
           disabled={isDeleting}
         >
-          Cancel
+          {t("cancel")}
         </button>
 
         <button
@@ -54,7 +56,7 @@ const DeleteAccountDialog: React.FC<DeleteAccountDialogProps> = ({ onClose }) =>
           className="w-full h-14 bg-[#D71F1F] rounded-md text-[#FEFEFE] text-lg font-semibold cursor-pointer disabled:opacity-50"
           disabled={isDeleting}
         >
-          {isDeleting ? "Deleting..." : "Delete Account"}
+          {isDeleting ? t("deleting") : t("delete_account")}
         </button>
       </div>
     </div>

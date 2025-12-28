@@ -58,4 +58,9 @@
     "errors_all_fields_required": "All fields are required",
     "errors_password_mismatch": "New password and confirmation do not match",
     "errors_password_min_length": "New password must be at least 6 characters"
+    ,"delete_confirm_title": "Are you sure you want to delete your account?",
+    "delete_confirm_desc": "By this action all your data and profile information will be removed.",
+    "deleting": "Deleting...",
+    "delete_account_image_alt": "Delete account illustration",
+    "errors_delete_account_failed": "An error occurred while deleting your account"
 }
