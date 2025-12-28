@@ -35,5 +35,18 @@
     "verification_rejected": "Verification Rejected !",
     "verification_rejected_desc": "Your verification request has been rejected, please contact our support team.",
     "contact_support": "Contact support",
-    "files_selected": "file(s) selected"
+    "files_selected": "file(s) selected",
+
+    "personal_information": "Personal Information",
+    "name": "Name",
+    "enter_name": "Enter your name",
+    "phone_number": "Phone Number",
+    "email": "Email",
+    "enter_email": "Enter your email",
+    "membre_type": "Member Type",
+    "individuals": "Individuals",
+    "companies": "Companies",
+    "saving": "Saving...",
+    "save_changes": "Save Changes",
+    "profile_updated": "Profile updated successfully"
 }

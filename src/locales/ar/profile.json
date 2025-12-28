@@ -35,5 +35,17 @@
     "verification_rejected": "تم رفض التحقق!",
     "verification_rejected_desc": "تم رفض طلب التحقق الخاص بك، يرجى التواصل مع فريق الدعم.",
     "contact_support": "التواصل مع الدعم",
-    "files_selected": "ملف/ملفات محددة"
+    "files_selected": "ملف/ملفات محددة",
+    "personal_information": "المعلومات الشخصية",
+    "name": "الاسم",
+    "enter_name": "أدخل اسمك",
+    "phone_number": "رقم الهاتف",
+    "email": "البريد الإلكتروني",
+    "enter_email": "أدخل بريدك الإلكتروني",
+    "membre_type": "نوع العضوية",
+    "individuals": "أفراد",
+    "companies": "شركات",
+    "saving": "جاري الحفظ...",
+    "save_changes": "حفظ التغييرات",
+    "profile_updated": "تم تحديث الملف الشخصي بنجاح"
 }

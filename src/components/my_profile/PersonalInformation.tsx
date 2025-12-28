@@ -12,8 +12,10 @@ import type { UserImage } from "../../lib/api/auth";
 import { PhoneInput, type PhoneValue } from "../compound/PhoneInput";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import Photo from "../icons/profile/Photo";
+import { useTranslation } from "react-i18next";
 
 const PersonalInformation: FC = () => {
+  const { t } = useTranslation("profile");
   const [isUpdating, setIsUpdating] = useState(false);
 
   const user = useAuthStore((s) => s.user);
@@ -109,7 +111,7 @@ const PersonalInformation: FC = () => {
 
       await updateUser(formData);
       await refetchUser();
-      toast.success("Profile updated successfully");
+      toast.success(t('profile_updated'));
     } catch (err) {
       console.log("Error updating profile:", err);
       // axios interceptor handles toast; revert the image preview and clear the selected file
@@ -124,7 +126,7 @@ const PersonalInformation: FC = () => {
   return (
     <div className="py-10">
       <h2 className="text-[#192540] text-2xl font-medium">
-        Personal Information
+        {t('personal_information')}
       </h2>
       <form onSubmit={handleSubmit} autoComplete="off">
         <div className="mt-10 flex items-center justify-center relative">
@@ -168,7 +170,7 @@ const PersonalInformation: FC = () => {
 
         <div className="px-2 mt-6">
           <label htmlFor="name" className="text-[#192540] text-xl font-medium">
-            Name
+            {t('name')}
           </label>
           <input
             type="text"
@@ -176,13 +178,13 @@ const PersonalInformation: FC = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full h-12 border rounded-md mt-2 px-2"
-            placeholder="Enter your name"
+            placeholder={t('enter_name')}
           />
         </div>
 
         <div className="px-2 mt-6">
           <label htmlFor="phone" className="text-[#192540] text-xl font-medium">
-            Phone Number
+            {t('phone_number')}
           </label>
           <div className="mt-3">
             <PhoneInput value={phone} onChange={setPhone} />
@@ -191,7 +193,7 @@ const PersonalInformation: FC = () => {
 
         <div className="px-2 mt-6">
           <label htmlFor="email" className="text-[#192540] text-xl font-medium">
-            Email
+            {t('email')}
           </label>
           <input
             type="email"
@@ -199,12 +201,14 @@ const PersonalInformation: FC = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full h-12 border rounded-md mt-2 px-2"
-            placeholder="Enter your email"
+            placeholder={t('enter_email')}
           />
         </div>
 
         <div className="px-2 mt-6">
-          <h2 className="text-[#192540] text-xl font-medium">Member Type</h2>
+          <h2 className="text-[#192540] text-xl font-medium">
+            {t('membre_type')}
+          </h2>
           <RadioGroup
             value={memberType}
             onValueChange={(value) => {
@@ -219,7 +223,7 @@ const PersonalInformation: FC = () => {
                 htmlFor="option-one"
                 className="text-[#192540] text-lg font-medium"
               >
-                Individuals
+                {t('individuals')}
               </label>
             </div>
             <div className="flex items-center space-x-2">
@@ -228,7 +232,7 @@ const PersonalInformation: FC = () => {
                 htmlFor="option-two"
                 className="text-[#192540] text-lg font-medium"
               >
-                Companies
+                {t('companies')}
               </label>
             </div>
           </RadioGroup>
@@ -240,7 +244,7 @@ const PersonalInformation: FC = () => {
               htmlFor="companyName"
               className="text-[#192540] text-xl font-medium"
             >
-              Company Name
+              {t('company_name')}
             </label>
             <input
               type="text"
@@ -248,7 +252,7 @@ const PersonalInformation: FC = () => {
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
               className="w-full h-12 border rounded-md mt-2 px-2"
-              placeholder="Enter company name"
+              placeholder={t('enter_company_name')}
             />
           </div>
         )}
@@ -259,7 +263,7 @@ const PersonalInformation: FC = () => {
             disabled={isUpdating}
             className="w-full h-12 bg-[#EBAF29] rounded-md text-[#192540] text-base font-semibold cursor-pointer hover:bg-[#d9a025] transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isUpdating ? "Saving..." : "Save Changes"}
+            {isUpdating ? t('saving') : t('save_changes')}
           </button>
         </div>
       </form>
