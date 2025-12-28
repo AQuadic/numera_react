@@ -10,8 +10,10 @@ import ProfilePlates from "./ProfilePlates";
 import AdsEmptyState from "../general/AdsEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Skeleton } from "../ui/skeleton";
+import { useTranslation } from "react-i18next";
 
 const AllAds = () => {
+  const { t } = useTranslation("profile");
   const [tab, setTab] = useState<"all" | "active" | "sold" | "paused">("all");
   const [searchParams] = useSearchParams();
 
@@ -58,10 +60,10 @@ const AllAds = () => {
           className="flex items-center justify-center"
         >
           <TabsList className="bg-transparent flex md:gap-[68px] mb-12">
-            <TabsTrigger value="all">All ADs</TabsTrigger>
-            <TabsTrigger value="active">Active</TabsTrigger>
-            <TabsTrigger value="sold">Sold</TabsTrigger>
-            <TabsTrigger value="paused">Paused</TabsTrigger>
+            <TabsTrigger value="all">{t("tab_all_ads")}</TabsTrigger>
+            <TabsTrigger value="active">{t("tab_active")}</TabsTrigger>
+            <TabsTrigger value="sold">{t("tab_sold")}</TabsTrigger>
+            <TabsTrigger value="paused">{t("tab_paused")}</TabsTrigger>
           </TabsList>
 
           <TabsContent value={tab}>

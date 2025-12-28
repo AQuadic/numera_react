@@ -4,6 +4,7 @@ import Sold from "../icons/profile/Sold";
 import Paused from "../icons/profile/Paused";
 import { Skeleton } from "../ui/skeleton";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface AdsStatsProps {
   data?: {
@@ -20,6 +21,7 @@ interface AdsStatsProps {
 type StatsData = AdsStatsProps["data"];
 
 const AdsStats = ({ data, isLoading }: AdsStatsProps) => {
+  const { t } = useTranslation("profile");
   const [cachedData, setCachedData] = useState<StatsData | undefined>(data);
 
   useEffect(() => {
@@ -53,7 +55,7 @@ const AdsStats = ({ data, isLoading }: AdsStatsProps) => {
                 {renderData?.total ?? "-"}
               </h2>
               <p className="text-[#717171] text-base font-medium mt-2">
-                Total Ads
+                {t("stats_total_ads")}
               </p>
             </div>
           </div>
@@ -65,7 +67,7 @@ const AdsStats = ({ data, isLoading }: AdsStatsProps) => {
                 {renderData?.data?.filter((p) => p.is_active).length ?? 0}
               </h2>
               <p className="text-[#717171] text-base font-medium mt-2">
-                Active
+                {t("stats_active")}
               </p>
             </div>
           </div>
@@ -76,7 +78,7 @@ const AdsStats = ({ data, isLoading }: AdsStatsProps) => {
               <h2 className="text-[#B48110] text-2xl font-semibold">
                 {renderData?.data?.filter((p) => p.is_sold).length ?? 0}
               </h2>
-              <p className="text-[#717171] text-base font-medium mt-2">Sold</p>
+              <p className="text-[#717171] text-base font-medium mt-2">{t("stats_sold")}</p>
             </div>
           </div>
 
@@ -88,7 +90,7 @@ const AdsStats = ({ data, isLoading }: AdsStatsProps) => {
                   0}
               </h2>
               <p className="text-[#717171] text-base font-medium mt-2">
-                Paused
+                {t("stats_paused")}
               </p>
             </div>
           </div>

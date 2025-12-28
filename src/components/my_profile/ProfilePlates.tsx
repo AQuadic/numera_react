@@ -24,6 +24,7 @@ import {
 import { markPlateSold } from "../../lib/api/markPlateSold";
 import toast from "react-hot-toast";
 import { deletePlate } from "../../lib/api/deletePlate";
+import { useTranslation } from "react-i18next";
 
 interface ProfilePlatesProps {
   plate: any;
@@ -31,6 +32,7 @@ interface ProfilePlatesProps {
 }
 
 const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
+  const { t } = useTranslation("profile");
   const [isLoading, setIsLoading] = useState(false);
   const [isRepublishing, setIsRepublishing] = useState(false);
   const [isPaused, setIsPaused] = useState(!plate.paused_at);
@@ -137,14 +139,14 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
           <div className="flex items-center gap-2">
             <div className="px-6 py-2 bg-[#B2E3C4] rounded-[20px] text-[#1E7634] font-medium">
               {plate.is_active
-                ? "Active"
+                ? t("status_active")
                 : plate.is_sold
-                ? "Sold"
+                ? t("status_sold")
                 : plate.paused_at
-                ? "Paused"
-                : "Continue"}
+                ? t("status_paused")
+                : t("status_continue")}
             </div>
-            <p className="text-[#717171] text-[10px]">Expires in 25 days</p>
+            <p className="text-[#717171] text-[10px]">{t("expires_in_25_days")}</p>
           </div>
 
           <Popover>
@@ -158,7 +160,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
               </div> */}
               <div className="flex items-center gap-2 cursor-pointer mt-4">
                 <Share />
-                <p className="text-[#192540] text-lg font-medium">Share</p>
+                <p className="text-[#192540] text-lg font-medium">{t("action_share")}</p>
               </div>
               <Dialog
                 open={isSoldDialogOpen}
@@ -167,7 +169,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                 <DialogTrigger className="w-full">
                   <div className="flex items-center gap-2 cursor-pointer mt-4">
                     <SoldActions />
-                    <p className="text-[#192540] text-lg font-medium">Sold</p>
+                    <p className="text-[#192540] text-lg font-medium">{t("action_sold")}</p>
                   </div>
                 </DialogTrigger>
                 <DialogContent className="w-[860px] px-0!">
@@ -182,10 +184,10 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                             className="w-[245px] h-[245px]"
                           />
                           <h2 className="text-[#192540] text-2xl font-semibold mt-4">
-                            Mark as Sold?
+                            {t("dialog_mark_as_sold")}
                           </h2>
                           <p className="text-[#717171] text-lg font-medium mt-4">
-                            Are you sure you want to mark this ad as sold?
+                            {t("dialog_mark_as_sold_desc")}
                           </p>
                         </div>
                         <div className="flex items-center justify-between gap-6 mt-7 px-8">
@@ -193,14 +195,14 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                             onClick={() => setIsSoldDialogOpen(false)}
                             className="w-full h-14 border border-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer"
                           >
-                            Cancel
+                            {t("cancel")}
                           </button>
                           <button
                             onClick={handleMarkAsSold}
                             disabled={isMarkingSold}
                             className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            {isMarkingSold ? "Processing..." : "Mark as Sold"}
+                            {isMarkingSold ? t("processing") : t("dialog_mark_as_sold")}
                           </button>
                         </div>
                       </div>
@@ -215,7 +217,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                 <DialogTrigger className="w-full">
                   <div className="flex items-center gap-2 cursor-pointer mt-4">
                     <Delete />
-                    <p className="text-[#D71F1F] text-lg font-medium">Delete</p>
+                    <p className="text-[#D71F1F] text-lg font-medium">{t("action_delete")}</p>
                   </div>
                 </DialogTrigger>
                 <DialogContent className="w-[860px] px-0!">
@@ -230,13 +232,13 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                             className="w-[245px] h-[245px]"
                           />
                           <h2 className="text-[#192540] text-2xl font-semibold mt-4">
-                            Delete Your Ad?
+                            {t("dialog_delete_ad")}
                           </h2>
                           <p className="text-[#717171] text-lg font-medium mt-4">
-                            Are you sure you want to delete this ad?
+                            {t("dialog_delete_ad_desc")}
                           </p>
                           <p className="text-[#717171] text-lg font-medium">
-                            This action is permanent and cannot be undone.
+                            {t("dialog_delete_ad_permanent")}
                           </p>
                         </div>
                         <div className="flex items-center justify-between gap-6 mt-7 px-8">
@@ -244,14 +246,14 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                             onClick={() => setIsDeleteDialogOpen(false)}
                             className="w-full h-14 border border-[#F0F0F0] rounded-md text-[#192540] text-lg font-semibold cursor-pointer"
                           >
-                            Cancel
+                            {t("cancel")}
                           </button>
                           <button
                             onClick={handleDeletePlate}
                             disabled={isDeleting}
                             className="w-full h-14 bg-[#D71F1F] rounded-md text-white text-lg font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            {isDeleting ? "Deleting..." : "Delete"}
+                            {isDeleting ? t("deleting") : t("action_delete")}
                           </button>
                         </div>
                       </div>
@@ -301,19 +303,19 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
             <div className="flex items-center gap-1">
               <Views />
               <p className="text-[#192540] text-base font-normal">
-                {plate.views_count} Views
+                {plate.views_count} {t("stat_views")}
               </p>
             </div>
             <div className="flex items-center gap-1">
               <Heart />
               <p className="text-[#192540] text-base font-normal">
-                {plate.favorites_count} Favorites
+                {plate.favorites_count} {t("stat_favorites")}
               </p>
             </div>
             <div className="flex items-center gap-1">
               <Chat />
               <p className="text-[#192540] text-base font-normal">
-                {plate.chats_count} Chats
+                {plate.chats_count} {t("stat_chats")}
               </p>
             </div>
           </div>
@@ -323,7 +325,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                 <button className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#EBAF29] flex items-center justify-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
                   <Republish />
                   <p className="text-[#192540] text-base font-medium">
-                    Republish
+                    {t("action_republish")}
                   </p>
                 </button>
               </DialogTrigger>
@@ -338,23 +340,22 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                           alt="republish"
                         />
                         <h2 className="text-[#192540] text-2xl font-semibold mt-4">
-                          Republish Your Ad ?
+                          {t("dialog_republish_ad")}
                         </h2>
                         <p className="text-[#717171] text-lg font-medium mt-4">
-                          Would you like to republish it to keep it active and
-                          visible to buyers?
+                          {t("dialog_republish_ad_desc")}
                         </p>
                       </div>
                       <div className="flex items-center justify-between gap-6 mt-7 px-8">
                         <button className="w-full h-14 border border-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer">
-                          Cancel
+                          {t("cancel")}
                         </button>
                         <button
                           onClick={handleRepublish}
                           disabled={isRepublishing}
                           className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer"
                         >
-                          {isRepublishing ? "Publishing..." : "Republish Now"}
+                          {isRepublishing ? t("publishing") : t("dialog_republish_now")}
                         </button>
                       </div>
                     </div>
@@ -371,7 +372,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                 <button className="xl:w-[152px] w-full h-11 rounded-[10px] bg-[#E4E4E4] flex items-center justify-center gap-1 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
                   <PlatePaused />
                   <p className="text-[#192540] text-base font-medium">
-                    {isPaused ? "Continue" : "Pause"}
+                    {isPaused ? t("action_continue") : t("action_pause")}
                   </p>
                 </button>
               </DialogTrigger>
@@ -387,12 +388,12 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                           className="w-[245px] h-[245px]"
                         />
                         <h2 className="text-[#192540] text-2xl font-semibold mt-4">
-                          {isPaused ? "Continue Your Ad?" : "Pause Your Ad?"}
+                          {isPaused ? t("dialog_continue_ad") : t("dialog_pause_ad")}
                         </h2>
                         <p className="text-[#717171] text-lg font-medium mt-4 text-center px-8">
                           {isPaused
-                            ? "Are you sure you want to continue this ad?"
-                            : "Are you sure you want to pause this ad? It will no longer appear to buyers until you reactivate it."}
+                            ? t("dialog_continue_ad_desc")
+                            : t("dialog_pause_ad_desc")}
                         </p>
                       </div>
                       <div className="flex items-center justify-between gap-6 mt-7 px-8">
@@ -400,7 +401,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                           onClick={() => setIsPauseDialogOpen(false)}
                           className="w-full h-14 border border-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer"
                         >
-                          Cancel
+                          {t("cancel")}
                         </button>
                         <button
                           onClick={() => handleTogglePause(plate.id)}
@@ -408,10 +409,10 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                           className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {isLoading
-                            ? "Loading..."
+                            ? t("loading")
                             : isPaused
-                            ? "Continue Now"
-                            : "Pause Now"}
+                            ? t("dialog_continue_now")
+                            : t("dialog_pause_now")}
                         </button>
                       </div>
                     </div>
