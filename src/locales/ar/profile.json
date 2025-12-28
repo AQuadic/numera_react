@@ -99,7 +99,7 @@
     "dialog_continue_ad_desc": "هل أنت متأكد من رغبتك بمتابعة هذا الإعلان؟",
     "dialog_pause_now": "التعليق الآن",
     "dialog_continue_now": "المتابعة الآن",
-    "stat_views": "عرضة",
+    "stat_views": "مشاهدات",
     "stat_favorites": "مفضلة",
     "stat_chats": "مراسلات",
     "processing": "جارِ معالجة...",
@@ -112,10 +112,13 @@
     ,"top_performing_ads_title": "أفضل الإعلانات أداءً",
     "best_performing_ad": "أفضل إعلان #{{number}}",
     "traffic_sources_title": "مصادر الترافق",
-    "analytics_views": "عرضة",
+    "analytics_views": "مشاهدات",
     "analytics_inquiries_short": "استفسارات",
     "no_data_available": "لا توجد بيانات متاحة",
     "views_overview_title": "نظرة عامة على العروض",
     "filter_last_month": "الشهر الماضي",
-    "filter_last_week": "الأسبوع الماضي"
+    "filter_last_week": "الأسبوع الماضي",
+    "setting_language": "اللغة",
+    "setting_language_value": "الإنجليزية",
+    "setting_notification": "الاشعارات"
 }

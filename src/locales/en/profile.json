@@ -118,5 +118,8 @@
     "no_data_available": "No data available",
     "views_overview_title": "Views Overview",
     "filter_last_month": "last month",
-    "filter_last_week": "last week"
+    "filter_last_week": "last week",
+    "setting_language": "Language",
+    "setting_language_value": "English",
+    "setting_notification": "Notification"
 }

@@ -42,8 +42,6 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const { t } = useTranslation("home");
-
   useEffect(() => {
     setIsPaused(!plate.paused_at);
   }, [plate.paused_at]);
