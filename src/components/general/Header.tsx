@@ -7,8 +7,13 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore";
-import { 
-  Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription 
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
 } from "../ui/dialog";
 // import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import DownloadApp from "./DownloadApp";
@@ -34,8 +39,8 @@ const Header = () => {
 
   const { data: notificationsData, isLoading } = useQuery({
     queryKey: ["broadcastNotifications"],
-    queryFn: () => getBroadcastNotifications({pagination: "simple" }),
-    enabled: hasUser, 
+    queryFn: () => getBroadcastNotifications({ pagination: "simple" }),
+    enabled: hasUser,
   });
 
   const notifications = notificationsData?.data ?? [];
@@ -50,82 +55,83 @@ const Header = () => {
             alt="Numra logo"
           />
         </Link>
-    
-  <div className="hidden lg:flex items-center gap-6">
-    {navLinks.map((link) =>
-      link.dialog ? (
-        <Dialog key={link.titleKey}>
-          <DialogTrigger asChild>
-            <button className="text-[#192540] text-lg font-medium hover:text-[#EBAF29] transition cursor-pointer">
-              {t(link.titleKey)}
-            </button>
-          </DialogTrigger>
 
-          <DialogContent className="w-[860px] max-w-full px-0">
-            <DialogHeader>
-              <DialogTitle />
-              <DialogDescription>
-                <DownloadApp />
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
-      ) : (
-        <NavLink
-          key={link.titleKey}
-          to={link.href ?? "/"}
-          end={link.href === "/"} 
-          className={({ isActive }) =>
-            `text-lg font-medium transition ${
-              isActive
-                ? "text-[#EBAF29]"
-                : "text-[#192540] hover:text-[#EBAF29]"
-            }`
-          }
-        >
-          {t(link.titleKey)}
-        </NavLink>
-      )
-    )}
-  </div>
+        <div className="hidden lg:flex items-center gap-6">
+          {navLinks.map((link) =>
+            link.dialog ? (
+              <Dialog key={link.titleKey}>
+                <DialogTrigger asChild>
+                  <button className="text-[#192540] text-lg font-medium hover:text-[#EBAF29] transition cursor-pointer">
+                    {t(link.titleKey)}
+                  </button>
+                </DialogTrigger>
 
-        <div className="flex items-center gap-6">
-          {/* <Chat /> */}
-
-          
+                <DialogContent className="w-[860px] max-w-full px-0">
+                  <DialogHeader>
+                    <DialogTitle />
+                    <DialogDescription>
+                      <DownloadApp />
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+            ) : (
+              <NavLink
+                key={link.titleKey}
+                to={link.href ?? "/"}
+                end={link.href === "/"}
+                className={({ isActive }) =>
+                  `text-lg font-medium transition ${
+                    isActive
+                      ? "text-[#EBAF29]"
+                      : "text-[#192540] hover:text-[#EBAF29]"
+                  }`
+                }
+              >
+                {t(link.titleKey)}
+              </NavLink>
+            )
+          )}
         </div>
 
-          <ChangeLanguage />
-          <div className="flex items-center gap-8">
-            {hasUser && (
-          <button onClick={() => setNotificationsOpen(true)} className="relative cursor-pointer">
-            <Notifications />
-            {notifications.length > 0 && (
-              <span className="absolute top-0 right-0 w-2 h-2 rounded-full bg-[#D71F1F]" />
-            )}
-          </button>
-        )}
+        <div className="flex items-center gap-6">{/* <Chat /> */}</div>
+
+        <ChangeLanguage />
+        <div className="flex items-center gap-8">
+          {hasUser && (
+            <button
+              onClick={() => setNotificationsOpen(true)}
+              className="relative cursor-pointer"
+            >
+              <Notifications />
+              {notifications.length > 0 && (
+                <span className="absolute top-0 right-0 w-2 h-2 rounded-full bg-[#D71F1F]" />
+              )}
+            </button>
+          )}
 
           <AnimatePresence>
-          {notificationsOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.5 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setNotificationsOpen(false)}
-              className="fixed inset-0 bg-black z-40"
-            />
+            {notificationsOpen && (
+              <>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.5 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setNotificationsOpen(false)}
+                  className="fixed inset-0 bg-black z-40"
+                />
 
                 <motion.div
                   initial={{ x: "100%" }}
                   animate={{ x: 0 }}
                   exit={{ x: "100%" }}
-                  transition={{ type: "spring", stiffness: 200, damping: 25 }} 
+                  transition={{ type: "spring", stiffness: 200, damping: 25 }}
                   className="fixed top-0 right-0 h-full w-[360px] bg-white shadow-lg z-50 flex flex-col"
                 >
                   <div className="flex items-center justify-between">
-                    <h2 className="text-[#192540] text-xl font-semibold mb-4 p-6">Notifications</h2>
+                    <h2 className="text-[#192540] text-xl font-semibold mb-4 p-6">
+                      Notifications
+                    </h2>
                     <button
                       className="text-3xl mb-6 text-[#192540]"
                       onClick={() => setNotificationsOpen(false)}
@@ -135,18 +141,29 @@ const Header = () => {
                   </div>
 
                   <div className="flex-1 flex flex-col gap-3 overflow-y-auto px-2 pb-4">
-                    {isLoading && <div className="flex items-center justify-center">
-                      <Spinner />
-                    </div> }
-                    {!isLoading && notifications.length === 0 && <NotificationsEmptyState />}
+                    {isLoading && (
+                      <div className="flex items-center justify-center">
+                        <Spinner />
+                      </div>
+                    )}
+                    {!isLoading && notifications.length === 0 && (
+                      <NotificationsEmptyState />
+                    )}
                     {notifications.map((notification) => (
-                      <div key={notification.id} className="flex items-center justify-between border-b py-4 bg-[#FDFAF3] px-4">
+                      <div
+                        key={notification.id}
+                        className="flex items-center justify-between border-b py-4 bg-[#FDFAF3] px-4"
+                      >
                         <div className="flex items-center gap-2">
                           <Bell />
-                          <p className="text-[#192540] text-sm font-medium">{notification.message}</p>
+                          <p className="text-[#192540] text-sm font-medium">
+                            {notification.message}
+                          </p>
                         </div>
                         <p className="text-[#717171] text-[12px]">
-                          {new Date(notification.created_at).toLocaleTimeString()}
+                          {new Date(
+                            notification.created_at
+                          ).toLocaleTimeString()}
                         </p>
                       </div>
                     ))}
@@ -156,13 +173,13 @@ const Header = () => {
             )}
           </AnimatePresence>
 
-        <button
-          onClick={() => setOpen(true)}
-          className="lg:hidden text-[#192540] text-3xl"
-        >
-          <Menu />
-        </button>
-        {hasUser ? (
+          <button
+            onClick={() => setOpen(true)}
+            className="lg:hidden text-[#192540] text-3xl"
+          >
+            <Menu />
+          </button>
+          {hasUser ? (
             <Link
               to="/profile"
               className="bg-[#EBAF29] min-w-[180px] h-14 px-4 rounded-[20px] text-[#192540] text-lg font-semibold hidden lg:flex items-center justify-center gap-2"
@@ -179,7 +196,7 @@ const Header = () => {
               Log In
             </Link>
           )}
-          </div>
+        </div>
       </header>
 
       <AnimatePresence>
@@ -214,7 +231,7 @@ const Header = () => {
                       <Dialog key={link.titleKey}>
                         <DialogTrigger asChild>
                           <button
-                            className="text-[#192540] text-xl font-semibold hover:text-[#EBAF29] transition text-start cursor-pointer"
+                            className="text-[#192540] text-xl font-semibold hover:text-[#EBAF29] transition cursor-pointer"
                             onClick={() => setOpen(false)}
                           >
                             {t(link.titleKey)}
