@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { PhoneInput, type PhoneValue } from "../../compound/PhoneInput";
 import { signUp, getErrorMessage } from "../../../lib/api/auth";
 import { useAuthStore } from "../../../store/useAuthStore";
+import { Eye, EyeOff, type EyeClosed } from "lucide-react";
 // Send phone and phone_country separately (number-only in phone)
 
 const SignUpForm = () => {
@@ -22,6 +23,9 @@ const SignUpForm = () => {
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -141,14 +145,25 @@ const SignUpForm = () => {
           >
             {t("signUp.passwordLabel")}
           </label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full h-14 border border-[#F0F0F0] rounded-md mt-3 px-3 placeholder:text-sm placeholder:font-medium"
-            placeholder={t("signUp.passwordPlaceholder")}
-            disabled={isLoading}
-          />
+
+          <div className="relative mt-3">
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full h-14 border border-[#F0F0F0] rounded-md px-3 pr-12 placeholder:text-sm placeholder:font-medium"
+              placeholder={t("signUp.passwordPlaceholder")}
+              disabled={isLoading}
+            />
+
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute ltr:right-3 rtl:left-3 top-1/2 -translate-y-1/2 text-[#717171] hover:text-[#192540]"
+          >
+            {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+          </button>
+          </div>
         </div>
 
         <div className="mt-6">
@@ -158,14 +173,25 @@ const SignUpForm = () => {
           >
             {t("signUp.confirmPasswordLabel")}
           </label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full h-14 border border-[#F0F0F0] rounded-md mt-3 px-3 placeholder:text-sm placeholder:font-medium"
-            placeholder={t("signUp.confirmPasswordPlaceholder")}
-            disabled={isLoading}
-          />
+
+          <div className="relative mt-3">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full h-14 border border-[#F0F0F0] rounded-md px-3 pr-12 placeholder:text-sm placeholder:font-medium"
+              placeholder={t("signUp.confirmPasswordPlaceholder")}
+              disabled={isLoading}
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword((prev) => !prev)}
+              className="absolute ltr:right-3 rtl:left-3 top-1/2 -translate-y-1/2 text-[#717171] hover:text-[#192540]"
+            >
+              {showConfirmPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+            </button>
+          </div>
         </div>
 
         <button
