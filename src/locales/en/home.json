@@ -38,5 +38,12 @@
     "getApp": "Get App"
   },
   "price_on_request": "Price on request",
-  "price_zero_meaning": "A price of 0 means Price on request"
+  "price_zero_meaning": "A price of 0 means Price on request",
+
+  "header_notifications": "Notifications",
+  "header_log_in": "Log In"
+
+  ,"no_notifications_image_alt": "No notifications",
+  "no_notifications_yet": "You have no notifications yet."
+
 }

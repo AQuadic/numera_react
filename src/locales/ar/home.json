@@ -38,5 +38,11 @@
     "getApp": "احصل على التطبيق"
   },
   "price_on_request": "السعر عند الطلب",
-  "price_zero_meaning": "قيمة السعر 0 تعني السعر عند الطلب"
+  "price_zero_meaning": "قيمة السعر 0 تعني السعر عند الطلب",
+
+  "header_notifications": "الإشعارات",
+  "header_log_in": "تسجيل الدخول"
+  ,"no_notifications_image_alt": "لا إشعارات",
+  "no_notifications_yet": "لا توجد إشعارات حتى الآن"
+
 }

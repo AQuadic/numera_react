@@ -130,7 +130,7 @@ const Header = () => {
                 >
                   <div className="flex items-center justify-between">
                     <h2 className="text-[#192540] text-xl font-semibold mb-4 p-6">
-                      Notifications
+                      {t("header_notifications")}
                     </h2>
                     <button
                       className="text-3xl mb-6 text-[#192540]"
@@ -193,7 +193,7 @@ const Header = () => {
               className="bg-[#EBAF29] w-[180px] h-14 rounded-[20px] text-[#192540] text-lg font-semibold lg:flex hidden items-center justify-center gap-2"
             >
               <Profile />
-              Log In
+              {t("header_log_in")}
             </Link>
           )}
         </div>
@@ -279,7 +279,7 @@ const Header = () => {
                   className="mt-8 bg-[#EBAF29] w-full py-3 rounded-2xl text-[#192540] text-lg font-semibold flex items-center justify-center gap-2"
                 >
                   <Profile />
-                  Log In
+                  {t("header_log_in")}
                 </Link>
               )}
             </motion.div>
