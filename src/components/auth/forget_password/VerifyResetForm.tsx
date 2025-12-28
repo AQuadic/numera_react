@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../../ui/input-otp";
 import {
   requestPasswordReset,
@@ -12,6 +13,7 @@ const OTP_LENGTH = 6;
 
 const VerifyResetForm = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation("auth");
   const phone = usePasswordResetStore((state) => state.phone);
   const phone_country = usePasswordResetStore((state) => state.phone_country);
   const step = usePasswordResetStore((state) => state.step);
@@ -27,13 +29,12 @@ const VerifyResetForm = () => {
   React.useEffect(() => {
     const handler = (event: BeforeUnloadEvent) => {
       event.preventDefault();
-      event.returnValue =
-        "Are you sure you want to refresh? You will need to restart verification.";
+      event.returnValue = t("verifyReset.errors.refreshWarning");
       return event.returnValue;
     };
     window.addEventListener("beforeunload", handler);
     return () => window.removeEventListener("beforeunload", handler);
-  }, []);
+  }, [t]);
 
   const phoneSuffix = React.useMemo(() => {
     if (!phone) return "***";
@@ -72,7 +73,7 @@ const VerifyResetForm = () => {
     setError(null);
 
     if (code.trim().length !== OTP_LENGTH) {
-      setError(`Please enter the ${OTP_LENGTH}-digit code`);
+      setError(t("verifyReset.errors.codeLength", { length: OTP_LENGTH }));
       return;
     }
 
@@ -115,11 +116,10 @@ const VerifyResetForm = () => {
   return (
     <div className="w-full">
       <h2 className="text-[#192540] text-[40px] font-medium text-center">
-        Enter Verification Code
+        {t("verifyReset.title")}
       </h2>
       <p className="text-[#717171] text-base font-medium mt-3 leading-[150%] text-center">
-        We&apos;ve sent a {OTP_LENGTH}-digit code to your phone ending with{" "}
-        {phoneSuffix}. Enter it below to continue.
+        {t("verifyReset.subtitle", { length: OTP_LENGTH, suffix: phoneSuffix })}
       </p>
 
       <form className="mt-6" onSubmit={handleSubmit}>
@@ -131,7 +131,7 @@ const VerifyResetForm = () => {
 
         <div className="flex flex-col items-center gap-4">
           <label className="text-[#192540] text-xl font-medium leading-[100%]">
-            Verification Code
+            {t("verifyReset.codeLabel")}
           </label>
           <InputOTP
             maxLength={OTP_LENGTH}
@@ -158,12 +158,12 @@ const VerifyResetForm = () => {
           disabled={isVerifying}
           className="w-full h-14 text-[#192540] text-base font-semibold bg-[#EBAF29] rounded-md mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isVerifying ? "Verifying..." : "Verify Code"}
+          {isVerifying ? t("verifyReset.submitting") : t("verifyReset.submit")}
         </button>
 
         <div className="mt-4 text-center">
           <p className="text-[#717171] text-sm font-medium">
-            Didn’t receive the code?
+            {t("verifyReset.didNotReceiveCode")}
           </p>
           <button
             type="button"
@@ -171,7 +171,7 @@ const VerifyResetForm = () => {
             disabled={isResending || isVerifying}
             className="text-[#EBAF29] text-base font-semibold mt-2 underline disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isResending ? "Resending..." : "Resend Code"}
+            {isResending ? t("verifyReset.resending") : t("verifyReset.resend")}
           </button>
         </div>
       </form>

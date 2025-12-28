@@ -1,10 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 import { resetPasswordWithToken, getErrorMessage } from "../../../lib/api/auth";
 import { usePasswordResetStore } from "../../../store/usePasswordResetStore";
 
 const ResetPassForm = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation("auth");
   const phone = usePasswordResetStore((state) => state.phone);
   const phone_country = usePasswordResetStore((state) => state.phone_country);
   const resetToken = usePasswordResetStore((state) => state.resetToken);
@@ -20,13 +22,12 @@ const ResetPassForm = () => {
   React.useEffect(() => {
     const handler = (event: BeforeUnloadEvent) => {
       event.preventDefault();
-      event.returnValue =
-        "Are you sure you want to refresh? You will restart from the first step.";
+      event.returnValue = t("resetPassword.errors.refreshWarning");
       return event.returnValue;
     };
     window.addEventListener("beforeunload", handler);
     return () => window.removeEventListener("beforeunload", handler);
-  }, []);
+  }, [t]);
 
   // Guard: require valid reset token
   React.useEffect(() => {
@@ -57,22 +58,22 @@ const ResetPassForm = () => {
     setError(null);
 
     if (!password || !confirmPassword) {
-      setError("Please fill out both password fields");
+      setError(t("resetPassword.errors.fieldsRequired"));
       return;
     }
 
     if (password.length < 6) {
-      setError("Password must be at least 6 characters");
+      setError(t("resetPassword.errors.passwordMinLength"));
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError(t("resetPassword.errors.passwordsDoNotMatch"));
       return;
     }
 
     if (!resetToken) {
-      setError("Reset token is missing. Please restart the flow.");
+      setError(t("resetPassword.errors.tokenMissing"));
       navigate("/forget_password", { replace: true });
       return;
     }
@@ -100,10 +101,10 @@ const ResetPassForm = () => {
   return (
     <div className="w-full">
       <h2 className="text-[#192540] text-[40px] font-medium text-center">
-        Reset Password
+        {t("resetPassword.title")}
       </h2>
       <p className="text-[#717171] text-base font-medium mt-3 leading-[150%] text-center">
-        Please enter your new password.
+        {t("resetPassword.subtitle")}
       </p>
 
       <form className="mt-6" onSubmit={handleSubmit}>
@@ -118,14 +119,14 @@ const ResetPassForm = () => {
             htmlFor="password"
             className="text-[#192540] text-xl font-medium leading-[100%]"
           >
-            Password
+            {t("resetPassword.passwordLabel")}
           </label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full h-14 border border-[#F0F0F0] rounded-md mt-3 px-3 placeholder:text-sm placeholder:font-medium"
-            placeholder="Enter your password"
+            placeholder={t("resetPassword.passwordPlaceholder")}
             disabled={isSubmitting}
           />
         </div>
@@ -135,14 +136,14 @@ const ResetPassForm = () => {
             htmlFor="confirm_password"
             className="text-[#192540] text-xl font-medium leading-[100%]"
           >
-            Confirm Password
+            {t("resetPassword.confirmPasswordLabel")}
           </label>
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             className="w-full h-14 border border-[#F0F0F0] rounded-md mt-3 px-3 placeholder:text-sm placeholder:font-medium"
-            placeholder="Confirm your password"
+            placeholder={t("resetPassword.confirmPasswordPlaceholder")}
             disabled={isSubmitting}
           />
         </div>
@@ -151,7 +152,9 @@ const ResetPassForm = () => {
           disabled={isSubmitting}
           className="w-full h-14 text-[#192540] text-base font-semibold bg-[#EBAF29] rounded-md mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isSubmitting ? "Updating..." : "Confirm"}
+          {isSubmitting
+            ? t("resetPassword.submitting")
+            : t("resetPassword.submit")}
         </button>
       </form>
     </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate, useLocation } from "react-router";
 import type { Location } from "react-router";
+import { useTranslation } from "react-i18next";
 import { PhoneInput, type PhoneValue } from "../../compound/PhoneInput";
 import { signUp, getErrorMessage } from "../../../lib/api/auth";
 import { useAuthStore } from "../../../store/useAuthStore";
@@ -9,6 +10,7 @@ import { useAuthStore } from "../../../store/useAuthStore";
 const SignUpForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation("auth");
   const setUser = useAuthStore((state) => state.setUser);
 
   const [name, setName] = React.useState("");
@@ -27,27 +29,27 @@ const SignUpForm = () => {
 
     // Validation
     if (!name.trim()) {
-      setError("Please enter your name");
+      setError(t("signUp.errors.nameRequired"));
       return;
     }
 
     if (!phone.number.trim()) {
-      setError("Please enter your phone number");
+      setError(t("signUp.errors.phoneRequired"));
       return;
     }
 
     if (!password) {
-      setError("Please enter a password");
+      setError(t("signUp.errors.passwordRequired"));
       return;
     }
 
     if (password.length < 6) {
-      setError("Password must be at least 6 characters");
+      setError(t("signUp.errors.passwordMinLength"));
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError(t("signUp.errors.passwordsDoNotMatch"));
       return;
     }
 
@@ -74,9 +76,7 @@ const SignUpForm = () => {
           (location.state as { from?: Location } | null)?.from?.pathname || "/";
         navigate(from, { replace: true });
       } else {
-        setError(
-          "Sign up succeeded but no user payload was returned. Please try again."
-        );
+        setError(t("signUp.errors.signUpFailed"));
       }
     } catch (err) {
       setError(getErrorMessage(err));
@@ -88,10 +88,10 @@ const SignUpForm = () => {
   return (
     <div className="w-full">
       <h2 className="text-[#192540] text-[40px] font-medium text-center">
-        Sign Up
+        {t("signUp.title")}
       </h2>
       <p className="text-[#717171] text-base font-medium mt-3 leading-[150%] text-center">
-        Join now and design your custom plate
+        {t("signUp.subtitle")}
       </p>
 
       <form className="mt-6" onSubmit={handleSubmit}>
@@ -106,14 +106,14 @@ const SignUpForm = () => {
             htmlFor="name"
             className="text-[#192540] text-xl font-medium leading-[100%]"
           >
-            Name
+            {t("signUp.nameLabel")}
           </label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full h-14 border border-[#F0F0F0] rounded-md mt-3 px-3 placeholder:text-sm placeholder:font-medium"
-            placeholder="Enter your name"
+            placeholder={t("signUp.namePlaceholder")}
             disabled={isLoading}
           />
         </div>
@@ -123,7 +123,7 @@ const SignUpForm = () => {
             htmlFor="phone"
             className="text-[#192540] text-xl font-medium leading-[100%]"
           >
-            Phone Number
+            {t("signUp.phoneLabel")}
           </label>
 
           <div className="mt-3">
@@ -139,14 +139,14 @@ const SignUpForm = () => {
             htmlFor="password"
             className="text-[#192540] text-xl font-medium leading-[100%]"
           >
-            Password
+            {t("signUp.passwordLabel")}
           </label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full h-14 border border-[#F0F0F0] rounded-md mt-3 px-3 placeholder:text-sm placeholder:font-medium"
-            placeholder="Enter your password"
+            placeholder={t("signUp.passwordPlaceholder")}
             disabled={isLoading}
           />
         </div>
@@ -156,14 +156,14 @@ const SignUpForm = () => {
             htmlFor="confirmPassword"
             className="text-[#192540] text-xl font-medium leading-[100%]"
           >
-            Confirm Password
+            {t("signUp.confirmPasswordLabel")}
           </label>
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             className="w-full h-14 border border-[#F0F0F0] rounded-md mt-3 px-3 placeholder:text-sm placeholder:font-medium"
-            placeholder="Confirm your password"
+            placeholder={t("signUp.confirmPasswordPlaceholder")}
             disabled={isLoading}
           />
         </div>
@@ -173,15 +173,15 @@ const SignUpForm = () => {
           disabled={isLoading}
           className="w-full h-14 text-[#192540] text-base font-semibold bg-[#EBAF29] rounded-md mt-6 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
-          {isLoading ? "Signing up..." : "Sign up"}
+          {isLoading ? t("signUp.submitting") : t("signUp.submit")}
         </button>
 
         <div className="mt-4 flex items-center justify-center gap-2">
           <p className="text-[#717171] text-base font-medium">
-            Already have an account ?
+            {t("signUp.alreadyHaveAccount")}
           </p>
           <Link to="/signin" className="text-[#EBAF29] text-lg font-semibold">
-            Sign In
+            {t("signUp.signInLink")}
           </Link>
         </div>
       </form>

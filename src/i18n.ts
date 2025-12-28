@@ -4,6 +4,8 @@ import LanguageDetector from "i18next-browser-languagedetector";
 
 import homeEn from "./locales/en/home.json";
 import homeAr from "./locales/ar/home.json";
+import authEn from "./locales/en/auth.json";
+import authAr from "./locales/ar/auth.json";
 
 i18n
   .use(LanguageDetector)
@@ -12,9 +14,11 @@ i18n
     resources: {
       en: {
         home: homeEn,
+        auth: authEn,
       },
       ar: {
         home: homeAr,
+        auth: authAr,
       },
     },
     lng: "en",
@@ -28,5 +32,10 @@ i18n
       caches: ["localStorage"],
     },
   });
+
+i18n.on("languageChanged", (lng) => {
+  document.documentElement.dir = lng === "ar" ? "rtl" : "ltr";
+  document.documentElement.lang = lng;
+});
 
 export default i18n;
