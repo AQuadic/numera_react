@@ -3,6 +3,7 @@ import Upload from "../icons/profile/Upload";
 import toast from "react-hot-toast";
 import { updateUser, getErrorMessage } from "../../lib/api/auth";
 import { useAuthStore } from "../../store";
+import { useTranslation } from "react-i18next";
 
 interface AccountVerificationDialogProps {
   onSubmit: () => void;
@@ -11,6 +12,7 @@ interface AccountVerificationDialogProps {
 const AccountVerificationDialog: React.FC<AccountVerificationDialogProps> = ({
   onSubmit,
 }) => {
+  const { t } = useTranslation("profile");
   const user = useAuthStore((s) => s.user);
   const setUser = useAuthStore((s) => s.setUser);
   const refetchUser = useAuthStore((s) => s.refetchUser);
@@ -128,19 +130,16 @@ const AccountVerificationDialog: React.FC<AccountVerificationDialogProps> = ({
   return (
     <div className="max-h-[600px] overflow-scroll">
       <h2 className="text-[#192540] text-2xl font-medium">
-        Account Verification
+        {t('account_verification')}
       </h2>
       <p className="text-[#717171] text-lg font-medium mt-4">
-        To verify your identity, please upload images of your ID or verification
-        documents. Our team will review your submission and get back to you
-        shortly.
+        {t('account_verification_desc')}
       </p>
 
       {alreadySubmitted && (
         <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded">
           <p className="text-[#856404] text-sm">
-            Your verification has been submitted and is under review. You cannot
-            reapply while it is pending.
+            {t('verification_submitted')}
           </p>
         </div>
       )}
@@ -150,7 +149,7 @@ const AccountVerificationDialog: React.FC<AccountVerificationDialogProps> = ({
           htmlFor="attachments"
           className="text-[#192540] text-base font-medium"
         >
-          Upload Attachments
+          {t('upload')}
         </label>
         <div
           onClick={handleDivClick}
@@ -159,10 +158,10 @@ const AccountVerificationDialog: React.FC<AccountVerificationDialogProps> = ({
           <Upload />
           <p className="text-[#717171] text-sm font-normal mt-2">
             {files.length > 0
-              ? `${files.length} file(s) selected`
+              ? `${files.length} ${t('files_selected')}`
               : alreadySubmitted
-              ? "Verification in progress"
-              : "Click to select images (PNG or JPG)"}
+              ? t('in_progress')
+              : t('click_to_upload')}
           </p>
           <input
             ref={fileInputRef}
@@ -196,14 +195,14 @@ const AccountVerificationDialog: React.FC<AccountVerificationDialogProps> = ({
           htmlFor="companyName"
           className="text-[#192540] text-base font-medium"
         >
-          Company Name
+          {t('company_name')}
         </label>
         <input
           type="text"
           id="companyName"
           className="w-full h-12 border rounded-md mt-2 px-2"
           placeholder={
-            alreadySubmitted ? "Verification in progress" : "Enter company name"
+            alreadySubmitted ? t('in_progress') : t('enter_company_name')
           }
           value={companyName}
           onChange={(e) => setCompanyName(e.target.value)}
@@ -224,10 +223,10 @@ const AccountVerificationDialog: React.FC<AccountVerificationDialogProps> = ({
             }`}
           >
             {isSubmitting
-              ? "Submitting..."
+              ? t('submitting')
               : alreadySubmitted
-              ? "Under review"
-              : "Submit"}
+              ? t('under_review')
+              : t('submit')}
           </button>
         </div>
       </div>

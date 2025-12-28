@@ -20,8 +20,10 @@ import DeleteAccount from "../icons/profile/DeleteAccount";
 import DeleteAccountDialog from "./DeleteAccountDialog";
 import Heart from "../icons/home/Heart";
 import type { UserImage } from "../../lib/api/auth";
+import { useTranslation } from "react-i18next";
 
 const MyProfileComponent = () => {
+  const { t } = useTranslation("profile");
   const [adsCounts, setAdsCounts] = useState<AdsCounts | null>(null);
   const [adsLoading, setAdsLoading] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -147,14 +149,18 @@ const MyProfileComponent = () => {
             <p className="text-[#192540] text-xl font-medium">
               {adsLoading ? "-" : adsCounts?.sold_ads ?? 0}
             </p>
-            <p className="text-[#717171] text-base font-medium">Sold Plate</p>
+            <p className="text-[#717171] text-base font-medium">
+              {t('sold_plate')}
+            </p>
           </div>
 
           <div className="w-[180px] h-[75px] bg-[#FEFEFE] rounded-[10px] flex flex-col items-center justify-center gap-1">
             <p className="text-[#EBAF29] text-xl font-medium">
               {adsLoading ? "-" : adsCounts?.active_ads ?? 0}
             </p>
-            <p className="text-[#717171] text-base font-medium">Active ADs</p>
+            <p className="text-[#717171] text-base font-medium">
+              {t('active_ads')}
+            </p>
           </div>
 
           <div className="w-[180px] h-[75px] bg-[#FEFEFE] rounded-[10px] flex flex-col items-center justify-center gap-1">
@@ -164,7 +170,9 @@ const MyProfileComponent = () => {
                   new Date(user.created_at).getFullYear()
                 : 0}
             </p>
-            <p className="text-[#717171] text-base font-medium">Active Years</p>
+            <p className="text-[#717171] text-base font-medium">
+              {t('active_years')}
+            </p>
           </div>
         </div>
       </div>
@@ -177,7 +185,7 @@ const MyProfileComponent = () => {
           <div className="flex items-center gap-2">
             <Profile />
             <p className="text-[#192540] text-base font-medium">
-              Personal Information{" "}
+              {t('personal_info')}{" "}
             </p>
           </div>
           <ArrowLeft />
@@ -192,7 +200,7 @@ const MyProfileComponent = () => {
           <div className="flex items-center gap-2">
             <ChangePassword />
             <p className="text-[#192540] text-base font-medium">
-              Change Password
+              {t('change_password')}
             </p>
           </div>
           <ArrowLeft />
@@ -215,7 +223,7 @@ const MyProfileComponent = () => {
           <div className="flex items-center gap-2">
             {user?.verification_status === "verified" && <Verified />}
             <p className="text-[#192540] text-base font-medium">
-              Account Verification
+              {t('account_verification')}
             </p>
           </div>
 
@@ -246,11 +254,10 @@ const MyProfileComponent = () => {
             </DialogTitle>
             <DialogDescription className="mt-14 text-center">
               <h2 className="text-[#192540] text-2xl font-semibold">
-                Verification Submitted!
+                {t('verification_submitted_title')}
               </h2>
               <p className="text-[#717171] text-lg font-medium mt-4">
-                Your verification has been submitted. We’ll notify you once it’s
-                reviewed.
+                {t('verification_submitted_desc')}
               </p>
             </DialogDescription>
           </DialogHeader>
@@ -260,7 +267,7 @@ const MyProfileComponent = () => {
               className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold flex items-center justify-center"
               onClick={() => setIsSubmittedOpen(false)}
             >
-              Back to home
+              {t('back_to_home')}
             </Link>
           </div>
         </DialogContent>
@@ -278,11 +285,10 @@ const MyProfileComponent = () => {
             </DialogTitle>
             <DialogDescription className="mt-6 text-center">
               <h2 className="text-[#192540] text-2xl font-semibold">
-                Verification Rejected !
+                {t('verification_rejected')}
               </h2>
               <p className="text-[#717171] text-lg font-medium mt-4">
-                Your verification request has been rejected, please contact our
-                support team.
+                {t('verification_rejected_desc')}
               </p>
             </DialogDescription>
           </DialogHeader>
@@ -291,14 +297,14 @@ const MyProfileComponent = () => {
               to="/"
               className="w-full h-14 border border-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold flex items-center justify-center"
             >
-              Cancel
+              {t('cancel')}
             </Link>
             <Link
               to="/contact_us"
               className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold flex items-center justify-center"
               onClick={() => setIsRejectedOpen(false)}
             >
-              Contact support
+              {t('contact_support')}
             </Link>
           </div>
         </DialogContent>
@@ -312,7 +318,7 @@ const MyProfileComponent = () => {
           <div className="flex items-center gap-2">
             <Heart />
             <p className="text-[#192540] text-base font-medium">
-              Favorite Plate
+              {t('fav_plate')}
             </p>
           </div>
           <ArrowLeft />
@@ -326,7 +332,7 @@ const MyProfileComponent = () => {
               <div className="flex items-center gap-2">
                 <DeleteAccount />
                 <p className="text-[#D71F1F] text-base font-medium">
-                  Delete Account
+                  {t('delete_account')}
                 </p>
               </div>
               <ArrowLeft />
