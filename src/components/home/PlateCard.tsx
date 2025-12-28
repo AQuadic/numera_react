@@ -5,12 +5,14 @@ import type { Plate } from "../../lib/api";
 import { toggleFavorite } from "../../lib/api/toggleFavorite";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "../../store";
+import { useTranslation } from "react-i18next";
 
 interface PlateCardProps {
   plate: Plate;
 }
 
 const PlateCard = ({ plate }: PlateCardProps) => {
+  const { t } = useTranslation("home");
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isFavorited, setIsFavorited] = useState(plate.is_favorite ?? false);
   const [isLoading, setIsLoading] = useState(false);
@@ -76,7 +78,7 @@ const PlateCard = ({ plate }: PlateCardProps) => {
               style={badgeStyle}
               className="w-[92px] h-8 rounded-lg py-2 px-4 text-[#192540] text-base font-semibold absolute -top-4 left-1/2 -translate-x-1/2 flex items-center justify-center"
             >
-              {packageName}
+              {t(`packages.${packageName}`)}
             </div>
           )}
 
@@ -93,7 +95,7 @@ const PlateCard = ({ plate }: PlateCardProps) => {
                 backgroundPosition: "center",
               }}
             >
-              {plate.is_sold ? "Sold" : "Available"}
+              {plate.is_sold ? t('sold') : t('available')}
             </div>
 
             {user && (
@@ -131,11 +133,13 @@ const PlateCard = ({ plate }: PlateCardProps) => {
           <div className="mt-6 flex gap-2 items-center justify-between">
             <h2 className="text-[#192540] md:text-xl text-lg font-semibold">
               {formatPrice(plate.price)}{" "}
-              <span className="text-xs relative md:top-1">AED</span>
+              <span className="text-xs relative md:top-1">
+                {t('aed')}
+              </span>
             </h2>
 
             <div className="w-[147px] h-12 bg-[#EBAF29] rounded-[10px] text-[#192540] text-base font-semibold flex items-center justify-center hover:bg-[#d9a01f] transition-colors">
-              View Details
+                {t('view_details')}
             </div>
           </div>
         </div>

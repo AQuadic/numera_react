@@ -1,23 +1,7 @@
-
-export const navLinks =[
-    {
-        title: "Home",
-        href: "/"
-    },
-    {
-        title: "Draw your plate",
-        href: "/draw_your_plates"
-    },
-    {
-        title: "Sell your plate",
-        dialog: true
-    },
-    {
-        title: "FAQs",
-        href: "/faq"
-    },
-    {
-        title: "Contact Us",
-        href: "/contact_us"
-    },
-]
+export const navLinks = [
+  { titleKey: "nav.home", href: "/" },
+  { titleKey: "nav.draw_your_plate", href: "/draw_your_plates" },
+  { titleKey: "nav.sell_your_plate", dialog: true },
+  { titleKey: "nav.faqs", href: "/faq" },
+  { titleKey: "nav.contact_us", href: "/contact_us" },
+];

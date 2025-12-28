@@ -15,12 +15,14 @@ import {
   DialogClose,
 } from "../ui/dialog";
 import Settings from "../icons/profile/Settings";
+import { useTranslation } from "react-i18next";
 
 interface SidebarProps {
   onSelect: (id: string) => void;
 }
 
 const Sidebar = ({ onSelect }: SidebarProps) => {
+  const { t } = useTranslation("profile");
   const { pathname } = useLocation();
 
   const isActive = (id: string) => {
@@ -29,11 +31,11 @@ const Sidebar = ({ onSelect }: SidebarProps) => {
   };
 
   const sidebarLinks = [
-    { title: "My Profile", icon: <Profile />, id: "profile" },
-    { title: "My ADs", icon: <Ads />, id: "ads" },
-    { title: "Analytical Dashboard", icon: <Analytical />, id: "analytics" },
-    { title: "App Setting", icon: <Settings />, id: "settings" },
-    { title: "My Plan", icon: <Plans />, id: "plan" },
+    { title: t('profile'), icon: <Profile />, id: "profile" },
+    { title: t('my_ads'), icon: <Ads />, id: "ads" },
+    { title: t('analytical'), icon: <Analytical />, id: "analytics" },
+    { title: t('app_setting'), icon: <Settings />, id: "settings" },
+    { title: t('my_plan'), icon: <Plans />, id: "plan" },
   ];
 
     return (
@@ -61,7 +63,7 @@ const Sidebar = ({ onSelect }: SidebarProps) => {
           <div className="flex items-center gap-3 py-3 cursor-pointer rounded-tl-[20px] rounded-bl-[20px] mt-6 px-2 hover:bg-[#E5E5E5]">
             <Logout />
             <span className="text-[#192540] text-base font-medium">
-              Log out
+              {t('logout')}
             </span>
           </div>
         </DialogTrigger>
@@ -69,10 +71,10 @@ const Sidebar = ({ onSelect }: SidebarProps) => {
         <DialogContent className="max-w-[420px]">
           <DialogHeader>
             <DialogTitle className="text-lg font-semibold">
-              Confirm logout
+              {t('confirm_logout')}
             </DialogTitle>
             <DialogDescription className="text-[#717171]">
-              Are you sure you want to log out of your account?
+              {t('confirm_desc')}
             </DialogDescription>
           </DialogHeader>
 
@@ -81,7 +83,7 @@ const Sidebar = ({ onSelect }: SidebarProps) => {
               <button
                 className="px-5 h-11 rounded-md border border-[#E5E5E5] text-[#192540] cursor-pointer"
               >
-                Cancel
+                {t('cancel')}
               </button>
             </DialogClose>
 
@@ -90,7 +92,7 @@ const Sidebar = ({ onSelect }: SidebarProps) => {
                 onClick={() => onSelect("logout")}
                 className="px-5 h-11 rounded-md bg-[#192540] text-white cursor-pointer"
               >
-                Log out
+                {t('logout')}
               </button>
             </DialogClose>
           </div>

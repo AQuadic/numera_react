@@ -1,3 +1,35 @@
 {
-    
+    "categories": "Categories",
+    "car_plates": "Cars Plates",
+    "fun": "Fun & Motorcycle",
+    "mobile_numbers": "Mobile Numbers",
+    "ads": "ADs",
+    "see_all": "See All",
+    "why_choose": "Why Choose",
+    "numra": "Numra",
+    "sold": "Sold",
+    "available": "Available",
+    "aed": "AED",
+    "view_details": "View Details",
+    "packages": {
+    "Gold": "Gold",
+    "Silver": "Silver",
+    "Free": "Free"
+    },
+    "footer_desc": "Your trusted platform to buy and sell custom car plates.",
+    "company": "Company",
+    "contact_us": "Contact Us",
+    "subscribe": "Subscribe",
+    "subscribe_desc": "Subscribe to get the latest updates, fitness tips, and exclusive offers — straight to your inbox",
+    "sending": "sending ...",
+    "send": "Send",
+    "follow_us": "Follow Us",
+    "write_email": "Write your email",
+    "nav": {
+    "home": "Home",
+    "draw_your_plate": "Draw your plate",
+    "sell_your_plate": "Sell your plate",
+    "faqs": "FAQs",
+    "contact_us": "Contact Us"
+    }
 }

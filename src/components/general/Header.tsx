@@ -19,8 +19,10 @@ import { getBroadcastNotifications } from "../../lib/api/notifications/getNotifi
 import NotificationsEmptyState from "./NotificationsEmptyState";
 import Spinner from "../icons/general/Spinner";
 import ChangeLanguage from "./ChangeLanguage";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
+  const { t } = useTranslation("home");
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const user = useAuthStore((state) => state.user);
@@ -52,10 +54,10 @@ const Header = () => {
   <div className="hidden lg:flex items-center gap-6">
     {navLinks.map((link) =>
       link.dialog ? (
-        <Dialog key={link.title}>
+        <Dialog key={link.titleKey}>
           <DialogTrigger asChild>
             <button className="text-[#192540] text-lg font-medium hover:text-[#EBAF29] transition cursor-pointer">
-              {link.title}
+              {t(link.titleKey)}
             </button>
           </DialogTrigger>
 
@@ -70,7 +72,7 @@ const Header = () => {
         </Dialog>
       ) : (
         <NavLink
-          key={link.title}
+          key={link.titleKey}
           to={link.href ?? "/"}
           end={link.href === "/"} 
           className={({ isActive }) =>
@@ -81,7 +83,7 @@ const Header = () => {
             }`
           }
         >
-          {link.title}
+          {t(link.titleKey)}
         </NavLink>
       )
     )}
@@ -209,13 +211,13 @@ const Header = () => {
                 {navLinks.map((link) => {
                   if (link.dialog) {
                     return (
-                      <Dialog key={link.title}>
+                      <Dialog key={link.titleKey}>
                         <DialogTrigger asChild>
                           <button
                             className="text-[#192540] text-xl font-semibold hover:text-[#EBAF29] transition text-start cursor-pointer"
                             onClick={() => setOpen(false)}
                           >
-                            {link.title}
+                            {t(link.titleKey)}
                           </button>
                         </DialogTrigger>
 
@@ -233,12 +235,12 @@ const Header = () => {
 
                   return (
                     <Link
-                      key={link.title}
+                      key={link.titleKey}
                       to={link.href ?? "/"}
                       onClick={() => setOpen(false)}
                       className="text-[#192540] text-xl font-semibold hover:text-[#EBAF29] transition"
                     >
-                      {link.title}
+                      {t(link.titleKey)}
                     </Link>
                   );
                 })}
