@@ -1,12 +1,14 @@
 // import Heart from "../icons/home/Heart";
 import Share from "../icons/plates/Share";
 import type { Plate } from "../../lib/api";
+import { useTranslation } from "react-i18next";
 
 interface PlateDetailsHeaderProps {
   plate: Plate;
 }
 
 const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
+  const { t } = useTranslation("home");
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-AE").format(price);
   };
@@ -62,8 +64,14 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
               {plate.numbers}
             </h2>
             <h2 className="text-[#966A08] md:text-2xl font-bold mt-3">
-              {formatPrice(plate.price)}{" "}
-              <span className="text-sm relative top-1">AED</span>
+              {plate.price != null ? (
+                <>
+                  {formatPrice(plate.price)}{" "}
+                  <span className="text-sm relative top-1">AED</span>
+                </>
+              ) : (
+                t("price_on_request")
+              )}
             </h2>
 
             {plate.is_negotiable && (

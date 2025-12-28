@@ -1,0 +1,25 @@
+{
+  "title": "جميع اللوحات",
+  "filters": "المرشحات",
+  "clearAll": "مسح الكل",
+  "vehicleType": "نوع المركبة",
+  "vehicleTypes": {
+    "cars": "سيارات",
+    "classic": "كلاسيك",
+    "bikes": "دراجات",
+    "fun": "ترفيهي"
+  },
+  "emirate": "الإمارة",
+  "allEmirates": "جميع الإمارات",
+  "letters": "حروف",
+  "lettersPlaceholder": "مثال: A",
+  "numbers": "أرقام",
+  "numbersPlaceholder": "مثال: 123",
+  "priceRange": "نطاق السعر",
+  "minPrice": "السعر الأدنى",
+  "maxPrice": "السعر الأقصى",
+  "noPlates": "لا توجد لوحات",
+  "previous": "السابق",
+  "next": "التالي",
+  "pageOf": "الصفحة {{current}} من {{total}}"
+}

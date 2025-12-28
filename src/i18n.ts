@@ -14,6 +14,10 @@ import faqEn from "./locales/en/faq.json";
 import faqAr from "./locales/ar/faq.json";
 import drawEn from "./locales/en/draw.json";
 import drawAr from "./locales/ar/draw.json";
+import platesEn from "./locales/en/plates.json";
+import platesAr from "./locales/ar/plates.json";
+import simsEn from "./locales/en/sims.json";
+import simsAr from "./locales/ar/sims.json";
 
 i18n
   .use(LanguageDetector)
@@ -26,6 +30,8 @@ i18n
         profile: profileEn,
         contact: contactEn,
         draw: drawEn,
+        plates: platesEn,
+        sims: simsEn,
         faq: faqEn,
       },
       ar: {
@@ -34,6 +40,8 @@ i18n
         profile: profileAr,
         contact: contactAr,
         draw: drawAr,
+        plates: platesAr,
+        sims: simsAr,
         faq: faqAr,
       },
     },

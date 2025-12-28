@@ -5,27 +5,31 @@ import type { Sim } from "../../lib/api";
 import { toggleFavorite } from "../../lib/api/toggleFavorite";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "../../store";
+import { useTranslation } from "react-i18next";
 
 interface SimCardProps {
   sim: Sim;
 }
 
 const SimCard = ({ sim }: SimCardProps) => {
+  const { t } = useTranslation("home");
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isFavorited, setIsFavorited] = useState(sim.is_favorite ?? false);
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
-    const user = useAuthStore((s) => s.user);
-  
+  const user = useAuthStore((s) => s.user);
+
   // const formatPrice = (price: number) => {
   //   return new Intl.NumberFormat("en-AE").format(price);
   // };
-  const handleToggleFavorite = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleToggleFavorite = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
     e.stopPropagation();
     if (isLoading) return;
 
-    setIsFavorited(prev => !prev); 
+    setIsFavorited((prev) => !prev);
     setIsLoading(true);
 
     try {
@@ -33,9 +37,9 @@ const SimCard = ({ sim }: SimCardProps) => {
         favorable_id: sim.id,
         favorable_type: "sim",
       });
-      queryClient.invalidateQueries({ queryKey: ["favorites"] }); 
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
     } catch (error) {
-      setIsFavorited(prev => !prev);
+      setIsFavorited((prev) => !prev);
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -48,38 +52,38 @@ const SimCard = ({ sim }: SimCardProps) => {
       className="md:w-[282px] w-full rounded-lg py-6 px-2 hover:shadow-lg transition-shadow border"
     >
       <div className="flex items-center justify-between">
-      {/* Operator Logo */}
-      <div className="flex items-center justify-center h-6 relative">
-        {!imageLoaded && sim.operator?.image?.url && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded animate-pulse">
+        {/* Operator Logo */}
+        <div className="flex items-center justify-center h-6 relative">
+          {!imageLoaded && sim.operator?.image?.url && (
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded animate-pulse">
+              <img
+                src="/images/header/numra_logo.png"
+                alt="Loading"
+                className="w-16 h-16 object-contain opacity-30"
+              />
+            </div>
+          )}
+          {sim.operator?.image?.url && (
             <img
-              src="/images/header/numra_logo.png"
-              alt="Loading"
-              className="w-16 h-16 object-contain opacity-30"
+              src={sim.operator.image.url}
+              alt={sim.operator.name.en}
+              className={`max-h-full max-w-full object-contain transition-opacity duration-300 ${
+                imageLoaded ? "opacity-100" : "opacity-0"
+              }`}
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageLoaded(true)}
             />
-          </div>
-        )}
-        {sim.operator?.image?.url && (
-          <img
-            src={sim.operator.image.url}
-            alt={sim.operator.name.en}
-            className={`max-h-full max-w-full object-contain transition-opacity duration-300 ${
-              imageLoaded ? "opacity-100" : "opacity-0"
-            }`}
-            onLoad={() => setImageLoaded(true)}
-            onError={() => setImageLoaded(true)}
-          />
-        )}
-      </div>
+          )}
+        </div>
         {user && (
-              <button
-                onClick={handleToggleFavorite}
-                disabled={isLoading}
-                className="cursor-pointer"
-              >
+          <button
+            onClick={handleToggleFavorite}
+            disabled={isLoading}
+            className="cursor-pointer"
+          >
             <Heart active={isFavorited} />
           </button>
-          )}
+        )}
       </div>
 
       {/* Number Display */}
@@ -117,7 +121,7 @@ const SimCard = ({ sim }: SimCardProps) => {
         </div>
       </div> */}
       <button className="w-full h-12 bg-[#EBAF29] rounded-[10px] mt-6 text-[#192540] text-base font-semibold cursor-pointer">
-          Price on request
+        {t("price_on_request")}
       </button>
       {/* Negotiable tag removed from card */}
     </Link>

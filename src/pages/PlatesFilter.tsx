@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router";
 import PlateCard from "../components/home/PlateCard";
 import { getPlates, getCities } from "../lib/api";
@@ -126,10 +127,16 @@ const PlatesFilter = () => {
     setCurrentPage(1);
   };
 
+  const { t, i18n } = useTranslation("plates");
+
+  const lang = (i18n.language || "en").toLowerCase().startsWith("ar")
+    ? "ar"
+    : "en";
+
   return (
     <section className="container md:py-[58px] py-5">
       <h2 className="text-[#192540] md:text-[32px] text-2xl font-medium mb-8">
-        All Plates
+        {t("title")}
       </h2>
 
       <div className="flex flex-col lg:flex-row gap-8">
@@ -138,20 +145,22 @@ const PlatesFilter = () => {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <FilterIcon />
-              <h3 className="text-lg font-semibold text-[#192540]">Filters</h3>
+              <h3 className="text-lg font-semibold text-[#192540]">
+                {t("filters")}
+              </h3>
             </div>
             <button
               onClick={clearFilters}
               className="text-sm text-[#966A08] hover:underline cursor-pointer"
             >
-              Clear All
+              {t("clearAll")}
             </button>
           </div>
 
           {/* Vehicle Types */}
           <div className="mb-6">
             <h4 className="text-sm font-semibold text-[#192540] mb-3">
-              Vehicle Type
+              {t("vehicleType")}
             </h4>
             <div className="space-y-2">
               {["cars", "classic", "bikes", "fun"].map((type) => (
@@ -166,7 +175,7 @@ const PlatesFilter = () => {
                     className="w-4 h-4 accent-[#EBAF29]"
                   />
                   <span className="text-sm text-[#192540] capitalize">
-                    {type}
+                    {t(`vehicleTypes.${type}`)}
                   </span>
                 </label>
               ))}
@@ -176,7 +185,7 @@ const PlatesFilter = () => {
           {/* Emirate */}
           <div className="mb-6">
             <h4 className="text-sm font-semibold text-[#192540] mb-3">
-              Emirate
+              {t("emirate")}
             </h4>
             <select
               value={filters.emirate_id || ""}
@@ -188,10 +197,11 @@ const PlatesFilter = () => {
               }
               className="w-full px-3 py-2 border border-[#F0F0F0] rounded-md text-sm"
             >
-              <option value="">All Emirates</option>
+              <option value="">{t("allEmirates")}</option>
               {cities.map((city) => (
                 <option key={city.id} value={city.id}>
-                  {city.name.en}
+                  {((city.name && city.name[lang]) || city.name.en) ??
+                    city.name.en}
                 </option>
               ))}
             </select>
@@ -200,13 +210,13 @@ const PlatesFilter = () => {
           {/* Letters */}
           <div className="mb-6">
             <h4 className="text-sm font-semibold text-[#192540] mb-3">
-              Letters
+              {t("letters")}
             </h4>
             <input
               type="text"
               value={filters.letters || ""}
               onChange={(e) => handleFilterChange("letters", e.target.value)}
-              placeholder="e.g., A"
+              placeholder={t("lettersPlaceholder")}
               className="w-full px-3 py-2 border border-[#F0F0F0] rounded-md text-sm"
             />
           </div>
@@ -214,13 +224,13 @@ const PlatesFilter = () => {
           {/* Numbers */}
           <div className="mb-6">
             <h4 className="text-sm font-semibold text-[#192540] mb-3">
-              Numbers
+              {t("numbers")}
             </h4>
             <input
               type="text"
               value={filters.numbers || ""}
               onChange={(e) => handleFilterChange("numbers", e.target.value)}
-              placeholder="e.g., 123"
+              placeholder={t("numbersPlaceholder")}
               className="w-full px-3 py-2 border border-[#F0F0F0] rounded-md text-sm"
             />
           </div>
@@ -228,7 +238,7 @@ const PlatesFilter = () => {
           {/* Price Range */}
           <div className="mb-6">
             <h4 className="text-sm font-semibold text-[#192540] mb-3">
-              Price Range
+              {t("priceRange")}
             </h4>
             <div className="space-y-3">
               <input
@@ -240,7 +250,7 @@ const PlatesFilter = () => {
                     e.target.value ? Number(e.target.value) : undefined
                   )
                 }
-                placeholder="Min Price"
+                placeholder={t("minPrice")}
                 className="w-full px-3 py-2 border border-[#F0F0F0] rounded-md text-sm"
               />
               <input
@@ -252,7 +262,7 @@ const PlatesFilter = () => {
                     e.target.value ? Number(e.target.value) : undefined
                   )
                 }
-                placeholder="Max Price"
+                placeholder={t("maxPrice")}
                 className="w-full px-3 py-2 border border-[#F0F0F0] rounded-md text-sm"
               />
             </div>
@@ -274,7 +284,7 @@ const PlatesFilter = () => {
 
           {!loading && plates.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-[#717171] text-lg">No plates found</p>
+              <p className="text-[#717171] text-lg">{t("noPlates")}</p>
             </div>
           )}
 
@@ -296,11 +306,11 @@ const PlatesFilter = () => {
                     disabled={currentPage === 1}
                     className="px-4 py-2 bg-[#F0F0F0] text-[#192540] rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#e0e0e0]"
                   >
-                    Previous
+                    {t("previous")}
                   </button>
 
                   <span className="text-sm text-[#717171]">
-                    Page {currentPage} of {totalPages}
+                    {t("pageOf", { current: currentPage, total: totalPages })}
                   </span>
 
                   <button
@@ -310,7 +320,7 @@ const PlatesFilter = () => {
                     disabled={currentPage === totalPages}
                     className="px-4 py-2 bg-[#EBAF29] text-[#192540] rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#d9a01f]"
                   >
-                    Next
+                    {t("next")}
                   </button>
                 </div>
               )}

@@ -1,0 +1,16 @@
+{
+  "title": "أرقام الجوال",
+  "filters": "المرشحات",
+  "clearAll": "مسح الكل",
+  "searchNumbers": "ابحث عن الأرقام",
+  "searchPlaceholder": "مثال: 050",
+  "searchHelper": "أدخل جزءاً من الرقم للبحث",
+  "priceRange": "نطاق السعر (درهم)",
+  "minPrice": "السعر الأدنى",
+  "maxPrice": "السعر الأقصى",
+  "noSims": "لا توجد أرقام جوال",
+  "tryAdjust": "حاول تعديل المرشحات",
+  "previous": "السابق",
+  "next": "التالي",
+  "pageOf": "الصفحة {{current}} من {{total}}"
+}

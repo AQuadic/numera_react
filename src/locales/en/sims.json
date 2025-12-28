@@ -1,0 +1,16 @@
+{
+  "title": "Mobile Numbers",
+  "filters": "Filters",
+  "clearAll": "Clear All",
+  "searchNumbers": "Search Numbers",
+  "searchPlaceholder": "e.g., 050",
+  "searchHelper": "Enter partial number to search",
+  "priceRange": "Price Range (AED)",
+  "minPrice": "Min Price",
+  "maxPrice": "Max Price",
+  "noSims": "No mobile numbers found",
+  "tryAdjust": "Try adjusting your filters",
+  "previous": "Previous",
+  "next": "Next",
+  "pageOf": "Page {{current}} of {{total}}"
+}
