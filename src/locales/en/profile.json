@@ -121,5 +121,21 @@
     "filter_last_week": "last week",
     "setting_language": "Language",
     "setting_language_value": "English",
-    "setting_notification": "Notification"
+    "setting_notification": "Notification",
+
+    "plates_negotiable": "Negotiable",
+    "plates_sold": "SOLD",
+    "plates_number_details": "Number Details",
+    "plates_operator_label": "Operator :",
+    "plates_subscription_type": "Subscription Type :",
+    "plates_package_label": "Package :",
+
+    "contact_seller_button": "{{price}} AED - Contact Seller",
+    "contact_seller_title": "Contact Seller",
+
+    "user_individual": "Individual Seller",
+    "user_premium_dealer": "Premium Dealer",
+
+    "action_call": "Call",
+    "action_whatsapp": "Whatsapp"
 }

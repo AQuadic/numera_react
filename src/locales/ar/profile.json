@@ -120,5 +120,21 @@
     "filter_last_week": "الأسبوع الماضي",
     "setting_language": "اللغة",
     "setting_language_value": "الإنجليزية",
-    "setting_notification": "الاشعارات"
+    "setting_notification": "الاشعارات",
+
+    "plates_negotiable": "قابل للتفاوض",
+    "plates_sold": "مباع",
+    "plates_number_details": "تفاصيل الرقم",
+    "plates_operator_label": "المشغل :",
+    "plates_subscription_type": "نوع الاشتراك :",
+    "plates_package_label": "الباقة :",
+
+    "contact_seller_button": "{{price}} درهم - تواصل مع البائع",
+    "contact_seller_title": "تواصل مع البائع",
+
+    "user_individual": "بائع فردي",
+    "user_premium_dealer": "تاجر مميز",
+
+    "action_call": "اتصال",
+    "action_whatsapp": "واتساب"
 }

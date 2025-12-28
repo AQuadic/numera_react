@@ -21,5 +21,17 @@
   "noPlates": "لا توجد لوحات",
   "previous": "السابق",
   "next": "التالي",
-  "pageOf": "الصفحة {{current}} من {{total}}"
+  "pageOf": "الصفحة {{current}} من {{total}}",
+
+  "purchase_instructions_title": "تعليمات الشراء",
+  "purchase_contact_title": "التواصل مع البائع",
+  "purchase_contact_desc": "استخدم زر الاتصال أو WhatsApp للتحدث عن التفاصيل والتفاوض على السعر.",
+  "purchase_verify_title": "التحقق من الوثائق",
+  "purchase_verify_desc": "تأكد من أن جميع وثائق تسجيل اللوحة أصلية وتم تحويلها بشكل صحيح.",
+  "purchase_complete_title": "إكمال العملية",
+  "purchase_complete_desc": "قابل البائع شخصياً في مكان آمن لإكمال عملية الدفع والتحويل.",
+  "purchase_official_title": "التحويل الرسمي",
+  "purchase_official_desc": "قم بزيارة إدارة المرور لتسجيل اللوحة رسمياً باسمك.",
+
+  "safety_tips_title": "نصائح الأمان"
 }

@@ -21,5 +21,17 @@
   "noPlates": "No plates found",
   "previous": "Previous",
   "next": "Next",
-  "pageOf": "Page {{current}} of {{total}}"
+  "pageOf": "Page {{current}} of {{total}}",
+
+  "purchase_instructions_title": "Purchase Instructions",
+  "purchase_contact_title": "Contact the Seller",
+  "purchase_contact_desc": "Use the call or WhatsApp button to discuss details and negotiate the price.",
+  "purchase_verify_title": "Verify Documents",
+  "purchase_verify_desc": "Ensure all plate registration documents are authentic and properly transferred.",
+  "purchase_complete_title": "Complete Transaction",
+  "purchase_complete_desc": "Meet in person at a safe location to complete the payment and transfer process.",
+  "purchase_official_title": "Official Transfer",
+  "purchase_official_desc": "Visit the traffic department to officially register the plate under your name.",
+
+  "safety_tips_title": "Safety Tips"
 }

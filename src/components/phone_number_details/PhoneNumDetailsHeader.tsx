@@ -12,12 +12,14 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import type { Sim } from "../../lib/api";
+import { useTranslation } from "react-i18next";
 
 interface PhoneNumDetailsHeaderProps {
   sim: Sim;
 }
 
 const PhoneNumDetailsHeader = ({ sim }: PhoneNumDetailsHeaderProps) => {
+  const { t } = useTranslation("profile");
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-AE").format(price);
   };
@@ -25,7 +27,7 @@ const PhoneNumDetailsHeader = ({ sim }: PhoneNumDetailsHeaderProps) => {
   // Member since hidden for single-item view
 
   const getUserTypeLabel = (type: string) => {
-    return type === "personal" ? "Individual Seller" : "Premium Dealer";
+    return type === "personal" ? t("user_individual") : t("user_premium_dealer");
   };
 
   const sellerPhoneForWA = (
@@ -40,7 +42,7 @@ const PhoneNumDetailsHeader = ({ sim }: PhoneNumDetailsHeaderProps) => {
         <div className="flex items-center justify-between">
           {sim.is_negotiable ? (
             <h2 className="w-[126px] h-9 rounded-[20px] bg-[#E4FBEA] text-[#1E7634] text-xl font-medium flex items-center justify-center">
-              negotiable
+              {t("plates_negotiable")}
             </h2>
           ) : (
             <div className="w-[126px] h-9" />
@@ -63,16 +65,16 @@ const PhoneNumDetailsHeader = ({ sim }: PhoneNumDetailsHeaderProps) => {
         {sim.is_sold && (
           <div className="mt-4 text-center">
             <span className="inline-block px-4 py-2 bg-[#FFE5E5] text-[#D32F2F] text-base font-semibold rounded-md">
-              SOLD
+              {t("plates_sold")}
             </span>
           </div>
         )}
 
         <h2 className="text-[#192540] text-2xl font-medium mt-8">
-          Number Details
+          {t("plates_number_details")}
         </h2>
         <div className="mt-6 flex items-center justify-between">
-          <p className="text-[#717171] md:text-xl font-medium">Operator :</p>
+          <p className="text-[#717171] md:text-xl font-medium">{t("plates_operator_label")}</p>
           <div className="flex items-center gap-3">
             {sim.operator?.image?.url && (
               <img
@@ -89,7 +91,7 @@ const PhoneNumDetailsHeader = ({ sim }: PhoneNumDetailsHeaderProps) => {
 
         <div className="mt-6 flex items-center justify-between">
           <p className="text-[#717171] md:text-xl font-medium">
-            Subscription Type :
+            {t("plates_subscription_type")}
           </p>
           <p className="text-[#192540] md:text-2xl font-semibold">
             {sim.subscription}
@@ -97,7 +99,7 @@ const PhoneNumDetailsHeader = ({ sim }: PhoneNumDetailsHeaderProps) => {
         </div>
 
         <div className="mt-6 flex items-center justify-between">
-          <p className="text-[#717171] md:text-xl font-medium">Package :</p>
+          <p className="text-[#717171] md:text-xl font-medium">{t("plates_package_label")}</p>
           <p className="text-[#192540] md:text-2xl font-semibold">
             {sim.package}
           </p>
@@ -107,13 +109,13 @@ const PhoneNumDetailsHeader = ({ sim }: PhoneNumDetailsHeaderProps) => {
       <Dialog>
         <DialogTrigger className="w-full">
           <button className="w-full h-14 bg-[#EBAF29] rounded-md mt-6 text-[#192540] text-lg font-semibold cursor-pointer hover:bg-[#d9a01f] transition-colors">
-            {formatPrice(sim.price)} AED - Contact Seller
+            {t("contact_seller_button", { price: formatPrice(sim.price) })}
           </button>
         </DialogTrigger>
         <DialogContent className="md:w-[860px] w-full">
           <DialogHeader>
             <DialogTitle className="text-[#192540] text-2xl font-medium">
-              Contact Seller
+              {t("contact_seller_title")}
             </DialogTitle>
             <DialogDescription>
               <div>
@@ -143,7 +145,7 @@ const PhoneNumDetailsHeader = ({ sim }: PhoneNumDetailsHeaderProps) => {
                       className="w-full h-14 bg-[#192540] rounded-[10px] flex items-center justify-center gap-2 hover:bg-[#2a3650] transition-colors"
                     >
                       <Call />
-                      <p className="text-[#FEFEFE] text-lg font-medium">Call</p>
+                      <p className="text-[#FEFEFE] text-lg font-medium">{t("action_call")}</p>
                     </a>
                   )}
 
@@ -156,7 +158,7 @@ const PhoneNumDetailsHeader = ({ sim }: PhoneNumDetailsHeaderProps) => {
                     >
                       <DialogWhatsapp />
                       <p className="text-[#FEFEFE] text-lg font-medium">
-                        Whatsapp
+                        {t("action_whatsapp")}
                       </p>
                     </a>
                   )}
