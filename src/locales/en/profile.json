@@ -105,5 +105,18 @@
     "stat_chats": "Chats",
     "processing": "Processing...",
     "publishing": "Publishing...",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "analytics_total_views": "Total Views",
+    "analytics_inquiries": "Inquiries",
+    "analytics_response_rate": "Response Rate",
+    "analytics_active_ads": "Active Ads"
+    ,"top_performing_ads_title": "Top Performing Ads",
+    "best_performing_ad": "Best performing ad #{{number}}",
+    "traffic_sources_title": "Traffic Sources",
+    "analytics_views": "views",
+    "analytics_inquiries_short": "inquiries",
+    "no_data_available": "No data available",
+    "views_overview_title": "Views Overview",
+    "filter_last_month": "last month",
+    "filter_last_week": "last week"
 }

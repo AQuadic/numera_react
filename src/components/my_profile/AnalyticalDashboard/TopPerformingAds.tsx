@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { AnalyticsData } from "../../../lib/api/analytics/getAnalytics";
 import AdsInquiries from "../../icons/profile/AdsInquiries";
 import AdsStar from "../../icons/profile/AdsStar";
@@ -9,11 +10,13 @@ interface TopPerformingAdsProps {
 }
 
 const  TopPerformingAds = ({ analytics }: TopPerformingAdsProps) => {
+    const { t } = useTranslation("profile");
+
     return (
         <div>
             <div className="mt-6 flex md:flex-row flex-col items-center justify-between gap-6">
                 <div className="xl:w-1/2 xl:h-[332px] w-full h-full bg-[#F0F0F0] rounded-md p-4">
-                    <h2 className="text-[#192540] md:text-[32px] text-xl font-medium">Top Performing Ads</h2>
+                    <h2 className="text-[#192540] md:text-[32px] text-xl font-medium">{t("top_performing_ads_title")}</h2>
                     <div className="mt-1 flex flex-col gap-4">
                         {analytics?.top_three_performing_ads?.length ? (
                         analytics.top_three_performing_ads.map((ad, index) => (
@@ -35,7 +38,7 @@ const  TopPerformingAds = ({ analytics }: TopPerformingAdsProps) => {
                                     {ad.ad_model}
                                 </h2>
                                 <p className="text-[#A3A3A3] md:text-sm text-sm mt-1">
-                                    Best performing ad #{index + 1}
+                                    {t("best_performing_ad", { number: index + 1 })}
                                 </p>
                                 </div>
                             </div>
@@ -43,27 +46,27 @@ const  TopPerformingAds = ({ analytics }: TopPerformingAdsProps) => {
                                 <div className="flex items-center gap-1">
                                 <AdsViews />
                                 <p className="text-[#192540] text-sm font-medium">
-                                {ad.views_count} views
+                                {ad.views_count} {t("analytics_views")}
                                 </p>
                                 </div>
                                 <div className="flex items-center gap-1">
                                 <AdsInquiries />
                                 <p className="text-[#EBAF29] text-sm font-medium">
-                                {ad.inquiries_count} inquiries
+                                {ad.inquiries_count} {t("analytics_inquiries_short")}
                                 </p>
                             </div>
                             </div>
                             </div>
                         ))
                         ) : (
-                        <p className="text-[#A3A3A3] text-sm mt-3">No data available</p>
+                        <p className="text-[#A3A3A3] text-sm mt-3">{t("no_data_available")}</p>
                         )}
                     </div>
                     
             </div>
 
                 <div className="xl:w-1/2 xl:h-[332px] w-full h-full bg-[#F0F0F0] rounded-md p-4">
-                    <h2 className="text-[#192540] md:text-[32px] text-xl font-medium">Traffic Sources</h2>
+                    <h2 className="text-[#192540] md:text-[32px] text-xl font-medium">{t("traffic_sources_title")}</h2>
                     <DonutChart
                         views={analytics?.views ?? 0}
                         visitor={analytics?.visitor ?? 0}

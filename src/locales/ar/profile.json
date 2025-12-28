@@ -104,5 +104,18 @@
     "stat_chats": "مراسلات",
     "processing": "جارِ معالجة...",
     "publishing": "جارِ النشر...",
-    "loading": "جارِ التحميل..."
+    "loading": "جارِ التحميل...",
+    "analytics_total_views": "إجمالي العروض",
+    "analytics_inquiries": "الاستفسارات",
+    "analytics_response_rate": "معدل الاستجابة",
+    "analytics_active_ads": "الإعلانات النشطة"
+    ,"top_performing_ads_title": "أفضل الإعلانات أداءً",
+    "best_performing_ad": "أفضل إعلان #{{number}}",
+    "traffic_sources_title": "مصادر الترافق",
+    "analytics_views": "عرضة",
+    "analytics_inquiries_short": "استفسارات",
+    "no_data_available": "لا توجد بيانات متاحة",
+    "views_overview_title": "نظرة عامة على العروض",
+    "filter_last_month": "الشهر الماضي",
+    "filter_last_week": "الأسبوع الماضي"
 }

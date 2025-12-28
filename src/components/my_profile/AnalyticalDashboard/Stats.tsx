@@ -7,12 +7,14 @@ import UpArrow from "../../icons/profile/UpArrow"
 // import Search from "../../icons/home/Search"
 import ActiveAds from "../../icons/profile/ActiveAds"
 import type { AnalyticsData } from "../../../lib/api/analytics/getAnalytics";
+import { useTranslation } from "react-i18next"
 
 interface StatsProps {
   analytics?: AnalyticsData;
 }
 
 const Stats = ({ analytics }: StatsProps) => {
+    const { t } = useTranslation("profile");
     return (
         <div>
             <div className="grid xl:grid-cols-4 md:grid-cols-2  items-center gap-6">
@@ -27,7 +29,7 @@ const Stats = ({ analytics }: StatsProps) => {
                         <p className="text-[#19AA3D] text-[10px] font-medium">{analytics?.total_views}%</p>
                         </div>
                     </div>
-                    <p className="text-[#717171] text-sm font-medium mt-3">Total Views</p>
+                    <p className="text-[#717171] text-sm font-medium mt-3">{t("analytics_total_views")}</p>
                 </div>
 
                 <div className="bg-[#F9F9F9] px-3 py-4 w-full rounded-md">
@@ -41,7 +43,7 @@ const Stats = ({ analytics }: StatsProps) => {
                             <p className="text-[#19AA3D] text-[10px] font-medium">{analytics?.inquiries ?? 0}</p>
                         </div>
                     </div>
-                    <p className="text-[#717171] text-sm font-medium mt-3">Inquiries</p>
+                    <p className="text-[#717171] text-sm font-medium mt-3">{t("analytics_inquiries")}</p>
                 </div>
 
                 <div className="bg-[#EEF6FF] px-3 py-4 w-full rounded-md">
@@ -55,7 +57,7 @@ const Stats = ({ analytics }: StatsProps) => {
                             <p className="text-[#19AA3D] text-[10px] font-medium">{analytics?.response_rate ?? 0}%</p>
                         </div>
                     </div>
-                    <p className="text-[#717171] text-sm font-medium mt-3">Response Rate</p>
+                    <p className="text-[#717171] text-sm font-medium mt-3">{t("analytics_response_rate")}</p>
                 </div>
 
                 <div className="bg-[#E4FBDE] px-3 py-4 w-full rounded-md">
@@ -69,7 +71,7 @@ const Stats = ({ analytics }: StatsProps) => {
                             <p className="text-[#D71F1F] text-[10px] font-medium">{analytics?.active_ads ?? 0}</p>
                         </div>
                     </div>
-                    <p className="text-[#717171] text-sm font-medium mt-3">Active Ads</p>
+                    <p className="text-[#717171] text-sm font-medium mt-3">{t("analytics_active_ads")}</p>
                 </div>
 
 
