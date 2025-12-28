@@ -14,6 +14,12 @@
     "active_years": "السنوات النشطة",
     "personal_info": "المعلومات الشخصية",
     "change_password": "تغيير كلمة المرور",
+    "current_password": "كلمة المرور الحالية",
+    "enter_current_password": "أدخل كلمة المرور الحالية",
+    "new_password": "كلمة المرور الجديدة",
+    "enter_new_password": "أدخل كلمة المرور الجديدة",
+    "confirm_new_password": "تأكيد كلمة المرور الجديدة",
+    "enter_confirm_new_password": "أكد كلمة المرور الجديدة",
     "account_verification": "تأكيد الحساب",
     "fav_plate": "اللوحات المفضلة",
     "delete_account": "حذف الحساب",
@@ -47,5 +53,8 @@
     "companies": "شركات",
     "saving": "جاري الحفظ...",
     "save_changes": "حفظ التغييرات",
-    "profile_updated": "تم تحديث الملف الشخصي بنجاح"
+    "profile_updated": "تم تحديث الملف الشخصي بنجاح",
+    "errors_all_fields_required": "جميع الحقول مطلوبة",
+    "errors_password_mismatch": "كلمة المرور الجديدة وتأكيدها غير متطابقين",
+    "errors_password_min_length": "يجب أن تكون كلمة المرور الجديدة 6 أحرف على الأقل"
 }
