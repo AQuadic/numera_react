@@ -1,11 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 import { PhoneInput, type PhoneValue } from "../../compound/PhoneInput";
 import { requestPasswordReset, getErrorMessage } from "../../../lib/api/auth";
 import { usePasswordResetStore } from "../../../store/usePasswordResetStore";
 
 const ForgetPassForm = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation("auth");
   const setPhoneAndCountry = usePasswordResetStore(
     (state) => state.setPhoneAndCountry
   );
@@ -30,7 +32,7 @@ const ForgetPassForm = () => {
     setError(null);
 
     if (!phone.number.trim()) {
-      setError("Please enter your phone number");
+      setError(t("forgetPassword.errors.phoneRequired"));
       return;
     }
 
@@ -62,10 +64,10 @@ const ForgetPassForm = () => {
   return (
     <div className="w-full">
       <h2 className="text-[#192540] text-[40px] font-medium text-center">
-        Forget Password
+        {t("forgetPassword.title")}
       </h2>
       <p className="text-[#717171] text-base font-medium mt-3 leading-[150%] text-center">
-        Enter your phone number to receive an OTP and reset your password.
+        {t("forgetPassword.subtitle")}
       </p>
 
       <form className="mt-6" onSubmit={handleSubmit}>
@@ -80,7 +82,7 @@ const ForgetPassForm = () => {
             htmlFor="phone"
             className="text-[#192540] text-xl font-medium leading-[100%]"
           >
-            Phone Number
+            {t("forgetPassword.phoneLabel")}
           </label>
 
           <div className="mt-3">
@@ -97,7 +99,9 @@ const ForgetPassForm = () => {
           disabled={isLoading}
           className="w-full h-14 text-[#192540] text-base font-semibold bg-[#EBAF29] rounded-md mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? "Sending..." : "Send OTP"}
+          {isLoading
+            ? t("forgetPassword.submitting")
+            : t("forgetPassword.submit")}
         </button>
       </form>
     </div>

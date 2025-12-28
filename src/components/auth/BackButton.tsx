@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 const BackButton = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation("auth");
 
   const handleBack = () => {
     // Prefer history back when available, otherwise go to home
@@ -12,8 +14,8 @@ const BackButton = () => {
   return (
     <button
       onClick={handleBack}
-      aria-label="Go back"
-      className="md:hidden absolute left-4 top-6 z-20 inline-flex items-center gap-3 rounded-full bg-white/95 px-3 py-2 text-sm font-medium shadow-sm transition hover:shadow-md"
+      aria-label={t("back")}
+      className="md:hidden absolute left-4 top-6 z-20 inline-flex items-center gap-3 rounded-full bg-white/95 px-3 py-2 text-sm font-medium shadow-sm transition hover:shadow-md rtl:flex-row-reverse"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -30,7 +32,7 @@ const BackButton = () => {
           d="M15 18l-6-6 6-6"
         />
       </svg>
-      <span className="text-neutral-800">Back</span>
+      <span className="text-neutral-800">{t("back")}</span>
     </button>
   );
 };

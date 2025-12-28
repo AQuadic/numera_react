@@ -7,7 +7,8 @@ import {
   arabicCountryNames,
   getCountryByCode,
   type Country,
-}  from "../../constants/countries";
+} from "../../constants/countries";
+import { useTranslation } from "react-i18next";
 import { cn } from "../../lib/utils";
 
 export interface PhoneValue {
@@ -151,10 +152,12 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       });
     };
 
+    const { t } = useTranslation("auth");
+
     // Translations for placeholders
-    const resolvedPlaceholder = placeholder ?? "Enter your phone number";
+    const resolvedPlaceholder = placeholder ?? t("phone.placeholder");
     const resolvedSearchPlaceholder =
-      searchPlaceholder ?? ("search country or code");
+      searchPlaceholder ?? t("phone.searchPlaceholder");
 
     return (
       <div className={cn("relative w-full", className)} dir="ltr">
