@@ -53,11 +53,11 @@ function App() {
               <Route path="plate_details" element={<PlateDetails />} />
               <Route path="plate_details/:id" element={<PlateDetails />} />
               <Route
-                path="phone_number_details"
+                path="sim"
                 element={<PhoneNumberDetails />}
               />
               <Route
-                path="phone_number_details/:id"
+                path="sim/:id"
                 element={<PhoneNumberDetails />}
               />
               <Route path="sell_plates" element={<SellPlatesPage />} />

@@ -48,7 +48,7 @@ const SimCard = ({ sim }: SimCardProps) => {
 
   return (
     <Link
-      to={`/phone_number_details/${sim.id}`}
+      to={`/sim/${sim.id}`}
       className="md:w-[282px] w-full rounded-lg py-6 px-2 hover:shadow-lg transition-shadow border"
     >
       <div className="flex items-center justify-between">
