@@ -83,8 +83,15 @@ const SignUpForm = () => {
         setError(t("signUp.errors.signUpFailed"));
       }
     } catch (err) {
-      setError(getErrorMessage(err));
-    } finally {
+        const msg = getErrorMessage(err);
+
+        setError(
+          msg
+            .replace(/\\n/g, " ")
+            .trim()
+        );
+      }
+      finally {
       setIsLoading(false);
     }
   };
