@@ -83,10 +83,10 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
             )}
 
             <h3 className="text-[#192540] md:text-base font-medium mt-5">
-              Plate Details
+              {t('plate_details')}
             </h3>
             <p className="text-[#717171] md:text-lg font-medium mt-5">
-              Plate Number :{" "}
+              {t('plate_number')} {" "}
               <span className="text-[#192540] md:text-xl">
                 {plate.letters ? `${plate.letters} ` : ""}
                 {plate.numbers}
@@ -94,21 +94,21 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
             </p>
 
             <p className="text-[#717171] md:text-lg font-medium mt-4">
-              Type :{" "}
+              {t('type')}{" "}
               <span className="text-[#192540] md:text-xl">
                 {getVehicleTypeLabel(plate.vehicle_type)}
               </span>
             </p>
 
             <p className="text-[#717171] md:text-lg font-medium mt-4">
-              Emirate :{" "}
+              {t('emirate')}{" "}
               <span className="text-[#192540] md:text-xl">
                 {getEmirateLabel(plate.emirate_id)}
               </span>
             </p>
 
             <p className="text-[#717171] md:text-lg font-medium mt-4">
-              Listed Date :{" "}
+              {t('listed_date')}{" "}
               <span className="text-[#192540] md:text-xl">
                 {formatDate(plate.published_at)}
               </span>
@@ -119,7 +119,7 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
             {plate.is_sold && (
               <div className="mt-4">
                 <span className="inline-block px-4 py-2 bg-[#FFE5E5] text-[#D32F2F] text-base font-semibold rounded-md">
-                  SOLD
+                  {t('sold')}
                 </span>
               </div>
             )}
