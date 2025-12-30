@@ -1,5 +1,13 @@
 import { axios } from "../axios";
 
+export interface SellerImage {
+  id: number;
+  uuid: string;
+  url: string;
+  responsive_urls: string[];
+  size: number;
+}
+
 export interface SellerProfile {
   id: number;
   name: string;
@@ -25,7 +33,7 @@ export interface SellerProfile {
   company_name: string | null;
   verification_status: string | null;
   unread_notifications_count: number;
-  image: string | null;
+  image: SellerImage | null;
 }
 
 export const getSellerProfile = (userId: number) =>

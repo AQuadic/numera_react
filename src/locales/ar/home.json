@@ -43,6 +43,17 @@
   "header_notifications": "الإشعارات",
   "header_log_in": "تسجيل الدخول"
   ,"no_notifications_image_alt": "لا إشعارات",
-  "no_notifications_yet": "لا توجد إشعارات حتى الآن"
+  "no_notifications_yet": "لا توجد إشعارات حتى الآن",
 
+  "plate_details": "تفاصيل اللوحة",
+  "plate_number": "رقم اللوحة :",
+  "type": "النوع :",
+  "emirate": "الإمارة :",
+  "listed_date": "تاريخ الإدراج :",
+  "owner_information": "معلومات المالك",
+  "call": "اتصال",
+  "whatsapp": "واتساب",
+
+  "total_plates": "إجمالي اللوحات",
+  "premium": "مميز"
 }

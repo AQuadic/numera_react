@@ -1,0 +1,21 @@
+{
+    "applinks": {
+        "details": [
+            {
+                "appIDs": [
+                    "F8FBUC9S7C.ae.numra.app"
+                ],
+                "components": [
+                    {
+                        "/": "/plate/*",
+                        "comment": "Matches /plate and anything after it, like /plate/{id}/{slug}"
+                    },
+                    {
+                        "/": "/sim/*",
+                        "comment": "Matches /sim and anything after it, like /sim/{id}/{slug}"
+                    }
+                ]
+            }
+        ]
+    }
+}

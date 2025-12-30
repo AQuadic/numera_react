@@ -43,21 +43,21 @@ function App() {
             <Route path="plates_result" element={<DrawYourPlatePage />} />
             <Route path="faq" element={<FAQsPage />} />
             <Route path="contact_us" element={<ContactUsPage />} />
-            <Route path="plates_filter" element={<PlatesFilter />} />
+            <Route path="plates" element={<PlatesFilter />} />
             <Route path="sims" element={<SimsPage />} />
             <Route path="page/:id" element={<PageDetails />} />
             <Route path="seller_profile/:userId" element={<SellerProfile />} />
 
             {/* Protected routes - require authentication */}
             <Route element={<ProtectedRoute />}>
-              <Route path="plate_details" element={<PlateDetails />} />
-              <Route path="plate_details/:id" element={<PlateDetails />} />
+              <Route path="plate" element={<PlateDetails />} />
+              <Route path="plate/:id" element={<PlateDetails />} />
               <Route
-                path="phone_number_details"
+                path="sim"
                 element={<PhoneNumberDetails />}
               />
               <Route
-                path="phone_number_details/:id"
+                path="sim/:id"
                 element={<PhoneNumberDetails />}
               />
               <Route path="sell_plates" element={<SellPlatesPage />} />

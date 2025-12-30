@@ -45,7 +45,7 @@ i18n
         faq: faqAr,
       },
     },
-    lng: "en",
+
     fallbackLng: "en",
     defaultNS: "home",
     interpolation: {

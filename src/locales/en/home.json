@@ -44,6 +44,17 @@
   "header_log_in": "Log In"
 
   ,"no_notifications_image_alt": "No notifications",
-  "no_notifications_yet": "You have no notifications yet."
+  "no_notifications_yet": "You have no notifications yet.",
 
+  "plate_details": "Plate Details",
+  "plate_number": "Plate Number :",
+  "type": "Type :",
+  "emirate": "Emirate :",
+  "listed_date": "Listed Date :",
+  "owner_information": "Owner Information",
+  "call": "Call",
+  "whatsapp": "WhatsApp",
+
+  "total_plates": "Total Plates",
+  "premium": "Premium"
 }

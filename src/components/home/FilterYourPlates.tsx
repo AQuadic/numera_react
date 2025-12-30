@@ -10,6 +10,7 @@ import { Skeleton } from "../ui/skeleton";
 import type { Package } from "../../lib/api/plates";
 import { getPackages } from "../../lib/api/getPackages";
 import { useTranslation } from "react-i18next";
+import Search from "../icons/home/Search";
 
 interface PlatesByPackage {
   package: Package;
@@ -92,6 +93,18 @@ const FilterYourPlates = () => {
         </h2>
 
         <div className="flex items-center gap-6">
+            <div className="flex items-center gap-6">
+                <div className="relative">
+                        <input 
+                            type="text"
+                            className="lg:w-[384px] w-full h-14 border border-[#F0F0F0] rounded-md px-12"
+                            placeholder="Search"
+                        />
+                        <div className="absolute top-4 left-4">
+                            <Search />
+                        </div>
+                    </div>
+            </div>
           <Dialog>
               <DialogTrigger className="w-full">
                 <div className="lg:w-[180px] w-full h-14 border border-[#F0F0F0] rounded-md flex items-center justify-center gap-3">
@@ -132,7 +145,7 @@ const FilterYourPlates = () => {
               {plates.length > 4 && (
                 <div className="mt-8 flex items-center justify-center">
                   <Link
-                    to={`/plates_filter?package=${pkg.id}`}
+                    to={`/plates?package=${pkg.id}`}
                     className="flex items-center gap-2 px-8 py-3 text-[#EBAF29] font-semibold rounded-lg"
                   >
                     {t('see_all')}

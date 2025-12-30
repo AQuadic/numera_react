@@ -94,10 +94,8 @@ const Header = () => {
           )}
         </div>
 
-        <div className="flex items-center gap-6">{/* <Chat /> */}</div>
-
-        <ChangeLanguage />
         <div className="flex items-center gap-8">
+        <ChangeLanguage />
           {hasUser && (
             <button
               onClick={() => setNotificationsOpen(true)}

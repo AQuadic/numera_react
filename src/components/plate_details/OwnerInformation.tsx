@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import Phone from "../icons/plates/Phone";
 import Verified from "../icons/plates/Verified";
 import Whatsapp from "../icons/plates/Whatsapp";
+import { useTranslation } from "react-i18next";
 
 interface User {
   id: number;
@@ -21,6 +22,7 @@ interface OwnerInformationProps {
 }
 
 const OwnerInformation = ({ user }: OwnerInformationProps) => {
+  const { t } = useTranslation("home");
   const getUserTypeLabel = (type: string) => {
     return type === "personal" ? "Individual Seller" : "Premium Dealer";
   };
@@ -33,7 +35,7 @@ const OwnerInformation = ({ user }: OwnerInformationProps) => {
   return (
     <section className="container md:py-[58px] py-10">
       <h2 className="text-[#192540] text-[32px] font-medium">
-        Owner Information
+        {t('owner_information')}
       </h2>
       <div className="mt-9 flex flex-wrap justify-between items-start">
         <div className="flex items-center gap-3">
@@ -62,7 +64,7 @@ const OwnerInformation = ({ user }: OwnerInformationProps) => {
               className="w-[180px] h-[102px] bg-[#192540] rounded-[10px] flex flex-col items-center justify-center gap-2 hover:bg-[#2a3650] transition-colors"
             >
               <Phone />
-              <p className="text-[#FEFEFE] text-xl font-medium">Call</p>
+              <p className="text-[#FEFEFE] text-xl font-medium">{t('call')}</p>
             </a>
           )}
 
@@ -76,7 +78,7 @@ const OwnerInformation = ({ user }: OwnerInformationProps) => {
               className="w-[180px] h-[102px] bg-[#19AA3D] rounded-[10px] flex flex-col items-center justify-center gap-2 hover:bg-[#158a32] transition-colors"
             >
               <Whatsapp />
-              <p className="text-[#FEFEFE] text-xl font-medium">WhatsApp</p>
+              <p className="text-[#FEFEFE] text-xl font-medium">{t('whatsapp')}</p>
             </a>
           )}
         </div>
