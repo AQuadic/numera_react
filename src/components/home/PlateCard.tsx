@@ -73,7 +73,7 @@ const PlateCard = ({ plate }: PlateCardProps) => {
 
   return (
     <Link
-      to={`/plate_details/${plate.id}`}
+      to={`/plate/${plate.id}`}
       className="md:w-[274px] w-full rounded-md hover:shadow-lg transition-shadow relative"
     >
       <div className="rounded-md p-px" style={{ background: borderGradient }}>

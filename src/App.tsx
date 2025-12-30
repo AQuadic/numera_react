@@ -50,8 +50,8 @@ function App() {
 
             {/* Protected routes - require authentication */}
             <Route element={<ProtectedRoute />}>
-              <Route path="plate_details" element={<PlateDetails />} />
-              <Route path="plate_details/:id" element={<PlateDetails />} />
+              <Route path="plate" element={<PlateDetails />} />
+              <Route path="plate/:id" element={<PlateDetails />} />
               <Route
                 path="sim"
                 element={<PhoneNumberDetails />}
