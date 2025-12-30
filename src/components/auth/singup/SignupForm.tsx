@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { PhoneInput, type PhoneValue } from "../../compound/PhoneInput";
 import { signUp, getErrorMessage } from "../../../lib/api/auth";
 import { useAuthStore } from "../../../store/useAuthStore";
-import { Eye, EyeOff, type EyeClosed } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 // Send phone and phone_country separately (number-only in phone)
 
 const SignUpForm = () => {
@@ -83,15 +83,10 @@ const SignUpForm = () => {
         setError(t("signUp.errors.signUpFailed"));
       }
     } catch (err) {
-        const msg = getErrorMessage(err);
+      const msg = getErrorMessage(err);
 
-        setError(
-          msg
-            .replace(/\\n/g, " ")
-            .trim()
-        );
-      }
-      finally {
+      setError(msg.replace(/\\n/g, " ").trim());
+    } finally {
       setIsLoading(false);
     }
   };
@@ -163,13 +158,13 @@ const SignUpForm = () => {
               disabled={isLoading}
             />
 
-          <button
-            type="button"
-            onClick={() => setShowPassword((prev) => !prev)}
-            className="absolute ltr:right-3 rtl:left-3 top-1/2 -translate-y-1/2 text-[#717171] hover:text-[#192540]"
-          >
-            {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
-          </button>
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute ltr:right-3 rtl:left-3 top-1/2 -translate-y-1/2 text-[#717171] hover:text-[#192540]"
+            >
+              {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+            </button>
           </div>
         </div>
 
