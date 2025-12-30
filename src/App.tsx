@@ -43,7 +43,7 @@ function App() {
             <Route path="plates_result" element={<DrawYourPlatePage />} />
             <Route path="faq" element={<FAQsPage />} />
             <Route path="contact_us" element={<ContactUsPage />} />
-            <Route path="plates_filter" element={<PlatesFilter />} />
+            <Route path="plates" element={<PlatesFilter />} />
             <Route path="sims" element={<SimsPage />} />
             <Route path="page/:id" element={<PageDetails />} />
             <Route path="seller_profile/:userId" element={<SellerProfile />} />

@@ -133,7 +133,7 @@ const FilterYourPlates = () => {
               {plates.length > 4 && (
                 <div className="mt-8 flex items-center justify-center">
                   <Link
-                    to={`/plates_filter?package=${pkg.id}`}
+                    to={`/plates?package=${pkg.id}`}
                     className="flex items-center gap-2 px-8 py-3 text-[#EBAF29] font-semibold rounded-lg"
                   >
                     {t('see_all')}
