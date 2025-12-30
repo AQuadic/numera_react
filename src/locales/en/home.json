@@ -53,5 +53,8 @@
   "listed_date": "Listed Date :",
   "owner_information": "Owner Information",
   "call": "Call",
-  "whatsapp": "WhatsApp"
+  "whatsapp": "WhatsApp",
+
+  "total_plates": "Total Plates",
+  "premium": "Premium"
 }
