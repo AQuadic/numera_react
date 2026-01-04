@@ -57,7 +57,7 @@ const FilterYourPlates = () => {
   }, [filters]);
 
   useEffect(() => {
-    const timeouts: Record<number, NodeJS.Timeout> = {};
+    const timeouts: Record<number, ReturnType<typeof setTimeout>> = {};
 
     Object.entries(searchQueries).forEach(([pkgId, query]) => {
       const packageId = Number(pkgId);
