@@ -5,6 +5,7 @@ import Axios, {
 } from "axios";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../store/useAuthStore";
+import i18n from "../i18n";
 
 const TOKEN_KEY = "numra_token";
 const API_BASE_URL =
@@ -37,6 +38,7 @@ function authRequestInterceptor(
 
   config.headers = config.headers || {};
   config.headers["Accept"] = "application/json";
+  config.headers["Accept-Language"] = i18n.language;
   // If the request body is FormData, let Axios set the correct multipart Content-Type
   // (including the boundary). Do not override it here.
   if (config.data instanceof FormData) {

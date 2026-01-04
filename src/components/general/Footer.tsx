@@ -36,7 +36,7 @@ const Footer = () => {
     });
 
     const handleSubscribe = async () => {
-        if (!email) return toast.error("Email is required");
+        if (!email) return toast.error(t('email_required'));
 
         setLoading(true);
         try {

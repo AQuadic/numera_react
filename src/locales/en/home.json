@@ -79,5 +79,6 @@
     "om_qauquan": "Umm Al Quwain",
     "ras_alkhima": "Ras Al Khaimah"
   },
-  "search": "Search"
+  "search": "Search",
+  "email_required": "Email is required"
 }
