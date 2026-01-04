@@ -47,9 +47,6 @@ function App() {
             <Route path="sims" element={<SimsPage />} />
             <Route path="page/:id" element={<PageDetails />} />
             <Route path="seller_profile/:userId" element={<SellerProfile />} />
-
-            {/* Protected routes - require authentication */}
-            <Route element={<ProtectedRoute />}>
               <Route path="plate" element={<PlateDetails />} />
               <Route path="plate/:id" element={<PlateDetails />} />
               <Route
@@ -60,6 +57,9 @@ function App() {
                 path="sim/:id"
                 element={<PhoneNumberDetails />}
               />
+            {/* Protected routes - require authentication */}
+            <Route element={<ProtectedRoute />}>
+              
               <Route path="sell_plates" element={<SellPlatesPage />} />
               <Route path="confirm_plate" element={<ConfirmPlate />} />
               <Route path="profile" element={<MyProfile />}>
