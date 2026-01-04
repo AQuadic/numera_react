@@ -98,7 +98,7 @@ const FilterYourPlates = () => {
                         <input 
                             type="text"
                             className="lg:w-[384px] w-full h-14 border border-[#F0F0F0] rounded-md px-12"
-                            placeholder="Search"
+                            placeholder={t('search')}
                         />
                         <div className="absolute top-4 left-4">
                             <Search />
