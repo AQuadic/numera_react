@@ -60,8 +60,16 @@ const SellerProfile = () => {
                     <Verified />
                 </div>
 
-                <p className="text-[#717171] text-base font-medium mt-2">{profile.type === "personal" ? "Premium Dealer" : profile.company_name || "Dealer"}</p>
-                <p className="text-[#717171] text-base font-medium mt-1">Member since {new Date(profile.created_at).getFullYear()}</p>
+                <p className="text-[#717171] text-base font-medium mt-2">
+                    {profile.type === "personal"
+                        ? t("individual_seller")
+                        : profile.company_name
+                        ? profile.company_name
+                        : t("premium_dealer")}
+                </p>
+                <p className="text-[#717171] text-base font-medium mt-1">
+                    {t("member_since", { year: new Date(profile.created_at).getFullYear() })}
+                    </p>
 
                 <div className="flex flex-wrap justify-center items-center gap-6 mt-4 lg:mt-6">
                     <div className="w-[180px] h-[102px] bg-[#192540] rounded-[10px] flex flex-col items-center justify-center gap-2">

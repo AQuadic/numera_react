@@ -89,5 +89,6 @@
   "days_ago": "منذ {{count}} أيام",
   "weeks_ago": "منذ {{count}} أسابيع",
   "individual_seller": "بائع فردي",
-  "premium_dealer": "تاجر مميز"
+  "premium_dealer": "تاجر مميز",
+  "member_since": "عضو منذ {{year}}"
 }
