@@ -1,7 +1,6 @@
 "use client";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
-import Language from "../icons/profile/Language";
 
 interface Props {
   isHome?: boolean;
@@ -38,7 +37,11 @@ const ChangeLanguage = ({ isHome = false }: Props) => {
           isHome ? "text-white" : "text-foreground"
         } transition-colors duration-300 font-medium cursor-pointer`}
       >
-        <Language />
+        <div className="w-[50px] h-[50px] border border-[#192540] rounded-full flex items-center justify-center">
+          <p className="text-[#192540] text-lg font-semibold">
+            {isEnglish ? "EN" : "AR"}
+          </p>
+        </div>
       </span>
     </button>
   );
