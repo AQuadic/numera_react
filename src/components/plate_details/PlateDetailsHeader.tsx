@@ -7,6 +7,7 @@ import { useAuthStore } from "../../store";
 import { useState } from "react";
 import { toggleFavorite } from "../../lib/api/toggleFavorite";
 import { useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 interface PlateDetailsHeaderProps {
   plate: Plate;
@@ -84,6 +85,30 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
       }
     };
 
+    const handleShare = async () => {
+      const shareUrl = `${window.location.origin}/plate/${plate.id}/${plate.numbers}`;
+
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: `Plate ${plate.letters ?? ""}${plate.numbers}`,
+            url: shareUrl,
+          });
+          toast.success("Shared successfully!");
+        } catch (err) {
+          console.error("Error sharing:", err);
+        }
+      } else {
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          toast.success("Link copied to clipboard!");
+        } catch (err) {
+          console.error("Failed to copy link", err);
+          toast.error("Failed to copy link");
+        }
+      }
+    };
+    
   return (
     <section className="container md:py-[58px] py-10">
       <div className="flex flex-wrap gap-6">
@@ -162,7 +187,9 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
           </div>
 
           <div className="flex items-center md:gap-8 gap-4">
-            <Share />
+            <button onClick={handleShare} className="cursor-pointer">
+              <Share />
+            </button>
             {user && (
               <button
                 onClick={handleToggleFavorite}
