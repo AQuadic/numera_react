@@ -87,5 +87,7 @@
   "today": "اليوم",
   "1_day_ago": "منذ يوم",
   "days_ago": "منذ {{count}} أيام",
-  "weeks_ago": "منذ {{count}} أسابيع"
+  "weeks_ago": "منذ {{count}} أسابيع",
+  "individual_seller": "بائع فردي",
+  "premium_dealer": "تاجر مميز"
 }

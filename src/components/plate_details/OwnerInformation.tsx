@@ -24,7 +24,7 @@ interface OwnerInformationProps {
 const OwnerInformation = ({ user }: OwnerInformationProps) => {
   const { t } = useTranslation("home");
   const getUserTypeLabel = (type: string) => {
-    return type === "personal" ? "Individual Seller" : "Premium Dealer";
+    return type === "personal" ? t("individual_seller") : t("premium_dealer");
   };
 
   const sellerPhoneForWA = (user.phone_e164 ?? user.phone ?? "").replaceAll(
