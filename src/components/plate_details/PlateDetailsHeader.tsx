@@ -13,7 +13,7 @@ interface PlateDetailsHeaderProps {
 }
 
 const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
-  const { t } = useTranslation("home");
+  const { t, i18n } = useTranslation("home");
   const user = useAuthStore((s) => s.user);
   const [isFavorited, setIsFavorited] = useState(plate.is_favorite ?? false);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,10 +24,10 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
 
   const getVehicleTypeLabel = (type: string) => {
     const labels: Record<string, string> = {
-      classic: "Classic",
-      bikes: "Bikes",
-      cars: "Cars",
-      fun: "Fun",
+      classic: t("classic"),
+      bikes: t("bikes"),
+      cars: t("cars"),
+      fun: t("fun"),
     };
     return labels[type] || type;
   };
@@ -38,22 +38,23 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
     const diffTime = Math.abs(now.getTime() - date.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if (diffDays === 0) return "Today";
-    if (diffDays === 1) return "1 day ago";
-    if (diffDays < 7) return `${diffDays} days ago`;
-    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
-    return date.toLocaleDateString("en-AE");
+    if (diffDays === 0) return t("today");
+    if (diffDays === 1) return t("1_day_ago");
+    if (diffDays < 7) return t("days_ago", { count: diffDays });
+    if (diffDays < 30) return t("weeks_ago", { count: Math.floor(diffDays / 7) });
+    
+    return date.toLocaleDateString(i18n.language);
   };
 
   const getEmirateLabel = (emirateId: string) => {
     const labels: Record<string, string> = {
-      abu_dhuabi: "Abu Dhabi",
-      dubai: "Dubai",
-      sharjah: "Sharjah",
-      ajman: "Ajman",
-      fujairah: "Fujairah",
-      ras_alkhima: "Ras Al Khaimah",
-      om_qauquan: "Umm Al Quwain",
+      abu_dhuabi: t("emirates.abu_dhabi"),
+      dubai: t("emirates.dubai"),
+      sharjah: t("emirates.sharjah"),
+      ajman: t("emirates.ajman"),
+      fujairah: t("emirates.fujairah"),
+      ras_alkhima: t("emirates.ras_alkhima"),
+      om_qauquan: t("emirates.umm_al_quwain"),
     };
     return labels[emirateId] || emirateId;
   };
@@ -98,14 +99,15 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
               {plate.numbers}
             </h2>
             <h2 className="text-[#966A08] md:text-2xl font-bold mt-3">
-              {plate.price != null ? (
-                <>
-                  {formatPrice(plate.price)}{" "}
-                  <span className="text-sm relative top-1">AED</span>
-                </>
-              ) : (
-                t("price_on_request")
-              )}
+              {plate.price ? (
+                  <>
+                    {formatPrice(plate.price)}{" "}
+                    <span className="text-sm relative top-1">{t('aed')}</span>
+                  </>
+                ) : (
+                  t("price_on_request")
+                )}
+
             </h2>
 
             {plate.is_negotiable && (

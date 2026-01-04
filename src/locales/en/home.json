@@ -81,5 +81,12 @@
   },
   "search": "Search",
   "email_required": "Email is required",
-  "no_results": "No matching results"
+  "no_results": "No matching results",
+  "classic": "Classic",
+  "bikes": "Bikes",
+  "cars": "Cars",
+  "today": "Today",
+  "1_day_ago": "1 day ago",
+  "days_ago": "{{count}} days ago",
+  "weeks_ago": "{{count}} weeks ago"
 }
