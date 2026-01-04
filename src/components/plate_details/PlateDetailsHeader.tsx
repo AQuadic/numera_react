@@ -2,6 +2,11 @@
 import Share from "../icons/plates/Share";
 import type { Plate } from "../../lib/api";
 import { useTranslation } from "react-i18next";
+import Heart from "../icons/home/Heart";
+import { useAuthStore } from "../../store";
+import { useState } from "react";
+import { toggleFavorite } from "../../lib/api/toggleFavorite";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface PlateDetailsHeaderProps {
   plate: Plate;
@@ -9,6 +14,10 @@ interface PlateDetailsHeaderProps {
 
 const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
   const { t } = useTranslation("home");
+  const user = useAuthStore((s) => s.user);
+  const [isFavorited, setIsFavorited] = useState(plate.is_favorite ?? false);
+  const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-AE").format(price);
   };
@@ -48,6 +57,31 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
     };
     return labels[emirateId] || emirateId;
   };
+
+    const handleToggleFavorite = async (
+      e: React.MouseEvent<HTMLButtonElement>
+    ) => {
+      e.preventDefault();
+      e.stopPropagation();
+  
+      if (isLoading) return;
+      setIsFavorited((prev) => !prev);
+  
+      try {
+        setIsLoading(true);
+        const res = await toggleFavorite({
+          favorable_id: plate.id,
+          favorable_type: "plate",
+        });
+        setIsFavorited(res.is_favorited);
+        queryClient.invalidateQueries({ queryKey: ["favorites"] });
+      } catch (error) {
+        setIsFavorited((prev) => !prev);
+        console.error("Failed to toggle favorite", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
   return (
     <section className="container md:py-[58px] py-10">
@@ -127,7 +161,15 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
 
           <div className="flex items-center md:gap-8 gap-4">
             <Share />
-            {/* <Heart /> */}
+            {user && (
+              <button
+                onClick={handleToggleFavorite}
+                disabled={isLoading}
+                className="cursor-pointer"
+              >
+                <Heart active={isFavorited} />
+              </button>
+            )}
           </div>
         </div>
       </div>
