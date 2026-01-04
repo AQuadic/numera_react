@@ -162,7 +162,7 @@ const PersonalInformation: FC = () => {
                 }
               }}
             />
-            <label htmlFor="uploadPhoto" className="absolute top-16 -left-14">
+            <label htmlFor="uploadPhoto" className="absolute top-16 ltr:-left-14 rtl:-right-14">
               <Photo />
             </label>
           </div>
