@@ -116,7 +116,10 @@ export const getPlates = async (
   }
   if (filters?.package_id) params.package_id = filters.package_id.toString();
   if (filters?.letters) params.letters = filters.letters;
-  if (filters?.numbers) params.numbers = filters.numbers;
+  // if (filters?.numbers) params.numbers = filters.numbers;
+  if (filters?.numbers && filters.numbers.trim() !== "") {
+    params.numbers = filters.numbers.trim(); 
+  }
   if (filters?.price_from) params.price_from = filters.price_from.toString();
   if (filters?.price_to) params.price_to = filters.price_to.toString();
   if (filters?.page) params.page = filters.page.toString();

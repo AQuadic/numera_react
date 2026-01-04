@@ -11,6 +11,7 @@ import type { Package } from "../../lib/api/plates";
 import { getPackages } from "../../lib/api/getPackages";
 import { useTranslation } from "react-i18next";
 import Search from "../icons/home/Search";
+import NoPlatesEmptyState from "./NoPlatesEmptyState";
 
 interface PlatesByPackage {
   package: Package;
@@ -18,14 +19,12 @@ interface PlatesByPackage {
 }
 
 const FilterYourPlates = () => {
-  const {t, i18n } = useTranslation("home");
+  const { t, i18n } = useTranslation("home");
   const [data, setData] = useState<PlatesByPackage[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const [filters, setFilters] = useState<PlateFilters>({
-    page: 1,
-  });
-
+  const [searchQueries, setSearchQueries] = useState<Record<number, string>>({});
+  const [searchLoading, setSearchLoading] = useState<Record<number, boolean>>({});
+  const [filters, setFilters] = useState<PlateFilters>({ page: 1 });
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -57,6 +56,40 @@ const FilterYourPlates = () => {
     fetchData();
   }, [filters]);
 
+  useEffect(() => {
+    const timeouts: Record<number, NodeJS.Timeout> = {};
+
+    Object.entries(searchQueries).forEach(([pkgId, query]) => {
+      const packageId = Number(pkgId);
+
+      timeouts[packageId] = setTimeout(async () => {
+        setSearchLoading((prev) => ({ ...prev, [packageId]: true }));
+
+        try {
+          const payload: PlateFilters = {
+            ...filters,
+            package_id: packageId,
+            page: 1,
+            numbers: query.trim() || undefined, 
+          };
+
+          const res = await getPlates(payload);
+
+          setData((prev) =>
+            prev.map((item) =>
+              item.package.id === packageId ? { ...item, plates: res.data.slice(0, 8) } : item
+            )
+          );
+        } catch (error) {
+          console.error(`Error fetching plates for package ${packageId}:`, error);
+        } finally {
+          setSearchLoading((prev) => ({ ...prev, [packageId]: false }));
+        }
+      }, 500);
+    });
+
+    return () => Object.values(timeouts).forEach((t) => clearTimeout(t));
+  }, [searchQueries, filters]);
 
   if (loading) {
   return (
@@ -85,25 +118,36 @@ const FilterYourPlates = () => {
 
   return (
     <div className="container md:py-[58px] py-10">
-    {data.map(({ package: pkg, plates }) => (
-      <div key={pkg.id} className="mt-10">
-      <div className="flex flex-wrap items-center justify-between mb-8">
-        <h2 className="text-[#192540] md:text-[32px] text-2xl font-medium">
-          {t('ads')} {i18n.language === "ar" ? pkg.name.ar : pkg.name.en}
-        </h2>
+      {data.map(({ package: pkg, plates }) => {
+        const searchQuery = searchQueries[pkg.id] || "";
+        const isSearching = searchLoading[pkg.id] || false;
 
-        <div className="flex items-center gap-6">
+        return (
+        <div key={pkg.id} className="mt-10">
+          <div className="flex flex-wrap items-center justify-between mb-8">
+            <h2 className="text-[#192540] md:text-[32px] text-2xl font-medium">
+              {t('ads')} {i18n.language === "ar" ? pkg.name.ar : pkg.name.en}
+            </h2>
+
             <div className="flex items-center gap-6">
                 <div className="relative">
                         <input 
                             type="text"
+                            value={searchQuery}
+                            onChange={(e) =>
+                              setSearchQueries((prev) => ({ ...prev, [pkg.id]: e.target.value }))
+                            }
                             className="lg:w-[384px] w-full h-14 border border-[#F0F0F0] rounded-md px-12"
                             placeholder={t('search')}
                         />
                         <div className="absolute top-4 left-4">
                             <Search />
                         </div>
+                  {isSearching && (
+                    <div className="absolute top-4 right-4">
+                      <div className="animate-spin h-5 w-5 border-2 border-[#EBAF29] border-t-transparent rounded-full" />
                     </div>
+                  )}
             </div>
           <Dialog>
               <DialogTrigger className="w-full">
@@ -132,9 +176,9 @@ const FilterYourPlates = () => {
           </div>
         </div>
 
-          {plates.length === 0 ? (
-            <p className="text-gray-500">No plates available</p>
-          ) : (
+            {plates.length === 0 ? (
+              <NoPlatesEmptyState />
+            ) : (
             <>
               <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {plates.map((plate) => (
@@ -156,7 +200,7 @@ const FilterYourPlates = () => {
             </>
           )}
         </div>
-      ))}
+      )})}
     </div>
   );
 };
