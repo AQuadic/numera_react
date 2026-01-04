@@ -108,7 +108,7 @@ const FilterYourPlates = () => {
           <Dialog>
               <DialogTrigger className="w-full">
                 <div className="lg:w-[180px] w-full h-14 border border-[#F0F0F0] rounded-md flex items-center justify-center gap-3">
-                  <p className="text-[#717171] font-semibold">Filter</p>
+                  <p className="text-[#717171] font-semibold">{t('filter')}</p>
                   <Filter />
                 </div>
               </DialogTrigger>

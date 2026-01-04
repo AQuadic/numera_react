@@ -55,5 +55,27 @@
   "whatsapp": "واتساب",
 
   "total_plates": "إجمالي اللوحات",
-  "premium": "مميز"
+  "premium": "مميز",
+  "filter": "تصفية",
+  "select_emirate": "اختر الإمارة",
+  "select_plate_type": "اختر نوع اللوحة",
+  "select_code": "اختر الرمز",
+  "letters": "الأحرف (مثال: أ)",
+  "numbers": "الأرقام (مثال: 12345)",
+  "apply": "تطبيق",
+  "vehicle_types": {
+    "classic": "كلاسيكي",
+    "bikes": "دراجات",
+    "cars": "سيارات",
+    "fun": "ترفيه"
+  },
+  "emirates": {
+    "abu_dhuabi": "أبو ظبي",
+    "dubai": "دبي",
+    "sharjah": "الشارقة",
+    "ajman": "عجمان",
+    "fujairah": "الفجيرة",
+    "om_qauquan": "أم القيوين",
+    "ras_alkhima": "رأس الخيمة"
+  }
 }

@@ -56,5 +56,27 @@
   "whatsapp": "WhatsApp",
 
   "total_plates": "Total Plates",
-  "premium": "Premium"
+  "premium": "Premium",
+  "filter": "Filter",
+  "select_emirate": "Select Emirate",
+  "select_plate_type": "Select Plate Type",
+  "select_code": "Select Code",
+  "letters": "Letters (e.g. A)",
+  "numbers": "Numbers (e.g. 12345)",
+  "apply": "Apply",
+  "vehicle_types": {
+    "classic": "Classic",
+    "bikes": "Bikes",
+    "cars": "Cars",
+    "fun": "Fun"
+  },
+  "emirates": {
+    "abu_dhuabi": "Abu Dhabi",
+    "dubai": "Dubai",
+    "sharjah": "Sharjah",
+    "ajman": "Ajman",
+    "fujairah": "Fujairah",
+    "om_qauquan": "Umm Al Quwain",
+    "ras_alkhima": "Ras Al Khaimah"
+  }
 }

@@ -1,24 +1,26 @@
 import { useState } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 import type { PlateFilters } from "../../lib/api";
+import { useTranslation } from "react-i18next";
 
 interface FilterComponentProps {
   onApply: (filters: PlateFilters) => void;
 }
 
-const emirates = [
-  { value: "abu_dhuabi", label: "Abu Dhabi" },
-  { value: "dubai", label: "Dubai" },
-  { value: "sharjah", label: "Sharjah" },
-  { value: "ajman", label: "Ajman" },
-  { value: "fujairah", label: "Fujairah" },
-  { value: "om_qauquan", label: "Umm Al Quwain" },
-  { value: "ras_alkhima", label: "Ras Al Khaimah" },
+const emirateValues = [
+  "abu_dhuabi",
+  "dubai",
+  "sharjah",
+  "ajman",
+  "fujairah",
+  "om_qauquan",
+  "ras_alkhima",
 ];
 
 const vehicleTypes = ["classic", "bikes", "cars", "fun"];
 
 const FilterComponent = ({ onApply }: FilterComponentProps) => {
+  const { t } = useTranslation("home");
   const [selectedEmirate, setSelectedEmirate] = useState<string | undefined>();
   const [selectedVehicleTypes, setSelectedVehicleTypes] = useState<string[]>([]);
   const [letters, setLetters] = useState("");
@@ -26,27 +28,27 @@ const FilterComponent = ({ onApply }: FilterComponentProps) => {
 
   return (
     <div className="px-6">
-      <h2 className="text-[#192540] text-2xl font-medium">Filter</h2>
+      <h2 className="text-[#192540] text-2xl font-medium ltr:text-left rtl:text-right">{t("filter")}</h2>
 
       <div className="mt-4 max-h-[500px] overflow-y-auto space-y-4">
         <Accordion type="single" collapsible>
           <AccordionItem value="emirate" className="border rounded-[10px] px-3 py-4">
             <AccordionTrigger className="text-[#192540] text-base font-medium">
-              Select Emirate
+              {t("select_emirate")}
             </AccordionTrigger>
             <AccordionContent>
-              {emirates.map((emirate) => (
+              {emirateValues.map((emirateValue) => (
                 <div
-                  key={emirate.value}
+                  key={emirateValue}
                   className="flex items-center justify-between mb-4"
                 >
                   <label className="text-[#192540] text-sm">
-                    {emirate.label}
+                    {t(`emirates.${emirateValue}`)}
                   </label>
                   <input
                     type="checkbox"
-                    checked={selectedEmirate === emirate.value}
-                    onChange={() => setSelectedEmirate(emirate.value)}
+                    checked={selectedEmirate === emirateValue}
+                    onChange={() => setSelectedEmirate(emirateValue)}
                   />
                 </div>
               ))}
@@ -57,7 +59,7 @@ const FilterComponent = ({ onApply }: FilterComponentProps) => {
         <Accordion type="single" collapsible>
           <AccordionItem value="plate-type" className="border rounded-[10px] px-3 py-4">
             <AccordionTrigger className="text-[#192540] text-base font-medium">
-              Select Plate Type
+              {t("select_plate_type")}
             </AccordionTrigger>
             <AccordionContent>
               {vehicleTypes.map((type) => (
@@ -65,8 +67,8 @@ const FilterComponent = ({ onApply }: FilterComponentProps) => {
                   key={type}
                   className="flex items-center justify-between mb-4"
                 >
-                  <label className="text-[#192540] text-sm capitalize">
-                    {type}
+                  <label className="text-[#192540] text-sm">
+                    {t(`vehicle_types.${type}`)}
                   </label>
                   <input
                     type="checkbox"
@@ -88,20 +90,20 @@ const FilterComponent = ({ onApply }: FilterComponentProps) => {
         <Accordion type="single" collapsible>
           <AccordionItem value="code" className="border rounded-[10px] px-3 py-4">
             <AccordionTrigger className="text-[#192540] text-base font-medium">
-              Select Code
+              {t("select_code")}
             </AccordionTrigger>
             <AccordionContent>
               <input
                 value={letters}
                 onChange={(e) => setLetters(e.target.value)}
-                placeholder="Letters (e.g. A)"
+                placeholder={t("letters")}
                 className="w-full border rounded-md p-2 mb-3"
               />
 
               <input
                 value={numbers}
                 onChange={(e) => setNumbers(e.target.value)}
-                placeholder="Numbers (e.g. 12345)"
+                placeholder={t("numbers")}
                 className="w-full border rounded-md p-2"
               />
             </AccordionContent>
@@ -122,7 +124,7 @@ const FilterComponent = ({ onApply }: FilterComponentProps) => {
         }
         className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold mt-4 cursor-pointer"
       >
-        Apply
+        {t("apply")}
       </button>
     </div>
   );
