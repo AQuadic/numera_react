@@ -17,8 +17,21 @@ const DownloadApp = () => {
           </p>
 
           <div className="flex flex-wrap items-center justify-center md:justify-start rtl:md:justify-end gap-6 md:px-8 px-2 mt-8">
-            <GooglePlay />
-            <AppStore />
+            <a
+              href="https://play.google.com/store/apps/details?id=ae.numra.app"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <GooglePlay />
+            </a>
+
+            <a
+              href="https://apps.apple.com/app/id6757126901"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <AppStore />
+            </a>
           </div>
         </div>
 
