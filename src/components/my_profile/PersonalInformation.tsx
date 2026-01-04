@@ -15,7 +15,7 @@ import Photo from "../icons/profile/Photo";
 import { useTranslation } from "react-i18next";
 
 const PersonalInformation: FC = () => {
-  const { t } = useTranslation("profile");
+  const { t, i18n } = useTranslation("profile");
   const [isUpdating, setIsUpdating] = useState(false);
 
   const user = useAuthStore((s) => s.user);
@@ -216,6 +216,7 @@ const PersonalInformation: FC = () => {
                 setMemberType(value);
             }}
             className="flex md:gap-60 mt-4"
+            dir={i18n.language === "ar" ? "rtl" : "ltr"} 
           >
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="personal" id="option-one" />
