@@ -33,5 +33,15 @@
   "purchase_official_title": "التحويل الرسمي",
   "purchase_official_desc": "قم بزيارة إدارة المرور لتسجيل اللوحة رسمياً باسمك.",
 
-  "safety_tips_title": "نصائح الأمان"
+  "safety_tips_title": "نصائح الأمان",
+
+  "emirates": {
+    "abu_dhuabi": "أبو ظبي",
+    "dubai": "دبي",
+    "sharjah": "الشارقة",
+    "ajman": "عجمان",
+    "fujairah": "الفجيرة",
+    "om_qauquan": "أم القيوين",
+    "ras_alkhima": "رأس الخيمة"
+  }
 }

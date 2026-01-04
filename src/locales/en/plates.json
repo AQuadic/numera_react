@@ -33,5 +33,15 @@
   "purchase_official_title": "Official Transfer",
   "purchase_official_desc": "Visit the traffic department to officially register the plate under your name.",
 
-  "safety_tips_title": "Safety Tips"
+  "safety_tips_title": "Safety Tips",
+  
+  "emirates": {
+    "abu_dhuabi": "Abu Dhabi",
+    "dubai": "Dubai",
+    "sharjah": "Sharjah",
+    "ajman": "Ajman",
+    "fujairah": "Fujairah",
+    "om_qauquan": "Umm Al Quwain",
+    "ras_alkhima": "Ras Al Khaimah"
+  }
 }

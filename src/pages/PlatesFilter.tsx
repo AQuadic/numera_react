@@ -9,10 +9,19 @@ import FilterIcon from "../components/icons/draw_plates/Filter";
 const PlatesFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [plates, setPlates] = useState<Plate[]>([]);
-  const [cities, setCities] = useState<City[]>([]);
+  const [, setCities] = useState<City[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const emirateValues = [
+    "abu_dhuabi",
+    "dubai",
+    "sharjah",
+    "ajman",
+    "fujairah",
+    "om_qauquan",
+    "ras_alkhima",
+  ] as const;
 
   // Filter states
   const [filters, setFilters] = useState<ApiPlateFilters>(() => {
@@ -127,11 +136,7 @@ const PlatesFilter = () => {
     setCurrentPage(1);
   };
 
-  const { t, i18n } = useTranslation("plates");
-
-  const lang = (i18n.language || "en").toLowerCase().startsWith("ar")
-    ? "ar"
-    : "en";
+  const { t } = useTranslation("plates");
 
   return (
     <section className="container md:py-[58px] py-5">
@@ -192,16 +197,15 @@ const PlatesFilter = () => {
               onChange={(e) =>
                 handleFilterChange(
                   "emirate_id",
-                  e.target.value ? Number(e.target.value) : undefined
+                  e.target.value || undefined
                 )
               }
               className="w-full px-3 py-2 border border-[#F0F0F0] rounded-md text-sm"
             >
               <option value="">{t("allEmirates")}</option>
-              {cities.map((city) => (
-                <option key={city.id} value={city.id}>
-                  {((city.name && city.name[lang]) || city.name.en) ??
-                    city.name.en}
+              {emirateValues.map((emirate) => (
+                <option key={emirate} value={emirate}>
+                  {t(`emirates.${emirate}`)}
                 </option>
               ))}
             </select>
