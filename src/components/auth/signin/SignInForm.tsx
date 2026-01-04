@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { PhoneInput, type PhoneValue } from "../../compound/PhoneInput";
 import { login, getErrorMessage } from "../../../lib/api/auth";
 import { useAuthStore } from "../../../store/useAuthStore";
-// country lookup not needed here — we send iso2 separately
+import { Eye, EyeOff } from "lucide-react"; 
 
 const SignInForm = () => {
   const navigate = useNavigate();
@@ -20,6 +20,7 @@ const SignInForm = () => {
   const [password, setPassword] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,7 +99,7 @@ const SignInForm = () => {
           </div>
         </div>
 
-        <div className="mt-6">
+        <div className="mt-6 relative">
           <label
             htmlFor="password"
             className="text-[#192540] text-xl font-medium leading-[100%]"
@@ -106,13 +107,20 @@ const SignInForm = () => {
             {t("signIn.passwordLabel")}
           </label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full h-14 border border-[#F0F0F0] rounded-md mt-3 px-3 placeholder:text-sm placeholder:font-medium"
+            className="w-full h-14 border border-[#F0F0F0] rounded-md mt-3 px-3 pr-10 placeholder:text-sm placeholder:font-medium"
             placeholder={t("signIn.passwordPlaceholder")}
             disabled={isLoading}
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute top-[70%] ltr:right-3 rtl:left-3 -translate-y-1/2 text-gray-500"
+          >
+            {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+          </button>
         </div>
 
         <div className="mt-3 text-end">
