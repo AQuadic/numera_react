@@ -80,5 +80,6 @@
     "ras_alkhima": "Ras Al Khaimah"
   },
   "search": "Search",
-  "email_required": "Email is required"
+  "email_required": "Email is required",
+  "no_results": "No matching results"
 }
