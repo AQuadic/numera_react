@@ -9,11 +9,22 @@ export interface BroadcastNotificationParams {
 }
 
 export interface BroadcastNotification {
-  id: number;
-  title: string;
-  message: string;
+  id: string;
+  title: {
+    en: string;
+    ar: string;
+  };
+  body: {
+    en: string;
+    ar: string;
+  };
   created_at: string;
+  app_ids?: string[];
+  type?: string;
+  image?: string | null;
+  read_at?: string | null;
 }
+
 
 export interface BroadcastNotificationsResponse {
   data: BroadcastNotification[];

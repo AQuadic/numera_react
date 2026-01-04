@@ -27,7 +27,8 @@ import ChangeLanguage from "./ChangeLanguage";
 import { useTranslation } from "react-i18next";
 
 const Header = () => {
-  const { t } = useTranslation("home");
+  const { t, i18n } = useTranslation("home");
+  const lang = i18n.language as "en" | "ar";
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const user = useAuthStore((state) => state.user);
@@ -147,24 +148,23 @@ const Header = () => {
                     {!isLoading && notifications.length === 0 && (
                       <NotificationsEmptyState />
                     )}
+
                     {notifications.map((notification) => (
-                      <div
-                        key={notification.id}
-                        className="flex items-center justify-between border-b py-4 bg-[#FDFAF3] px-4"
-                      >
+                      <div key={notification.id} className="flex items-center justify-between border-b py-4 bg-[#FDFAF3] px-4">
                         <div className="flex items-center gap-2">
-                          <Bell />
+                          <div>
+                            <Bell />
+                          </div>
                           <p className="text-[#192540] text-sm font-medium">
-                            {notification.message}
+                            {notification.body[lang] ?? notification.body.en}
                           </p>
                         </div>
                         <p className="text-[#717171] text-[12px]">
-                          {new Date(
-                            notification.created_at
-                          ).toLocaleTimeString()}
+                          {new Date(notification.created_at).toLocaleTimeString()}
                         </p>
                       </div>
                     ))}
+
                   </div>
                 </motion.div>
               </>
