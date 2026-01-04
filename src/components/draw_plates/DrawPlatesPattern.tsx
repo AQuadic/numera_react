@@ -217,11 +217,18 @@ const DrawPlatesPattern = () => {
 
   return (
     <section className="px-4 container ">
-      <div
-        ref={plateContainerRef}
-        className="w-96 h-72 border mx-auto mb-2 flex flex-col justify-between"
-        style={{ backgroundColor: bgColor }}
-      >
+<div
+  ref={plateContainerRef}
+  className="relative w-96 h-72 border mx-auto mb-2 flex flex-col justify-between bg-cover bg-center"
+  style={{
+    backgroundColor: bgColor,
+    backgroundImage:
+      bgColor === "black"
+        ? "url(/images/pattern.jpeg)"
+        : "url(/images/pattern1.jpeg)",
+  }}
+>
+
         <div className="flex-1 flex items-center justify-center flex-col px-4">
           {plateImg ? (
             <img
@@ -233,13 +240,15 @@ const DrawPlatesPattern = () => {
             <div className="w-full h-full flex items-center justify-center" />
           )}
 
-          {price && (
+          {price !== "" && (
             <p
               className={`${getContrastTextClass(
                 bgColor
               )} text-lg font-medium text-center mt-2`}
             >
-              {t("priceLabel")} {price}
+              {price === "0"
+                ? t("price_on_request")
+                : `${t("priceLabel")} ${price}`}
             </p>
           )}
         </div>
