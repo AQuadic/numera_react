@@ -32,6 +32,7 @@ const Header = () => {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const user = useAuthStore((state) => state.user);
+  const [downloadDialogOpen, setDownloadDialogOpen] = useState(false);
   // Show the user's name when the store has a user; this avoids relying on a
   // token-only check which can be false when the server uses HttpOnly cookies.
   // AuthProvider hydrates the store before rendering, so user will be available
@@ -226,25 +227,15 @@ const Header = () => {
                 {navLinks.map((link) => {
                   if (link.dialog) {
                     return (
-                      <Dialog key={link.titleKey}>
-                        <DialogTrigger asChild>
-                          <button
-                            className="text-[#192540] text-xl font-semibold hover:text-[#EBAF29] transition cursor-pointer text-start"
-                            onClick={() => setOpen(false)}
-                          >
-                            {t(link.titleKey)}
-                          </button>
-                        </DialogTrigger>
-
-                        <DialogContent className="w-[860px] max-w-full px-0">
-                          <DialogHeader>
-                            <DialogTitle></DialogTitle>
-                            <DialogDescription>
-                              <DownloadApp />
-                            </DialogDescription>
-                          </DialogHeader>
-                        </DialogContent>
-                      </Dialog>
+                    <button
+                        className="text-[#192540] text-xl font-semibold hover:text-[#EBAF29] transition text-start"
+                        onClick={() => {
+                          setDownloadDialogOpen(true);
+                          setOpen(false);
+                        }}
+                      >
+                        {t(link.titleKey)}
+                      </button>
                     );
                   }
 
@@ -284,6 +275,16 @@ const Header = () => {
           </>
         )}
       </AnimatePresence>
+        <Dialog open={downloadDialogOpen} onOpenChange={setDownloadDialogOpen}>
+          <DialogContent className="w-[860px] max-w-full px-0">
+            <DialogHeader>
+              <DialogTitle />
+              <DialogDescription>
+                <DownloadApp />
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
     </>
   );
 };
