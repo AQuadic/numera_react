@@ -48,48 +48,48 @@ const AdsStats = ({ data, isLoading }: AdsStatsProps) => {
         ))
       ) : (
         <>
-          <div className="w-[187px] md:px-6 px-2 py-5 bg-[#EEF6FF] rounded-lg flex items-center gap-3">
+          <div className="w-[187px] md:px-3 px-2 py-5 bg-[#EEF6FF] rounded-lg flex items-center gap-3">
             <TotalAds />
             <div>
               <h2 className="text-[#155DFD] text-2xl font-semibold">
                 {renderData?.total ?? "-"}
               </h2>
-              <p className="text-[#717171] text-base font-medium mt-2">
+              <p className="text-[#717171] text-sm font-medium mt-2">
                 {t("stats_total_ads")}
               </p>
             </div>
           </div>
 
-          <div className="w-[187px] md:px-6 px-2 py-5 bg-[#ECF5F1] rounded-lg flex items-center gap-3">
+          <div className="w-[187px] md:px-3 px-2 py-5 bg-[#ECF5F1] rounded-lg flex items-center gap-3">
             <Active />
             <div>
               <h2 className="text-[#19AA3D] text-2xl font-semibold">
                 {renderData?.data?.filter((p) => p.is_active).length ?? 0}
               </h2>
-              <p className="text-[#717171] text-base font-medium mt-2">
+              <p className="text-[#717171] text-sm font-medium mt-2">
                 {t("stats_active")}
               </p>
             </div>
           </div>
 
-          <div className="w-[187px] md:px-6 px-2 py-5 bg-[#FFF9E0] rounded-lg flex items-center gap-3">
+          <div className="w-[187px] md:px-3 px-2 py-5 bg-[#FFF9E0] rounded-lg flex items-center gap-3">
             <Sold />
             <div>
               <h2 className="text-[#B48110] text-2xl font-semibold">
                 {renderData?.data?.filter((p) => p.is_sold).length ?? 0}
               </h2>
-              <p className="text-[#717171] text-base font-medium mt-2">{t("stats_sold")}</p>
+              <p className="text-[#717171] text-sm font-medium mt-2">{t("stats_sold")}</p>
             </div>
           </div>
 
-          <div className="w-[187px] md:px-6 px-2 py-5 bg-[#F0F0F080] rounded-lg flex items-center gap-3">
+          <div className="w-[187px] md:px-3 px-2 py-5 bg-[#F0F0F080] rounded-lg flex items-center gap-3">
             <Paused />
             <div>
               <h2 className="text-[#717171] text-2xl font-semibold">
                 {renderData?.data?.filter((p) => p.paused_at !== null).length ??
                   0}
               </h2>
-              <p className="text-[#717171] text-base font-medium mt-2">
+              <p className="text-[#717171] text-sm font-medium mt-2">
                 {t("stats_paused")}
               </p>
             </div>
