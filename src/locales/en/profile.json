@@ -150,5 +150,13 @@
     "member_since": "Member since {{year}}",
 
     "favorites": "Favorite",
-    "plates": "Plates"
+    "plates": "Plates",
+
+    "verification_status": {
+    "verified": "Verified",
+    "pending": "Pending",
+    "submitted": "Submitted",
+    "rejected": "Rejected",
+    "not_verified": "Not Verified"
+    }
 }

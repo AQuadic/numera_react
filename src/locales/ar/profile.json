@@ -149,5 +149,13 @@
     "member_since": "عضو منذ {{year}}",
 
     "favorites": "المفضلة",
-    "plates": "اللوحات"
+    "plates": "اللوحات",
+
+    "verification_status": {
+    "verified": "تم التحقق",
+    "pending": "قيد الانتظار",
+    "submitted": "تم الإرسال",
+    "rejected": "مرفوض",
+    "not_verified": "غير متحقق"
+    }
 }

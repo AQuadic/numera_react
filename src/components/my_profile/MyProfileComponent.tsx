@@ -61,15 +61,15 @@ const MyProfileComponent = () => {
   const getVerificationStatusText = () => {
     switch (user?.verification_status) {
       case "verified":
-        return "Verified";
+        return t("verification_status.verified");
       case "pending":
-        return "Pending";
+        return t("verification_status.pending");
       case "submitted":
-        return "Submitted";
+        return t("verification_status.submitted");
       case "rejected":
-        return "Rejected";
+        return t("verification_status.rejected");
       default:
-        return "Not Verified";
+        return t("verification_status.not_verified");
     }
   };
 
