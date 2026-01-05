@@ -178,7 +178,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                       <div>
                         <div className="flex flex-col items-center justify-center">
                           <img
-                            src="../../../public/images/sold.png"
+                            src="/images/sold.png"
                             alt="sold"
                             className="w-[245px] h-[245px]"
                           />
@@ -226,7 +226,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                       <div>
                         <div className="flex flex-col items-center justify-center">
                           <img
-                            src="../../../public/images/delete_account.png"
+                            src="/images/delete_account.png"
                             alt="delete"
                             className="w-[245px] h-[245px]"
                           />
@@ -348,7 +348,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                     <div>
                       <div className="flex flex-col items-center justify-center">
                         <img
-                          src="../../../public/images/republish.png"
+                          src="/images/republish.png"
                           alt="republish"
                         />
                         <h2 className="text-[#192540] text-2xl font-semibold mt-4">
@@ -395,7 +395,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                     <div>
                       <div className="flex flex-col items-center justify-center">
                         <img
-                          src="../../../public/images/pause.png"
+                          src="/images/pause.png"
                           alt="pause"
                           className="w-[245px] h-[245px]"
                         />
