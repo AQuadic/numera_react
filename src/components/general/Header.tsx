@@ -133,7 +133,7 @@ const Header = () => {
                       {t("header_notifications")}
                     </h2>
                     <button
-                      className="text-3xl mb-6 text-[#192540]"
+                      className="text-3xl mb-6 mx-4 text-[#192540]"
                       onClick={() => setNotificationsOpen(false)}
                     >
                       <XIcon />
@@ -161,7 +161,11 @@ const Header = () => {
                           </p>
                         </div>
                         <p className="text-[#717171] text-[12px]">
-                          {new Date(notification.created_at).toLocaleTimeString()}
+                          {new Date(notification.created_at).toLocaleTimeString(undefined, {
+                            hour: "numeric",
+                            minute: "numeric",
+                            hour12: true,
+                          })}
                         </p>
                       </div>
                     ))}
