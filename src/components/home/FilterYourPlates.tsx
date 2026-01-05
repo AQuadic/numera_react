@@ -25,15 +25,20 @@ const FilterYourPlates = () => {
   const [searchQueries, setSearchQueries] = useState<Record<number, string>>({});
   const [searchLoading, setSearchLoading] = useState<Record<number, boolean>>({});
   const [filters, setFilters] = useState<PlateFilters>({ page: 1 });
+  const [filtersByPackage, setFiltersByPackage] = useState<
+    Record<number, PlateFilters>
+  >({});
+  const [openDialogs, setOpenDialogs] = useState<Record<number, boolean>>({});
+
+
   useEffect(() => {
     const fetchData = async () => {
-      try {
         setLoading(true);
         const packages = await getPackages();
-        const result: PlatesByPackage[] = await Promise.all(
+
+        const result = await Promise.all(
           packages.map(async (pkg) => {
             const res = await getPlates({
-              ...filters,
               package_id: pkg.id,
               page: 1,
             });
@@ -45,16 +50,12 @@ const FilterYourPlates = () => {
           })
         );
 
-        setData(result);
-      } catch (error) {
-        console.error("Error fetching plates:", error);
-      } finally {
-        setLoading(false);
-      }
+      setData(result);
+      setLoading(false);
     };
 
     fetchData();
-  }, [filters]);
+  }, []);
 
   useEffect(() => {
     const timeouts: Record<number, ReturnType<typeof setTimeout>> = {};
@@ -122,6 +123,12 @@ const FilterYourPlates = () => {
         const searchQuery = searchQueries[pkg.id] || "";
         const isSearching = searchLoading[pkg.id] || false;
 
+        const isFilterActive = Boolean(
+          filtersByPackage[pkg.id] &&
+          Object.values(filtersByPackage[pkg.id]).some(
+            (v) => v !== undefined && v !== ""
+          )
+        );
         return (
         <div key={pkg.id} className="mt-10">
           <div className="flex flex-wrap items-center justify-between mb-8">
@@ -149,26 +156,62 @@ const FilterYourPlates = () => {
                     </div>
                   )}
             </div>
-          <Dialog>
+          <Dialog
+              open={!!openDialogs[pkg.id]}
+              onOpenChange={(open) =>
+                setOpenDialogs((prev) => ({ ...prev, [pkg.id]: open }))
+              }
+            >
               <DialogTrigger className="w-full">
-                <div className="lg:w-[180px] w-full h-14 border border-[#F0F0F0] rounded-md flex items-center justify-center gap-3">
-                  <p className="text-[#717171] font-semibold">{t('filter')}</p>
-                  <Filter />
+                <div className="relative">
+                  <div className="lg:w-[180px] w-full h-14 border rounded-md flex items-center justify-center gap-3">
+                    <p className="font-semibold">
+                      {t("filter")}
+                    </p>
+                    <Filter />
+                  </div>
+
+                  {isFilterActive && (
+                    <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full" />
+                  )}
                 </div>
               </DialogTrigger>
               <DialogContent className="w-[860px] px-0!">
                   <DialogHeader>
                   <DialogTitle ></DialogTitle>
                   <DialogDescription>
-                      <FilterComponent
-                        onApply={(newFilters) =>
-                          setFilters((prev) => ({
-                            ...prev,
-                            ...newFilters,
-                            page: 1,
-                          }))
-                        }
-                      />
+                    <FilterComponent
+                      onApply={(newFilters) => {
+                        setFiltersByPackage((prev) => {
+                          const updated = { ...prev };
+
+                          if (!newFilters || Object.keys(newFilters).length === 0) {
+                            delete updated[pkg.id];
+                          } else {
+                            updated[pkg.id] = newFilters;
+                          }
+
+                          return updated;
+                        });
+
+                        getPlates({
+                          ...newFilters,
+                          package_id: pkg.id,
+                          page: 1,
+                        }).then((res) => {
+                          setData((prev) =>
+                            prev.map((item) =>
+                              item.package.id === pkg.id
+                                ? { ...item, plates: res.data.slice(0, 8) }
+                                : item
+                            )
+                          );
+                        });
+
+                        setOpenDialogs((prev) => ({ ...prev, [pkg.id]: false }));
+                      }}
+                    />
+
                   </DialogDescription>
                   </DialogHeader>
               </DialogContent>

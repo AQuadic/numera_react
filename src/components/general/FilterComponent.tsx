@@ -4,7 +4,7 @@ import type { PlateFilters } from "../../lib/api";
 import { useTranslation } from "react-i18next";
 
 interface FilterComponentProps {
-  onApply: (filters: PlateFilters) => void;
+  onApply: (filtersByPackage: Record<number, PlateFilters>) => void;
 }
 
 const emirateValues = [
@@ -126,6 +126,21 @@ const FilterComponent = ({ onApply }: FilterComponentProps) => {
       >
         {t("apply")}
       </button>
+
+      <button
+        onClick={() => {
+          setSelectedEmirate(undefined);
+          setSelectedVehicleTypes([]);
+          setLetters("");
+          setNumbers("");
+
+          onApply(undefined as any);
+        }}
+        className="w-full h-14 border rounded-md mt-2 cursor-pointer"
+      >
+        {t("clear_filters")}
+      </button>
+
     </div>
   );
 };
