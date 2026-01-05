@@ -6,8 +6,10 @@ import { auth, googleProvider } from "../../lib/firebase";
 import { socialLogin, getErrorMessage } from "../../lib/api/auth";
 import { useAuthStore } from "../../store/useAuthStore";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 const SocialLogin = () => {
+  const { t } = useTranslation("auth");
   const navigate = useNavigate();
   const location = useLocation();
   const setUser = useAuthStore((state) => state.setUser);
@@ -90,7 +92,7 @@ const SocialLogin = () => {
           />
         </svg>
         <span className="text-[#192540] text-base font-medium">
-          Continue with Google
+          {t('continue_with_google')}
         </span>
       </button>
     </div>
