@@ -229,7 +229,7 @@ const Header = () => {
                       <Dialog key={link.titleKey}>
                         <DialogTrigger asChild>
                           <button
-                            className="text-[#192540] text-xl font-semibold hover:text-[#EBAF29] transition cursor-pointer"
+                            className="text-[#192540] text-xl font-semibold hover:text-[#EBAF29] transition cursor-pointer text-start"
                             onClick={() => setOpen(false)}
                           >
                             {t(link.titleKey)}
