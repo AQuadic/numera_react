@@ -141,5 +141,10 @@
     "ads_list_empty": "قائمة إعلاناتك فارغة. أنشئ إعلانًا جديدًا للبدء.",
 
     "views": "المشاهدات",
-    "visitors": "الزوار"
+    "visitors": "الزوار",
+
+    "personal_user": "مستخدم شخصي",
+    "business_user": "حساب تجاري",
+    "member_since_unknown": "عضو منذ غير معروف",
+    "member_since": "عضو منذ {{year}}"
 }
