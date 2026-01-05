@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/plate-generate/:path*",
+      "destination": "https://numra.motofy.io/plate-generate/:path*"
+    },
+    {
       "destination": "/index.html",
       "source": "/(.*)"
     }

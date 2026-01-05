@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { X } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
 
 type PlateData = {
   emirate: string;
@@ -17,18 +17,60 @@ type PlateData = {
   price: string;
 };
 
+const PlateImage = ({
+  src,
+  alt,
+  className,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    setHasError(false);
+  }, [src]);
+
+  return (
+    <div className="relative flex items-center justify-center w-full min-h-[50px] plate-image-container">
+      {isLoading && !hasError && (
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+          <Loader2 className="w-8 h-8 animate-spin text-[#EBAF29]" />
+        </div>
+      )}
+      {hasError ? (
+        <div className="flex flex-col items-center justify-center text-red-500 p-2 border border-red-200 rounded bg-red-50 plate-error-state w-[80%]">
+          <span className="text-xs text-center font-medium">
+            Image unavailable
+          </span>
+        </div>
+      ) : (
+        <img
+          src={src}
+          alt={alt}
+          className={`${className} ${
+            isLoading ? "opacity-0" : "opacity-100"
+          } transition-opacity duration-300 plate-image`}
+          onLoad={() => setIsLoading(false)}
+          onError={() => {
+            setIsLoading(false);
+            setHasError(true);
+          }}
+        />
+      )}
+    </div>
+  );
+};
+
 const DrawPlatesPattern = () => {
   const plateContainerRef = useRef<HTMLDivElement>(null);
   const [bgColor, setBgColor] = useState("black");
   const [barColor, setBarColor] = useState("white");
   const [details, setDetails] = useState("");
   const [mobile, setMobile] = useState("");
-  const [price, setPrice] = useState("");
-
-  const [emirate, setEmirate] = useState("");
-  const [numbers, setNumbers] = useState("");
-  const [letters, setLetters] = useState("");
-  const [plateImg, setPlateImg] = useState("");
   const [isDownloading, setIsDownloading] = useState(false);
 
   // Direct URL to the plate image (cross-origin, for display only)
@@ -89,21 +131,6 @@ const DrawPlatesPattern = () => {
     return "text-black";
   };
 
-  useEffect(() => {
-    if (
-      !emirate?.toString().trim() ||
-      !numbers?.toString().trim() ||
-      !letters?.toString().trim()
-    ) {
-      setPlateImg("");
-      return;
-    }
-
-    // The endpoint returns the image directly, so use the URL as the src
-    const imgUrl = `${plateBaseUrl}/plate-generate/cars/${letters}/${numbers}/${emirate}`;
-    setPlateImg(imgUrl);
-  }, [emirate, letters, numbers]);
-
   const handleDownload = async () => {
     if (!plateContainerRef.current) return;
 
@@ -131,66 +158,146 @@ const DrawPlatesPattern = () => {
       ctx.scale(scale, scale);
 
       // Draw background
-      ctx.fillStyle = bgColor;
-      ctx.fillRect(0, 0, rect.width, rect.height);
-
-      // Draw plate image if we have one - fetch via proxy to avoid CORS
-      if (plateImg) {
-        try {
-          // Fetch the image through the Vite dev proxy (same-origin)
-          const proxyUrl = `/plate-generate/cars/${letters}/${numbers}/${emirate}`;
-          const response = await fetch(proxyUrl);
-
-          if (response.ok) {
-            const blob = await response.blob();
-            const dataUrl = await new Promise<string>((resolve) => {
-              const reader = new FileReader();
-              reader.onloadend = () => resolve(reader.result as string);
-              reader.readAsDataURL(blob);
-            });
-
-            // Create a new image from the data URL (same-origin, no taint)
-            const img = new Image();
-            await new Promise<void>((resolve, reject) => {
-              img.onload = () => resolve();
-              img.onerror = () =>
-                reject(new Error("Failed to load image for canvas"));
-              img.src = dataUrl;
-            });
-
-            const imgWidth = img.naturalWidth;
-            const imgHeight = img.naturalHeight;
-
-            // Calculate centered position (max 80% width as per CSS)
-            const maxWidth = rect.width * 0.8;
-            const aspectRatio = imgWidth / imgHeight;
-            const drawWidth = Math.min(maxWidth, imgWidth);
-            const drawHeight = drawWidth / aspectRatio;
-
-            // Center horizontally
-            const drawX = (rect.width - drawWidth) / 2;
-            // Position in top area (flex-1 area, roughly centered in top 60%)
-            const topAreaHeight = rect.height - 40 - 30;
-            const drawY = (topAreaHeight - drawHeight) / 2 + 16;
-
-            ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
-          }
-        } catch (imgErr) {
-          console.warn("Could not include plate image in download:", imgErr);
-          // Continue without the plate image
-        }
+      try {
+        const bgImageSrc =
+          bgColor === "black"
+            ? "/images/pattern.jpeg"
+            : "/images/pattern1.jpeg";
+        const bgImg = new Image();
+        await new Promise<void>((resolve, reject) => {
+          bgImg.onload = () => resolve();
+          bgImg.onerror = reject;
+          bgImg.src = bgImageSrc;
+        });
+        ctx.drawImage(bgImg, 0, 0, rect.width, rect.height);
+      } catch (e) {
+        console.warn(
+          "Failed to load background pattern, falling back to color",
+          e
+        );
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(0, 0, rect.width, rect.height);
       }
 
-      // Draw price if present
-      if (price) {
-        ctx.fillStyle =
-          bgColor === "black" || bgColor === "#000" || bgColor === "#000000"
-            ? "#ffffff"
-            : "#000000";
-        ctx.font = "500 18px sans-serif";
-        ctx.textAlign = "center";
-        const priceY = plateImg ? rect.height - 70 : rect.height / 2;
-        ctx.fillText(`${t("priceLabel")} ${price}`, rect.width / 2, priceY);
+      // Find all plate wrappers
+      const wrappers = Array.from(
+        container.querySelectorAll(".plate-wrapper")
+      ) as HTMLDivElement[];
+
+      for (const wrapper of wrappers) {
+        // Skip if error state is present
+        if (wrapper.querySelector(".plate-error-state")) {
+          continue;
+        }
+
+        // Find image
+        const img = wrapper.querySelector(".plate-image") as HTMLImageElement;
+        if (img) {
+          const imgRect = img.getBoundingClientRect();
+          const x = imgRect.left - rect.left;
+          const y = imgRect.top - rect.top;
+          const w = imgRect.width;
+          const h = imgRect.height;
+
+          try {
+            const src = img.src;
+            if (!src) continue;
+
+            let imageToDraw: HTMLImageElement | null = null;
+
+            // Helper to load image from URL
+            const loadImage = (
+              url: string,
+              isCors: boolean
+            ): Promise<HTMLImageElement> => {
+              return new Promise((resolve, reject) => {
+                const i = new Image();
+                if (isCors) i.crossOrigin = "anonymous";
+                i.onload = () => resolve(i);
+                i.onerror = reject;
+                i.src = url;
+              });
+            };
+
+            // Helper to fetch blob and create object URL
+            const fetchImage = async (url: string): Promise<string> => {
+              // Add cache buster to avoid browser caching issues with CORS
+              const urlWithCache = url.includes("?")
+                ? `${url}&t=${Date.now()}`
+                : `${url}?t=${Date.now()}`;
+
+              const res = await fetch(urlWithCache, {
+                headers: {
+                  Accept: "image/png,image/jpeg,image/*",
+                },
+              });
+              if (!res.ok)
+                throw new Error(
+                  `Fetch failed: ${res.status} ${res.statusText}`
+                );
+              const blob = await res.blob();
+              return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result as string);
+                reader.readAsDataURL(blob);
+              });
+            };
+
+            // Strategy 1: Fetch via Custom Proxy (Handles Redirects & CORS)
+            try {
+              const urlObj = new URL(src);
+              const relativePath = urlObj.pathname + urlObj.search;
+              // Use our new robust proxy endpoint
+              const proxyUrl = `/api/image-proxy?path=${encodeURIComponent(
+                relativePath
+              )}`;
+
+              const dataUrl = await fetchImage(proxyUrl);
+              imageToDraw = await loadImage(dataUrl, false);
+            } catch (e) {
+              console.warn("Strategy 1 (Proxy) failed", e);
+            }
+
+            // Strategy 2: Direct Image Load with CORS (Fallback)
+            if (!imageToDraw) {
+              try {
+                imageToDraw = await loadImage(src, true);
+              } catch (e) {
+                console.warn("Strategy 2 (Direct CORS) failed", e);
+              }
+            }
+
+            // Strategy 3: Removed redundant strategies
+            // Strategy 4: Removed redundant strategies
+
+            if (imageToDraw) {
+              ctx.drawImage(imageToDraw, x, y, w, h);
+            } else {
+              console.warn("All strategies failed to load image:", src);
+            }
+          } catch (e) {
+            console.warn("Failed to process plate image", e);
+          }
+        }
+
+        // Find price
+        const priceEl = wrapper.querySelector(
+          ".plate-price"
+        ) as HTMLParagraphElement;
+        if (priceEl) {
+          const priceRect = priceEl.getBoundingClientRect();
+          const px = priceRect.left - rect.left + priceRect.width / 2;
+          const py = priceRect.top - rect.top + priceRect.height / 2;
+
+          ctx.fillStyle =
+            bgColor === "black" || bgColor === "#000" || bgColor === "#000000"
+              ? "#ffffff"
+              : "#000000";
+          ctx.font = "500 18px sans-serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(priceEl.innerText, px, py);
+        }
       }
 
       // Draw details text
@@ -201,6 +308,7 @@ const DrawPlatesPattern = () => {
             : "#000000";
         ctx.font = "500 18px sans-serif";
         ctx.textAlign = "left";
+        ctx.textBaseline = "alphabetic";
         ctx.fillText(details, 16, rect.height - 50);
       }
 
@@ -216,14 +324,13 @@ const DrawPlatesPattern = () => {
       ctx.fillStyle = barTextColor;
       ctx.font = "400 16px sans-serif";
       ctx.textAlign = "left";
+      ctx.textBaseline = "alphabetic";
       ctx.fillText(`${t("toContact")} ${mobile}`, 16, rect.height - 14);
 
       // Download
       const link = document.createElement("a");
       link.href = canvas.toDataURL("image/png");
-      link.download = `plate-${letters || "X"}-${numbers || "0"}-${
-        emirate || "uae"
-      }.png`;
+      link.download = `plates-collection.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -256,17 +363,20 @@ const DrawPlatesPattern = () => {
             const imgUrl = `${plateBaseUrl}/plate-generate/cars/${plate.letters}/${plate.numbers}/${plate.emirate}`;
 
             return (
-              <div key={index} className="flex flex-col items-center">
-                <img
+              <div
+                key={index}
+                className="flex flex-col items-center w-full plate-wrapper"
+              >
+                <PlateImage
                   src={imgUrl}
                   alt="plate image"
-                  className="max-w-[80%] h-auto object-contain"
+                  className="max-w-[80%] h-auto object-contain plate-image"
                 />
                 {plate.price && (
                   <p
                     className={`${getContrastTextClass(
                       bgColor
-                    )} text-lg font-medium mt-1`}
+                    )} text-lg font-medium mt-1 plate-price`}
                   >
                     {plate.price === "0"
                       ? t("price_on_request")
@@ -325,77 +435,73 @@ const DrawPlatesPattern = () => {
           <Select
             onValueChange={(value) =>
               setPlates((prev) =>
-                prev.map((p, i) =>
-                  i === index ? { ...p, emirate: value } : p
-                )
+                prev.map((p, i) => (i === index ? { ...p, emirate: value } : p))
               )
             }
           >
-          <SelectTrigger className="lg:w-72 w-full h-12!">
-            <SelectValue placeholder={t("emiratePlaceholder")} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="dubai">{t("emirates.dubai")}</SelectItem>
-            <SelectItem value="abu-dhabi">
-              {t("emirates.abu_dhabi")}
-            </SelectItem>
-            <SelectItem value="sharjah">{t("emirates.sharjah")}</SelectItem>
-            <SelectItem value="ajman">{t("emirates.ajman")}</SelectItem>
-            <SelectItem value="fujairah">
-              {t("emirates.fujairah")}
-            </SelectItem>
-            <SelectItem value="ras_alkhima">
-              {t("emirates.ras_alkhima")}
-            </SelectItem>
-            <SelectItem value="om_qauquan">
-              {t("emirates.om_qauquan")}
-            </SelectItem>
-          </SelectContent>
-        </Select>
+            <SelectTrigger className="lg:w-72 w-full h-12!">
+              <SelectValue placeholder={t("emiratePlaceholder")} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="dubai">{t("emirates.dubai")}</SelectItem>
+              <SelectItem value="abu-dhabi">
+                {t("emirates.abu_dhabi")}
+              </SelectItem>
+              <SelectItem value="sharjah">{t("emirates.sharjah")}</SelectItem>
+              <SelectItem value="ajman">{t("emirates.ajman")}</SelectItem>
+              <SelectItem value="fujairah">{t("emirates.fujairah")}</SelectItem>
+              <SelectItem value="ras_alkhima">
+                {t("emirates.ras_alkhima")}
+              </SelectItem>
+              <SelectItem value="om_qauquan">
+                {t("emirates.om_qauquan")}
+              </SelectItem>
+            </SelectContent>
+          </Select>
 
-        <input
-          type="text"
-          className="lg:w-72 w-full h-12 border rounded-md px-4"
-          placeholder={t("lettersPlaceholder")}
-          value={plate.letters}
-          onChange={(e) =>
-            setPlates((prev) =>
-              prev.map((p, i) =>
-                i === index ? { ...p, letters: e.target.value } : p
+          <input
+            type="text"
+            className="lg:w-72 w-full h-12 border rounded-md px-4"
+            placeholder={t("lettersPlaceholder")}
+            value={plate.letters}
+            onChange={(e) =>
+              setPlates((prev) =>
+                prev.map((p, i) =>
+                  i === index ? { ...p, letters: e.target.value } : p
+                )
               )
-            )
-          }
-        />
+            }
+          />
 
-        <input
-          type="text"
-          className="lg:w-72 w-full h-12 border rounded-md px-4"
-          placeholder={t("numberPlaceholder")}
-          value={plate.numbers}
-          onChange={(e) =>
-            setPlates((prev) =>
-              prev.map((p, i) =>
-                i === index ? { ...p, numbers: e.target.value } : p
+          <input
+            type="text"
+            className="lg:w-72 w-full h-12 border rounded-md px-4"
+            placeholder={t("numberPlaceholder")}
+            value={plate.numbers}
+            onChange={(e) =>
+              setPlates((prev) =>
+                prev.map((p, i) =>
+                  i === index ? { ...p, numbers: e.target.value } : p
+                )
               )
-            )
-          }
-        />
+            }
+          />
 
-        <input
-          type="number"
-          className="lg:w-72 w-full h-12 border rounded-md px-4"
-          placeholder={t("pricePlaceholder")}
-          value={plate.price}
-          onChange={(e) =>
-            setPlates((prev) =>
-              prev.map((p, i) =>
-                i === index ? { ...p, price: e.target.value } : p
+          <input
+            type="number"
+            className="lg:w-72 w-full h-12 border rounded-md px-4"
+            placeholder={t("pricePlaceholder")}
+            value={plate.price}
+            onChange={(e) =>
+              setPlates((prev) =>
+                prev.map((p, i) =>
+                  i === index ? { ...p, price: e.target.value } : p
+                )
               )
-            )
-          }
-        />
-      </div>
-    ))}
+            }
+          />
+        </div>
+      ))}
 
       <div className="mt-4">
         <label className="text-[#192540] text-base font-medium">
