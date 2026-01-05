@@ -139,5 +139,8 @@
     "action_call": "Call",
     "action_whatsapp": "Whatsapp",
 
-    "ads_list_empty": "Your ads list is empty. Create a new ad to get started."
+    "ads_list_empty": "Your ads list is empty. Create a new ad to get started.",
+
+    "views": "Views",
+    "visitors": "Visitors"
 }

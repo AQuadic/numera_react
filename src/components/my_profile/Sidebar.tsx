@@ -70,15 +70,15 @@ const Sidebar = ({ onSelect }: SidebarProps) => {
 
         <DialogContent className="max-w-[420px]">
           <DialogHeader>
-            <DialogTitle className="text-lg font-semibold">
+            <DialogTitle className="text-lg font-semibold text-start">
               {t('confirm_logout')}
             </DialogTitle>
-            <DialogDescription className="text-[#717171]">
+            <DialogDescription className="text-[#717171] text-start">
               {t('confirm_desc')}
             </DialogDescription>
           </DialogHeader>
 
-          <div className="flex justify-end gap-3 mt-6">
+          <div className="flex gap-3 mt-6">
             <DialogClose asChild>
               <button
                 className="px-5 h-11 rounded-md border border-[#E5E5E5] text-[#192540] cursor-pointer"

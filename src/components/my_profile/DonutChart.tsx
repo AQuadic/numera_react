@@ -1,14 +1,17 @@
+import { useTranslation } from "react-i18next";
+
 interface DonutChartProps {
   views: number;
   visitor: number;
 }
 
 const DonutChart = ({ views, visitor }: DonutChartProps) => {
+  const { t } = useTranslation("profile");
   const total = views + visitor || 1;
 
   const data = [
-    { label: "Views", value: (views / total) * 100, color: "#2D2FF0" },
-    { label: "Visitors", value: (visitor / total) * 100, color: "#EBAF29" },
+    { label: t('views'), value: (views / total) * 100, color: "#2D2FF0" },
+    { label: t('visitors'), value: (visitor / total) * 100, color: "#EBAF29" },
   ];
 
   const radius = 70;
