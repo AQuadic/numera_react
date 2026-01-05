@@ -136,7 +136,7 @@ const PlateCard = ({ plate }: PlateCardProps) => {
           </div>
 
           <div className="mt-6 flex gap-2 items-center justify-between">
-            <h2 className="text-[#192540] md:text-xl text-lg font-semibold">
+            <h2 className="text-[#192540] md:text-sm text-lg font-semibold">
               {plate.price && plate.price > 0 ? (
                 <>
                   {formatPrice(plate.price)}{" "}
