@@ -86,7 +86,7 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
     };
 
     const handleShare = async () => {
-      const shareUrl = `${window.location.origin}/plate/${plate.id}/${plate.numbers}`;
+      const shareUrl = `${window.location.origin}/plate/${plate.id}`;
 
       if (navigator.share) {
         try {
