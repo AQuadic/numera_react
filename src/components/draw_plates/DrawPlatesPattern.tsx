@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import {
@@ -8,6 +8,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { X } from "lucide-react";
+
+type PlateData = {
+  emirate: string;
+  letters: string;
+  numbers: string;
+  price: string;
+};
 
 const DrawPlatesPattern = () => {
   const plateContainerRef = useRef<HTMLDivElement>(null);
@@ -25,8 +33,22 @@ const DrawPlatesPattern = () => {
 
   // Direct URL to the plate image (cross-origin, for display only)
   const { t } = useTranslation("draw");
+  const [plates, setPlates] = useState<PlateData[]>([
+    { emirate: "", letters: "", numbers: "", price: "" },
+  ]);
 
   const plateBaseUrl = "https://numra.motofy.io";
+
+  const addPlate = () => {
+    setPlates((prev) => [
+      ...prev,
+      { emirate: "", letters: "", numbers: "", price: "" },
+    ]);
+  };
+
+  const removePlate = (index: number) => {
+    setPlates((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const getContrastTextClass = (color: string) => {
     if (!color) return "text-black";
@@ -217,40 +239,43 @@ const DrawPlatesPattern = () => {
 
   return (
     <section className="px-4 container ">
-<div
-  ref={plateContainerRef}
-  className="relative w-96 h-72 border mx-auto mb-2 flex flex-col justify-between bg-cover bg-center"
-  style={{
-    backgroundColor: bgColor,
-    backgroundImage:
-      bgColor === "black"
-        ? "url(/images/pattern.jpeg)"
-        : "url(/images/pattern1.jpeg)",
-  }}
->
+      <div
+        ref={plateContainerRef}
+        className="relative w-96 min-h-72 border mx-auto mb-4 flex flex-col bg-cover bg-center"
+        style={{
+          backgroundColor: bgColor,
+          backgroundImage:
+            bgColor === "black"
+              ? "url(/images/pattern.jpeg)"
+              : "url(/images/pattern1.jpeg)",
+        }}
+      >
+        <div className="flex-1 flex flex-col items-center justify-center gap-4 px-4 py-4">
+          {plates.map((plate, index) => {
+            if (!plate.emirate || !plate.letters || !plate.numbers) return null;
+            const imgUrl = `${plateBaseUrl}/plate-generate/cars/${plate.letters}/${plate.numbers}/${plate.emirate}`;
 
-        <div className="flex-1 flex items-center justify-center flex-col px-4">
-          {plateImg ? (
-            <img
-              src={plateImg}
-              alt="plate image"
-              className="max-w-[80%] h-auto object-contain"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center" />
-          )}
-
-          {price !== "" && (
-            <p
-              className={`${getContrastTextClass(
-                bgColor
-              )} text-lg font-medium text-center mt-2`}
-            >
-              {price === "0"
-                ? t("price_on_request")
-                : `${t("priceLabel")} ${price}`}
-            </p>
-          )}
+            return (
+              <div key={index} className="flex flex-col items-center">
+                <img
+                  src={imgUrl}
+                  alt="plate image"
+                  className="max-w-[80%] h-auto object-contain"
+                />
+                {plate.price && (
+                  <p
+                    className={`${getContrastTextClass(
+                      bgColor
+                    )} text-lg font-medium mt-1`}
+                  >
+                    {plate.price === "0"
+                      ? t("price_on_request")
+                      : `${t("priceLabel")} ${plate.price}`}
+                  </p>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         <h2
@@ -272,21 +297,53 @@ const DrawPlatesPattern = () => {
         </div>
       </div>
 
-      <h2 className="text-[#192540] md:text-[32px] text-xl font-medium">
-        {t("choosePatternTitle")}
-      </h2>
+      <div
+        onClick={addPlate}
+        className="w-full h-12 rounded-2xl bg-[#EBAF29] mt-4 px-4 flex items-center justify-between cursor-pointer"
+      >
+        <p className="text-[#192540] text-base font-medium">
+          {t("plates_data")}
+        </p>
+        <div className="text-[#192540] text-2xl font-medium">+</div>
+      </div>
 
-      <div className="flex flex-wrap items-center gap-4 mt-4 w-full">
-        <Select onValueChange={setEmirate}>
+      {plates.map((plate, index) => (
+        <div
+          key={index}
+          className="relative flex flex-wrap items-center gap-4 mt-4 w-full border-b pb-6"
+        >
+          {plates.length > 1 && (
+            <button
+              type="button"
+              onClick={() => removePlate(index)}
+              className="absolute top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+            >
+              <X size={16} />
+            </button>
+          )}
+
+          <Select
+            onValueChange={(value) =>
+              setPlates((prev) =>
+                prev.map((p, i) =>
+                  i === index ? { ...p, emirate: value } : p
+                )
+              )
+            }
+          >
           <SelectTrigger className="lg:w-72 w-full h-12!">
             <SelectValue placeholder={t("emiratePlaceholder")} />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="dubai">{t("emirates.dubai")}</SelectItem>
-            <SelectItem value="abu-dhabi">{t("emirates.abu_dhabi")}</SelectItem>
+            <SelectItem value="abu-dhabi">
+              {t("emirates.abu_dhabi")}
+            </SelectItem>
             <SelectItem value="sharjah">{t("emirates.sharjah")}</SelectItem>
             <SelectItem value="ajman">{t("emirates.ajman")}</SelectItem>
-            <SelectItem value="fujairah">{t("emirates.fujairah")}</SelectItem>
+            <SelectItem value="fujairah">
+              {t("emirates.fujairah")}
+            </SelectItem>
             <SelectItem value="ras_alkhima">
               {t("emirates.ras_alkhima")}
             </SelectItem>
@@ -300,26 +357,45 @@ const DrawPlatesPattern = () => {
           type="text"
           className="lg:w-72 w-full h-12 border rounded-md px-4"
           placeholder={t("lettersPlaceholder")}
-          value={letters}
-          onChange={(e) => setLetters(e.target.value)}
+          value={plate.letters}
+          onChange={(e) =>
+            setPlates((prev) =>
+              prev.map((p, i) =>
+                i === index ? { ...p, letters: e.target.value } : p
+              )
+            )
+          }
         />
 
         <input
           type="text"
           className="lg:w-72 w-full h-12 border rounded-md px-4"
           placeholder={t("numberPlaceholder")}
-          value={numbers}
-          onChange={(e) => setNumbers(e.target.value)}
+          value={plate.numbers}
+          onChange={(e) =>
+            setPlates((prev) =>
+              prev.map((p, i) =>
+                i === index ? { ...p, numbers: e.target.value } : p
+              )
+            )
+          }
         />
 
         <input
           type="number"
           className="lg:w-72 w-full h-12 border rounded-md px-4"
           placeholder={t("pricePlaceholder")}
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
+          value={plate.price}
+          onChange={(e) =>
+            setPlates((prev) =>
+              prev.map((p, i) =>
+                i === index ? { ...p, price: e.target.value } : p
+              )
+            )
+          }
         />
       </div>
+    ))}
 
       <div className="mt-4">
         <label className="text-[#192540] text-base font-medium">
