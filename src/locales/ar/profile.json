@@ -91,7 +91,7 @@
     "dialog_delete_ad_desc": "هل أنت متأكد من رغبتك بحذف هذا الإعلان؟",
     "dialog_delete_ad_permanent": "هذا الإجراء نهائي ولا يمكن استرجاعه.",
     "dialog_republish_ad": "إعادة نشر إعلانك؟",
-    "dialog_republish_ad_desc": "هل ترغب بإعادة نشره لالبقاء نشطاً ومرئياً للمشترين؟",
+    "dialog_republish_ad_desc": "هل ترغب بإعادة نشره للبقاء نشطاً ومرئياً للمشترين؟",
     "dialog_republish_now": "إعادة نشر الآن",
     "dialog_pause_ad": "تعليق إعلانك؟",
     "dialog_pause_ad_desc": "هل أنت متأكد من رغبتك بتعليق هذا الإعلان؟ لن يظهر للمشترين حتى تقوم بإعادة تفعيله.",
