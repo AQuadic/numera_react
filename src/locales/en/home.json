@@ -91,5 +91,6 @@
   "weeks_ago": "{{count}} weeks ago",
   "individual_seller": "Individual Seller",
   "premium_dealer": "Premium Dealer",
-  "member_since": "Member since {{year}}"
+  "member_since": "Member since {{year}}",
+  "negotiable": "Negotiable"
 }

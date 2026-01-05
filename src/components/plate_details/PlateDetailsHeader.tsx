@@ -49,7 +49,7 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
 
   const getEmirateLabel = (emirateId: string) => {
     const labels: Record<string, string> = {
-      abu_dhuabi: t("emirates.abu_dhabi"),
+      abu_dhuabi: t("emirates.abu_dhuabi"),
       dubai: t("emirates.dubai"),
       sharjah: t("emirates.sharjah"),
       ajman: t("emirates.ajman"),
@@ -138,7 +138,7 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
             {plate.is_negotiable && (
               <div className="mt-3">
                 <span className="inline-block px-3 py-1 bg-[#E3F2FD] text-[#1976D2] text-sm font-medium rounded-full">
-                  Negotiable
+                  {t('negotiable')}
                 </span>
               </div>
             )}

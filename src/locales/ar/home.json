@@ -90,5 +90,6 @@
   "weeks_ago": "منذ {{count}} أسابيع",
   "individual_seller": "بائع فردي",
   "premium_dealer": "تاجر مميز",
-  "member_since": "عضو منذ {{year}}"
+  "member_since": "عضو منذ {{year}}",
+  "negotiable": "قابل للتفاوض"
 }
