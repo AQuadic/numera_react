@@ -1,5 +1,4 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router";
 import type { Location } from "react-router";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
@@ -9,7 +8,6 @@ import { useAuthStore } from "../../store/useAuthStore";
 import toast from "react-hot-toast";
 
 const SocialLogin = () => {
-  const { t } = useTranslation("auth");
   const navigate = useNavigate();
   const location = useLocation();
   const setUser = useAuthStore((state) => state.setUser);

@@ -1,10 +1,15 @@
 import { useState } from "react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../ui/accordion";
 import type { PlateFilters } from "../../lib/api";
 import { useTranslation } from "react-i18next";
 
 interface FilterComponentProps {
-  onApply: (filtersByPackage: Record<number, PlateFilters>) => void;
+  onApply: (filters: PlateFilters) => void;
 }
 
 const emirateValues = [
@@ -22,17 +27,24 @@ const vehicleTypes = ["classic", "bikes", "cars", "fun"];
 const FilterComponent = ({ onApply }: FilterComponentProps) => {
   const { t } = useTranslation("home");
   const [selectedEmirate, setSelectedEmirate] = useState<string | undefined>();
-  const [selectedVehicleTypes, setSelectedVehicleTypes] = useState<string[]>([]);
+  const [selectedVehicleTypes, setSelectedVehicleTypes] = useState<string[]>(
+    []
+  );
   const [letters, setLetters] = useState("");
   const [numbers, setNumbers] = useState("");
 
   return (
     <div className="px-6">
-      <h2 className="text-[#192540] text-2xl font-medium ltr:text-left rtl:text-right">{t("filter")}</h2>
+      <h2 className="text-[#192540] text-2xl font-medium ltr:text-left rtl:text-right">
+        {t("filter")}
+      </h2>
 
       <div className="mt-4 max-h-[500px] overflow-y-auto space-y-4">
         <Accordion type="single" collapsible>
-          <AccordionItem value="emirate" className="border rounded-[10px] px-3 py-4">
+          <AccordionItem
+            value="emirate"
+            className="border rounded-[10px] px-3 py-4"
+          >
             <AccordionTrigger className="text-[#192540] text-base font-medium">
               {t("select_emirate")}
             </AccordionTrigger>
@@ -57,7 +69,10 @@ const FilterComponent = ({ onApply }: FilterComponentProps) => {
         </Accordion>
 
         <Accordion type="single" collapsible>
-          <AccordionItem value="plate-type" className="border rounded-[10px] px-3 py-4">
+          <AccordionItem
+            value="plate-type"
+            className="border rounded-[10px] px-3 py-4"
+          >
             <AccordionTrigger className="text-[#192540] text-base font-medium">
               {t("select_plate_type")}
             </AccordionTrigger>
@@ -88,7 +103,10 @@ const FilterComponent = ({ onApply }: FilterComponentProps) => {
         </Accordion>
 
         <Accordion type="single" collapsible>
-          <AccordionItem value="code" className="border rounded-[10px] px-3 py-4">
+          <AccordionItem
+            value="code"
+            className="border rounded-[10px] px-3 py-4"
+          >
             <AccordionTrigger className="text-[#192540] text-base font-medium">
               {t("select_code")}
             </AccordionTrigger>
@@ -140,7 +158,6 @@ const FilterComponent = ({ onApply }: FilterComponentProps) => {
       >
         {t("clear_filters")}
       </button>
-
     </div>
   );
 };
