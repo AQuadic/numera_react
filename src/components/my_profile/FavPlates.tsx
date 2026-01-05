@@ -6,8 +6,10 @@ import { getFavorites } from "../../lib/api/getFavorites";
 import FavEmpty from "./FavEmpty";
 import Spinner from "../icons/general/Spinner";
 import { getPlateById } from "../../lib/api";
+import { useTranslation } from "react-i18next";
 
 const FavPlates = () => {
+  const { t } = useTranslation("profile");
   const { data: favoritePlates = [], isLoading } = useQuery({
     queryKey: ["favorites"],
     queryFn: getFavorites,
@@ -37,7 +39,7 @@ const FavPlates = () => {
 
   return (
     <section className="py-12">
-      <h2 className="text-[#192540] text-2xl font-medium">Favorite</h2>
+      <h2 className="text-[#192540] text-2xl font-medium">{t('favorites')}</h2>
 
       <Tabs
         defaultValue="plates"
@@ -45,10 +47,10 @@ const FavPlates = () => {
       >
         <TabsList className="bg-[#FDFAF3] flex items-center justify-center mt-13 md:gap-[68px] mb-12 py-8 px-8 rounded-[74px]">
           <TabsTrigger value="plates" className="xl:w-[494px] w-full">
-            Plates
+            {t('plates')}
           </TabsTrigger>
           <TabsTrigger value="phone_number" className="xl:w-[494px] w-full">
-            Phone Number
+            {t('phone_number')}
           </TabsTrigger>
         </TabsList>
 

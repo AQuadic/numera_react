@@ -115,7 +115,7 @@
     "analytics_views": "مشاهدات",
     "analytics_inquiries_short": "استفسارات",
     "no_data_available": "لا توجد بيانات متاحة",
-    "views_overview_title": "نظرة عامة على العروض",
+    "views_overview_title": "نظرة عامة على المشاهدات",
     "filter_last_month": "الشهر الماضي",
     "filter_last_week": "الأسبوع الماضي",
     "setting_language": "اللغة",
@@ -146,5 +146,8 @@
     "personal_user": "مستخدم شخصي",
     "business_user": "حساب تجاري",
     "member_since_unknown": "عضو منذ غير معروف",
-    "member_since": "عضو منذ {{year}}"
+    "member_since": "عضو منذ {{year}}",
+
+    "favorites": "المفضلة",
+    "plates": "اللوحات"
 }

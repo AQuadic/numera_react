@@ -147,5 +147,8 @@
     "personal_user": "Personal User",
     "business_user": "Business User",
     "member_since_unknown": "Member since unknown",
-    "member_since": "Member since {{year}}"
+    "member_since": "Member since {{year}}",
+
+    "favorites": "Favorite",
+    "plates": "Plates"
 }
