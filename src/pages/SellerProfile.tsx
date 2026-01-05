@@ -72,20 +72,37 @@ const SellerProfile = () => {
                     </p>
 
                 <div className="flex flex-wrap justify-center items-center gap-6 mt-4 lg:mt-6">
-                    <div className="w-[180px] h-[102px] bg-[#192540] rounded-[10px] flex flex-col items-center justify-center gap-2">
-                        <Phone />
-                        <p className="text-[#FEFEFE] text-xl font-medium">{t('call')}</p>
+                {profile.phone ? (
+                    <a
+                    href={`tel:${profile.phone}`}
+                    className="w-[180px] h-[102px] bg-[#192540] rounded-[10px] flex flex-col items-center justify-center gap-2 hover:opacity-90 transition"
+                    >
+                    <Phone />
+                    <p className="text-[#FEFEFE] text-xl font-medium">{t('call')}</p>
+                    </a>
+                ) : (
+                    <div className="w-[180px] h-[102px] bg-[#192540] rounded-[10px] flex flex-col items-center justify-center gap-2 opacity-50 cursor-not-allowed">
+                    <Phone />
+                    <p className="text-[#FEFEFE] text-xl font-medium">{t('call')}</p>
                     </div>
+                )}
 
-                    {/* <div className="w-[180px] h-[102px] bg-[#EBAF29] rounded-[10px] flex flex-col items-center justify-center gap-2">
-                        <Chat />
-                        <p className="text-[#192540] text-xl font-medium">Chat</p>
-                    </div> */}
-
-                    <div className="w-[180px] h-[102px] bg-[#19AA3D] rounded-[10px] flex flex-col items-center justify-center gap-2">
-                        <Whatsapp />
-                        <p className="text-[#FEFEFE] text-xl font-medium">{t('whatsapp')}</p>
+                {profile.phone ? (
+                    <a
+                    href={`https://wa.me/${profile.phone.replace(/\D/g, "")}`} 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-[180px] h-[102px] bg-[#19AA3D] rounded-[10px] flex flex-col items-center justify-center gap-2 hover:opacity-90 transition"
+                    >
+                    <Whatsapp />
+                    <p className="text-[#FEFEFE] text-xl font-medium">{t('whatsapp')}</p>
+                    </a>
+                ) : (
+                    <div className="w-[180px] h-[102px] bg-[#19AA3D] rounded-[10px] flex flex-col items-center justify-center gap-2 opacity-50 cursor-not-allowed">
+                    <Whatsapp />
+                    <p className="text-[#FEFEFE] text-xl font-medium">{t('whatsapp')}</p>
                     </div>
+                )}
                 </div>
 
                 <div className="flex flex-wrap justify-center items-center gap-6 mt-4 lg:mt-6">
