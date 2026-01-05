@@ -1,7 +1,7 @@
 {
     "profile": "ملفي الشخصي",
     "my_ads": "إعلاناتي",
-    "analytical": "لوحة تحكم التحليلات",
+    "analytical": "لوحة التحليلات",
     "app_setting": "إعدادات التطبيق",
     "my_plan": "خطتي",
     "logout": "تسجيل الخروج",
@@ -105,13 +105,13 @@
     "processing": "جارِ معالجة...",
     "publishing": "جارِ النشر...",
     "loading": "جارِ التحميل...",
-    "analytics_total_views": "إجمالي العروض",
+    "analytics_total_views": "إجمالي المشاهدات",
     "analytics_inquiries": "الاستفسارات",
     "analytics_response_rate": "معدل الاستجابة",
     "analytics_active_ads": "الإعلانات النشطة"
     ,"top_performing_ads_title": "أفضل الإعلانات أداءً",
     "best_performing_ad": "أفضل إعلان #{{number}}",
-    "traffic_sources_title": "مصادر الترافق",
+    "traffic_sources_title": "مصادر المرور",
     "analytics_views": "مشاهدات",
     "analytics_inquiries_short": "استفسارات",
     "no_data_available": "لا توجد بيانات متاحة",
@@ -138,5 +138,8 @@
     "action_call": "اتصال",
     "action_whatsapp": "واتساب",
 
-    "ads_list_empty": "قائمة إعلاناتك فارغة. أنشئ إعلانًا جديدًا للبدء."
+    "ads_list_empty": "قائمة إعلاناتك فارغة. أنشئ إعلانًا جديدًا للبدء.",
+
+    "views": "المشاهدات",
+    "visitors": "الزوار"
 }
