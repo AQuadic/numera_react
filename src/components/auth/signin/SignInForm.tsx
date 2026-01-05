@@ -5,7 +5,8 @@ import { useTranslation } from "react-i18next";
 import { PhoneInput, type PhoneValue } from "../../compound/PhoneInput";
 import { login, getErrorMessage } from "../../../lib/api/auth";
 import { useAuthStore } from "../../../store/useAuthStore";
-import { Eye, EyeOff } from "lucide-react"; 
+import { Eye, EyeOff } from "lucide-react";
+import SocialLogin from "../SocialLogin";
 
 const SignInForm = () => {
   const navigate = useNavigate();
@@ -139,6 +140,8 @@ const SignInForm = () => {
         >
           {isLoading ? t("signIn.submitting") : t("signIn.submit")}
         </button>
+
+        <SocialLogin />
 
         <div className="mt-4 flex items-center justify-center gap-2">
           <p className="text-[#717171] text-base font-medium">

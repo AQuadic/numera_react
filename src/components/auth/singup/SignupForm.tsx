@@ -6,6 +6,7 @@ import { PhoneInput, type PhoneValue } from "../../compound/PhoneInput";
 import { signUp, getErrorMessage } from "../../../lib/api/auth";
 import { useAuthStore } from "../../../store/useAuthStore";
 import { Eye, EyeOff } from "lucide-react";
+import SocialLogin from "../SocialLogin";
 // Send phone and phone_country separately (number-only in phone)
 
 const SignUpForm = () => {
@@ -203,6 +204,8 @@ const SignUpForm = () => {
         >
           {isLoading ? t("signUp.submitting") : t("signUp.submit")}
         </button>
+
+        <SocialLogin />
 
         <div className="mt-4 flex items-center justify-center gap-2">
           <p className="text-[#717171] text-base font-medium">
