@@ -136,5 +136,7 @@
     "user_premium_dealer": "تاجر مميز",
 
     "action_call": "اتصال",
-    "action_whatsapp": "واتساب"
+    "action_whatsapp": "واتساب",
+
+    "ads_list_empty": "قائمة إعلاناتك فارغة. أنشئ إعلانًا جديدًا للبدء."
 }

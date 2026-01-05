@@ -137,5 +137,7 @@
     "user_premium_dealer": "Premium Dealer",
 
     "action_call": "Call",
-    "action_whatsapp": "Whatsapp"
+    "action_whatsapp": "Whatsapp",
+
+    "ads_list_empty": "Your ads list is empty. Create a new ad to get started."
 }
