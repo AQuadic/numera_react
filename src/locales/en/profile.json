@@ -142,5 +142,10 @@
     "ads_list_empty": "Your ads list is empty. Create a new ad to get started.",
 
     "views": "Views",
-    "visitors": "Visitors"
+    "visitors": "Visitors",
+
+    "personal_user": "Personal User",
+    "business_user": "Business User",
+    "member_since_unknown": "Member since unknown",
+    "member_since": "Member since {{year}}"
 }

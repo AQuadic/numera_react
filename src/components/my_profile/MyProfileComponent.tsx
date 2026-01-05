@@ -52,9 +52,9 @@ const MyProfileComponent = () => {
 
   // Calculate "Member since" from created_at
   const getMemberSince = () => {
-    if (!user?.created_at) return "Member since unknown";
+    if (!user?.created_at) return t('member_since_unknown');
     const date = new Date(user.created_at);
-    return `Member since ${date.getFullYear()}`;
+    return t('member_since', { year: date.getFullYear() });
   };
 
   // Get verification status badge
@@ -138,7 +138,7 @@ const MyProfileComponent = () => {
         </div>
 
         <p className="text-[#717171] text-base font-medium mt-2">
-          {user?.type === "personal" ? "Personal User" : "Business User"}
+          {user?.type === "personal" ? t('personal_user') : t('business_user')}
         </p>
         <p className="text-[#717171] text-base font-medium mt-1">
           {getMemberSince()}
