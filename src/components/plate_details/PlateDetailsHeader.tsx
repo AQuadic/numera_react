@@ -94,7 +94,7 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
             title: `Plate ${plate.letters ?? ""}${plate.numbers}`,
             url: shareUrl,
           });
-          toast.success("Shared successfully!");
+          toast.success(t('shared_successfully'));
         } catch (err) {
           console.error("Error sharing:", err);
         }

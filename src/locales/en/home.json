@@ -93,5 +93,6 @@
   "premium_dealer": "Premium Dealer",
   "member_since": "Member since {{year}}",
   "negotiable": "Negotiable",
-  "clear_filters": "Clear filters"
+  "clear_filters": "Clear filters",
+  "shared_successfully": "Shared successfully!"
 }
