@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import Bell from "../icons/header/Bell";
 import Language from "../icons/profile/Language";
 import { Switch } from "../ui/switch";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { registerDevice } from "../../lib/api/notifications/registerDevice";
 import { requestForToken } from "../../lib/firebase";
