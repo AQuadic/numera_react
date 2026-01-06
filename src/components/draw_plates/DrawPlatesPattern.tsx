@@ -74,7 +74,7 @@ const DrawPlatesPattern = () => {
   const [isDownloading, setIsDownloading] = useState(false);
 
   // Direct URL to the plate image (cross-origin, for display only)
-  const { t } = useTranslation("draw");
+  const { t, i18n } = useTranslation("draw");
   const [plates, setPlates] = useState<PlateData[]>([
     { emirate: "", letters: "", numbers: "", price: "" },
   ]);
@@ -169,7 +169,28 @@ const DrawPlatesPattern = () => {
           bgImg.onerror = reject;
           bgImg.src = bgImageSrc;
         });
-        ctx.drawImage(bgImg, 0, 0, rect.width, rect.height);
+
+        // Simulate background-size: cover and background-position: center
+        const imgRatio = bgImg.width / bgImg.height;
+        const containerRatio = rect.width / rect.height;
+
+        let drawW, drawH, drawX, drawY;
+
+        if (containerRatio > imgRatio) {
+          // Container is wider relative to image -> fit width
+          drawW = rect.width;
+          drawH = rect.width / imgRatio;
+          drawX = 0;
+          drawY = (rect.height - drawH) / 2; // Center vertically
+        } else {
+          // Container is taller relative to image -> fit height
+          drawH = rect.height;
+          drawW = rect.height * imgRatio;
+          drawY = 0;
+          drawX = (rect.width - drawW) / 2; // Center horizontally
+        }
+
+        ctx.drawImage(bgImg, drawX, drawY, drawW, drawH);
       } catch (e) {
         console.warn(
           "Failed to load background pattern, falling back to color",
@@ -185,10 +206,10 @@ const DrawPlatesPattern = () => {
       ) as HTMLDivElement[];
 
       for (const wrapper of wrappers) {
-        // Skip if error state is present
-        if (wrapper.querySelector(".plate-error-state")) {
-          continue;
-        }
+        // Skip check for error state to allow drawing price even if image fails
+        // if (wrapper.querySelector(".plate-error-state")) {
+        //   continue;
+        // }
 
         // Find image
         const img = wrapper.querySelector(".plate-image") as HTMLImageElement;
@@ -300,6 +321,8 @@ const DrawPlatesPattern = () => {
         }
       }
 
+      const isRTL = i18n.language === "ar";
+
       // Draw details text
       if (details) {
         ctx.fillStyle =
@@ -307,9 +330,10 @@ const DrawPlatesPattern = () => {
             ? "#ffffff"
             : "#000000";
         ctx.font = "500 18px sans-serif";
-        ctx.textAlign = "left";
+        ctx.textAlign = isRTL ? "right" : "left";
         ctx.textBaseline = "alphabetic";
-        ctx.fillText(details, 16, rect.height - 50);
+        const xPos = isRTL ? rect.width - 16 : 16;
+        ctx.fillText(details, xPos, rect.height - 50);
       }
 
       // Draw bottom bar
@@ -323,9 +347,14 @@ const DrawPlatesPattern = () => {
           : "#ffffff";
       ctx.fillStyle = barTextColor;
       ctx.font = "400 16px sans-serif";
-      ctx.textAlign = "left";
+      ctx.textAlign = isRTL ? "right" : "left";
       ctx.textBaseline = "alphabetic";
-      ctx.fillText(`${t("toContact")} ${mobile}`, 16, rect.height - 14);
+      const contactXPos = isRTL ? rect.width - 16 : 16;
+      ctx.fillText(
+        `${t("toContact")} ${mobile}`,
+        contactXPos,
+        rect.height - 14
+      );
 
       // Download
       const link = document.createElement("a");
