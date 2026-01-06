@@ -4,7 +4,7 @@ import ChangeLanguage from "../../general/ChangeLanguage";
 
 const SigninPage = () => {
   return (
-    <div className="min-h-screen w-full flex bg-white">
+    <div className="min-h-screen w-full flex bg-white ">
       {/* left visual column (desktop) */}
       <div className="hidden md:block md:w-1/2 h-screen">
         <img
