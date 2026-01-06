@@ -57,7 +57,7 @@ const SocialLogin = () => {
           <div className="w-full border-t border-[#EAEAEA]"></div>
         </div>
         <span className="relative bg-white px-4 text-[#717171] text-sm font-medium">
-          OR
+          {t('or')}
         </span>
       </div>
 
