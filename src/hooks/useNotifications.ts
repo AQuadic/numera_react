@@ -21,12 +21,6 @@ export const useNotifications = () => {
   });
 
   const setupNotifications = async () => {
-    if (!user) {
-      console.log("setupNotifications skipped: No user");
-      return;
-    }
-    console.log("setupNotifications started for user:", user.id || user.name);
-
     if (Notification.permission === "denied") {
       console.log("Notification permission denied previously.");
       return;
@@ -42,17 +36,34 @@ export const useNotifications = () => {
         const token = await requestForToken();
         console.log("FCM Token retrieved:", token);
 
-        if (token) {
-          console.log("Registering device...");
-          mutation.mutate({
-            device_type: "web",
-            device_token: getDeviceId(),
-            device_name: window.navigator.userAgent,
-            app_id: "user",
-            notifiable_type: "firebase",
-            notifiable_id: token,
-            enabled: true,
-          });
+        if (token && user) {
+          const storageKey = `fcm_registered_${user.id || user.email}`;
+          const lastRegisteredToken = localStorage.getItem(storageKey);
+
+          if (lastRegisteredToken === token) {
+            console.log(
+              "Device already registered for this user with this token."
+            );
+            return;
+          }
+
+          console.log("Registering device for user:", user.id || user.name);
+          mutation.mutate(
+            {
+              device_type: "web",
+              device_token: getDeviceId(),
+              device_name: window.navigator.userAgent,
+              app_id: "user",
+              notifiable_type: "firebase",
+              notifiable_id: token,
+              enabled: true,
+            },
+            {
+              onSuccess: () => {
+                localStorage.setItem(storageKey, token);
+              },
+            }
+          );
         }
       }
     } catch (err) {
@@ -61,25 +72,18 @@ export const useNotifications = () => {
   };
 
   useEffect(() => {
-    if (user) {
-      console.log(
-        "useNotifications effect triggered. Scheduling setup in 2s..."
-      );
-      const timer = setTimeout(() => {
-        setupNotifications();
-      }, 2000);
+    // Request permission and setup token on mount (as soon as they enter the website)
+    setupNotifications();
 
-      const unsubscribe = onMessage(messaging, (payload) => {
-        console.log("Foreground message received:", payload);
-        // Invalidate notifications query to refresh the list in the header
-        queryClient.invalidateQueries({ queryKey: ["broadcastNotifications"] });
-      });
+    const unsubscribe = onMessage(messaging, (payload) => {
+      console.log("Foreground message received:", payload);
+      // Invalidate notifications query to refresh the list in the header
+      queryClient.invalidateQueries({ queryKey: ["broadcastNotifications"] });
+    });
 
-      return () => {
-        clearTimeout(timer);
-        unsubscribe();
-      };
-    }
+    return () => {
+      unsubscribe();
+    };
   }, [user, queryClient]);
 
   return { setupNotifications };
