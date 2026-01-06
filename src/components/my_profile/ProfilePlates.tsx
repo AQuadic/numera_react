@@ -135,8 +135,8 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   return (
     <section>
       <div className="md:w-[348px] w-full bg-[#F0F0F0] rounded-md px-4 py-3 bg-[url('/images/plates/plate_stars.png')] bg-no-repeat bg-position-[center_-0px]">
-        <div className="flex flew items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="flex rtl:flex-row-reverse items-center justify-between">
+          <div className="flex rtl:flex-row-reverse items-center gap-2">
             <div className="px-6 py-2 bg-[#B2E3C4] rounded-[20px] text-[#1E7634] font-medium">
               {plate.is_active
                 ? t("status_active")
@@ -269,7 +269,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
           <img src={plate.image_url} alt="plate" />
           <div>
             <h2 className="text-[#192540] text-base font-medium">
-              {plate.price != null ? (
+              {plate.price && plate.price > 0 ? (
                 <>
                   {plate.price}{" "}
                   <span className="text-base relative top-1">AED</span>
@@ -279,12 +279,16 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
               )}
             </h2>
 
-            {plate.old_price && (
-              <h2 className="text-[#A3A3A3] text-sm font-medium">
-                {plate.old_price}{" "}
-                <span className="text-sm relative top-1">AED</span>
-              </h2>
-            )}
+            <h2 className="text-[#A3A3A3] text-sm font-medium">
+              {typeof plate.old_price === "number" && plate.old_price > 0 ? (
+                <>
+                  {plate.old_price}{" "}
+                  <span className="text-sm relative top-1">AED</span>
+                </>
+              ) : (
+                t("price_on_request")
+              )}
+            </h2>
           </div>
         </div>
 
@@ -293,25 +297,6 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
           {/* Removed 'Available' overlay text from profile card */}
         </div>
         <div className="flex flex-col gap-4">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex flex-col gap-2">
-              <p className="text-[#192540] text-2xl font-semibold">
-                {plate.price != null ? (
-                  <>
-                    {plate.price}{" "}
-                    <span className="text-base font-medium">AED</span>
-                  </>
-                ) : (
-                  t("price_on_request")
-                )}
-              </p>
-              {plate.old_price && (
-                <p className="text-[#8E8E93] text-xl font-medium line-through">
-                  {plate.old_price} <span className="text-sm">AED</span>
-                </p>
-              )}
-            </div>
-          </div>
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-1">
               <Views />

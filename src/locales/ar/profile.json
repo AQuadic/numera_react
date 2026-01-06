@@ -73,10 +73,10 @@
     "tab_all_ads": "جميع الإعلانات",
     "tab_active": "نشط",
     "tab_sold": "مباع",
-    "tab_paused": "مؤقف",
+    "tab_paused": "معلق",
     "status_active": "نشط",
     "status_sold": "مباع",
-    "status_paused": "مؤقف",
+    "status_paused": "معلق",
     "status_continue": "متابعة",
     "expires_in_25_days": "الصلاحية خلال 25 يوما",
     "action_share": "مشاركة",
@@ -157,5 +157,6 @@
     "submitted": "تم الإرسال",
     "rejected": "مرفوض",
     "not_verified": "غير متحقق"
-    }
+    },
+  "price_on_request": "السعر عند الطلب"
 }
