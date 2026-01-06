@@ -197,14 +197,12 @@ const FilterYourPlates = () => {
                       <DialogTitle></DialogTitle>
                       <DialogDescription>
                         <FilterComponent
+                          initialFilters={filtersByPackage[pkg.id]}
                           onApply={(newFilters) => {
                             setFiltersByPackage((prev) => {
                               const updated = { ...prev };
 
-                              if (
-                                !newFilters ||
-                                Object.keys(newFilters).length === 0
-                              ) {
+                              if (!newFilters || Object.keys(newFilters).length === 0) {
                                 delete updated[pkg.id];
                               } else {
                                 updated[pkg.id] = newFilters;

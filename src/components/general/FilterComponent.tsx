@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 
 interface FilterComponentProps {
   onApply: (filters: PlateFilters) => void;
+  initialFilters?: PlateFilters;
 }
 
 const emirateValues = [
@@ -24,7 +25,7 @@ const emirateValues = [
 
 const vehicleTypes = ["classic", "bikes", "cars", "fun"];
 
-const FilterComponent = ({ onApply }: FilterComponentProps) => {
+const FilterComponent = ({ onApply, initialFilters  }: FilterComponentProps) => {
   const { t } = useTranslation("home");
   const [selectedEmirate, setSelectedEmirate] = useState<string | undefined>();
   const [selectedVehicleTypes, setSelectedVehicleTypes] = useState<string[]>(
@@ -32,6 +33,16 @@ const FilterComponent = ({ onApply }: FilterComponentProps) => {
   );
   const [letters, setLetters] = useState("");
   const [numbers, setNumbers] = useState("");
+
+  useEffect(() => {
+  if (!initialFilters) return;
+
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  setSelectedEmirate(initialFilters.emirate_id);
+  setSelectedVehicleTypes(initialFilters.vehicle_types || []);
+  setLetters(initialFilters.letters || "");
+  setNumbers(initialFilters.numbers || "");
+}, [initialFilters]);
 
   return (
     <div className="px-6">
