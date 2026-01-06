@@ -7,15 +7,23 @@ import { useMutation } from "@tanstack/react-query";
 import { registerDevice } from "../../lib/api/notifications/registerDevice";
 import { requestForToken } from "../../lib/firebase";
 import { getDeviceId } from "../../lib/utils";
+import { useAuthStore } from "../../store/useAuthStore";
 
 const Settings = () => {
   const { t } = useTranslation("profile");
+  const user = useAuthStore((state) => state.user);
   const [notificationsEnabled, setNotificationsEnabled] = useState(
     Notification.permission === "granted"
   );
 
   const mutation = useMutation({
     mutationFn: registerDevice,
+    onSuccess: (_, variables) => {
+      if (user) {
+        const storageKey = `fcm_registered_${user.id || user.email}`;
+        localStorage.setItem(storageKey, variables.notifiable_id);
+      }
+    },
   });
 
   const handleToggle = async (checked: boolean) => {
