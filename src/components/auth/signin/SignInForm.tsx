@@ -70,7 +70,7 @@ const SignInForm = () => {
 
   return (
     <div className="w-full">
-      <h2 className="text-[#192540] text-[40px] font-medium text-center">
+      <h2 className="text-[#192540] text-[40px] font-medium text-center ">
         {t("signIn.title")}
       </h2>
       <p className="text-[#717171] text-base font-medium mt-3 leading-[150%] text-center">
