@@ -158,5 +158,6 @@
     "rejected": "مرفوض",
     "not_verified": "غير متحقق"
     },
-  "price_on_request": "السعر عند الطلب"
+  "price_on_request": "السعر عند الطلب",
+  "republish_limit_reached": "تم الوصول إلى حد إعادة النشر"
 }

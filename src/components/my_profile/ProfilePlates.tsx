@@ -26,6 +26,7 @@ import { markPlateSold } from "../../lib/api/markPlateSold";
 import toast from "react-hot-toast";
 import { deletePlate } from "../../lib/api/deletePlate";
 import { useTranslation } from "react-i18next";
+import DownloadApp from "../general/DownloadApp";
 
 interface ProfilePlatesProps {
   plate: any;
@@ -42,6 +43,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   const [isMarkingSold, setIsMarkingSold] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showRepublishLimitDialog, setShowRepublishLimitDialog] = useState(false);
 
   useEffect(() => {
     setIsPaused(!plate.paused_at);
@@ -76,11 +78,18 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
       });
 
       if (response.success) {
-        console.log(response.message || "Plate republished successfully");
+        toast.success(response.message || "Plate republished successfully");
         refetch?.();
       }
-    } catch (error) {
-      console.error("Failed to republish plate:", error);
+    } catch (error: any) {
+      const status = error?.response?.status;
+      const apiMessage = error?.response?.data?.message;
+
+      if (status === 422) {
+        setShowRepublishLimitDialog(true);
+      } else {
+        toast.error(apiMessage || "Failed to republish plate");
+      }
     } finally {
       setIsRepublishing(false);
     }
@@ -421,6 +430,25 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
               </DialogContent>
             </Dialog>
           </div>
+          <Dialog
+            open={showRepublishLimitDialog}
+            onOpenChange={setShowRepublishLimitDialog}
+          >
+            <DialogContent className="w-[900px] max-w-[95vw] px-6">
+              <DialogHeader>
+                <DialogTitle className="text-center text-2xl font-semibold text-[#192540]">
+                  {t("republish_limit_reached")}
+                </DialogTitle>
+
+                <DialogDescription>
+                  <div className="mt-6">
+                    <DownloadApp />
+                  </div>
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+
         </div>
       </div>
     </section>
