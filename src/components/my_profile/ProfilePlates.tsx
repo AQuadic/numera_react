@@ -15,6 +15,7 @@ import Views from "../icons/profile/Views";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -359,9 +360,11 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                         </p>
                       </div>
                       <div className="flex items-center justify-between gap-6 mt-7 px-8">
-                        <button className="w-full h-14 border border-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer">
-                          {t("cancel")}
-                        </button>
+                        <DialogClose asChild>
+                          <button className="w-full h-14 border border-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer">
+                            {t("cancel")}
+                          </button>
+                        </DialogClose>
                         <button
                           onClick={handleRepublish}
                           disabled={isRepublishing}
