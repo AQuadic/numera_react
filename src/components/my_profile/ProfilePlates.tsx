@@ -288,7 +288,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
               )}
             </h2>
 
-            <h2 className="text-[#A3A3A3] text-sm font-medium">
+            {/* <h2 className="text-[#A3A3A3] text-sm font-medium">
               {typeof plate.old_price === "number" && plate.old_price > 0 ? (
                 <>
                   {plate.old_price}{" "}
@@ -297,7 +297,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
               ) : (
                 t("price_on_request")
               )}
-            </h2>
+            </h2> */}
           </div>
         </div>
 
