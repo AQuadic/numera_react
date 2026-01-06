@@ -19,6 +19,7 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
   const [isFavorited, setIsFavorited] = useState(plate.is_favorite ?? false);
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
+  const isOwner = user?.id === plate.user?.id;
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-AE").format(price);
   };
@@ -190,7 +191,7 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
             <button onClick={handleShare} className="cursor-pointer">
               <Share />
             </button>
-            {user && (
+            {user && !isOwner && (
               <button
                 onClick={handleToggleFavorite}
                 disabled={isLoading}

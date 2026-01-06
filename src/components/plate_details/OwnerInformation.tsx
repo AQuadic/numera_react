@@ -4,6 +4,7 @@ import Phone from "../icons/plates/Phone";
 import Verified from "../icons/plates/Verified";
 import Whatsapp from "../icons/plates/Whatsapp";
 import { useTranslation } from "react-i18next";
+import { useAuthStore } from "../../store";
 
 interface UserImage {
   url: string;
@@ -36,6 +37,12 @@ const OwnerInformation = ({ user }: OwnerInformationProps) => {
     "+",
     ""
   );
+
+  const loggedUser = useAuthStore((s) => s.user);
+  const isOwner =
+  loggedUser?.id != null &&
+  Number(loggedUser.id) === Number(user.id);
+
 
   return (
     <section className="container md:py-[58px] py-10">
@@ -72,6 +79,7 @@ const OwnerInformation = ({ user }: OwnerInformationProps) => {
           {user.verification_status === "verified" && <Verified />}
         </div>
 
+      {!isOwner && (
         <div className="flex flex-wrap justify-center items-center gap-6 mt-4 lg:mt-0">
           {user.phone_e164 && (
             <a
@@ -79,11 +87,11 @@ const OwnerInformation = ({ user }: OwnerInformationProps) => {
               className="w-[180px] h-[102px] bg-[#192540] rounded-[10px] flex flex-col items-center justify-center gap-2 hover:bg-[#2a3650] transition-colors"
             >
               <Phone />
-              <p className="text-[#FEFEFE] text-xl font-medium">{t('call')}</p>
+              <p className="text-[#FEFEFE] text-xl font-medium">
+                {t("call")}
+              </p>
             </a>
           )}
-
-          {/* chat button hidden as requested */}
 
           {user.phone_e164 && (
             <a
@@ -93,10 +101,13 @@ const OwnerInformation = ({ user }: OwnerInformationProps) => {
               className="w-[180px] h-[102px] bg-[#19AA3D] rounded-[10px] flex flex-col items-center justify-center gap-2 hover:bg-[#158a32] transition-colors"
             >
               <Whatsapp />
-              <p className="text-[#FEFEFE] text-xl font-medium">{t('whatsapp')}</p>
+              <p className="text-[#FEFEFE] text-xl font-medium">
+                {t("whatsapp")}
+              </p>
             </a>
           )}
         </div>
+      )}
       </div>
     </section>
   );
