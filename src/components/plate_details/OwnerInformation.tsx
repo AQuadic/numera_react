@@ -5,6 +5,10 @@ import Verified from "../icons/plates/Verified";
 import Whatsapp from "../icons/plates/Whatsapp";
 import { useTranslation } from "react-i18next";
 
+interface UserImage {
+  url: string;
+}
+
 interface User {
   id: number;
   name: string;
@@ -15,6 +19,7 @@ interface User {
   company_name: string | null;
   created_at?: string;
   verification_status: string | null;
+  image?: UserImage | null;
 }
 
 interface OwnerInformationProps {
@@ -38,10 +43,20 @@ const OwnerInformation = ({ user }: OwnerInformationProps) => {
         {t('owner_information')}
       </h2>
       <div className="mt-9 flex flex-wrap justify-between items-start">
-        <div className="flex items-center gap-3">
+        <div className="flex justify-between gap-3 bg-[#FDFAF3] px-2 py-3 md:w-1/2 rounded-md">
           <Link to={`/seller_profile/${user.id}`} className="flex items-center gap-3">
-            <div className="w-[78px] h-[78px] rounded-full bg-[#EBAF29] flex items-center justify-center text-white text-2xl font-bold">
-              {user.name.charAt(0).toUpperCase()}
+            <div className="w-[78px] h-[78px] rounded-full overflow-hidden bg-[#EBAF29] flex items-center justify-center">
+              {user.image?.url ? (
+                <img
+                  src={user.image.url}
+                  alt={user.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span className="text-white text-2xl font-bold">
+                  {user.name.charAt(0).toUpperCase()}
+                </span>
+              )}
             </div>
             <div>
               <h2 className="text-[#192540] text-2xl font-medium">
