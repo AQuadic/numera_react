@@ -97,7 +97,7 @@ const Header = () => {
         </div>
 
         <div className="flex items-center gap-8">
-        <ChangeLanguage />
+          <ChangeLanguage />
           {hasUser && (
             <button
               onClick={() => setNotificationsOpen(true)}
@@ -151,25 +151,33 @@ const Header = () => {
                     )}
 
                     {notifications.map((notification) => (
-                      <div key={notification.id} className="flex items-center justify-between border-b py-4 bg-[#FDFAF3] px-4">
-                        <div className="flex items-center gap-2">
-                          <div>
+                      <div
+                        key={notification.id}
+                        className="flex flex-col border-b py-4 bg-[#FDFAF3] px-4 gap-1"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
                             <Bell />
+                            <h3 className="text-[#192540] text-sm font-bold">
+                              {notification.title[lang] ??
+                                notification.title.en}
+                            </h3>
                           </div>
-                          <p className="text-[#192540] text-sm font-medium">
-                            {notification.body[lang] ?? notification.body.en}
+                          <p className="text-[#717171] text-[10px]">
+                            {new Date(
+                              notification.created_at
+                            ).toLocaleTimeString(undefined, {
+                              hour: "numeric",
+                              minute: "numeric",
+                              hour12: true,
+                            })}
                           </p>
                         </div>
-                        <p className="text-[#717171] text-[12px]">
-                          {new Date(notification.created_at).toLocaleTimeString(undefined, {
-                            hour: "numeric",
-                            minute: "numeric",
-                            hour12: true,
-                          })}
+                        <p className="text-[#717171] text-xs font-medium ps-6">
+                          {notification.body[lang] ?? notification.body.en}
                         </p>
                       </div>
                     ))}
-
                   </div>
                 </motion.div>
               </>
@@ -231,7 +239,7 @@ const Header = () => {
                 {navLinks.map((link) => {
                   if (link.dialog) {
                     return (
-                    <button
+                      <button
                         className="text-[#192540] text-xl font-semibold hover:text-[#EBAF29] transition text-start"
                         onClick={() => {
                           setDownloadDialogOpen(true);
@@ -279,16 +287,16 @@ const Header = () => {
           </>
         )}
       </AnimatePresence>
-        <Dialog open={downloadDialogOpen} onOpenChange={setDownloadDialogOpen}>
-          <DialogContent className="w-[860px] max-w-full px-0">
-            <DialogHeader>
-              <DialogTitle />
-              <DialogDescription>
-                <DownloadApp />
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+      <Dialog open={downloadDialogOpen} onOpenChange={setDownloadDialogOpen}>
+        <DialogContent className="w-[860px] max-w-full px-0">
+          <DialogHeader>
+            <DialogTitle />
+            <DialogDescription>
+              <DownloadApp />
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

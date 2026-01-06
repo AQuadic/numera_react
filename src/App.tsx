@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router";
+import { useNotifications } from "./hooks/useNotifications";
 import Layout from "./components/general/Layout";
 import HomePage from "./pages/HomePage";
 import SigninPage from "./components/auth/signin/SigninPage";
@@ -32,6 +33,7 @@ import AllAds from "./components/my_profile/AllAds";
 import Settings from "./components/my_profile/Settings";
 
 function App() {
+  useNotifications();
   return (
     <BrowserRouter>
       <AuthProvider>
@@ -47,34 +49,24 @@ function App() {
             <Route path="sims" element={<SimsPage />} />
             <Route path="page/:id" element={<PageDetails />} />
             <Route path="seller_profile/:userId" element={<SellerProfile />} />
-              <Route path="plate" element={<PlateDetails />} />
-              <Route path="plate/:id" element={<PlateDetails />} />
-              <Route
-                path="sim"
-                element={<PhoneNumberDetails />}
-              />
-              <Route
-                path="sim/:id"
-                element={<PhoneNumberDetails />}
-              />
+            <Route path="plate" element={<PlateDetails />} />
+            <Route path="plate/:id" element={<PlateDetails />} />
+            <Route path="sim" element={<PhoneNumberDetails />} />
+            <Route path="sim/:id" element={<PhoneNumberDetails />} />
             {/* Protected routes - require authentication */}
             <Route element={<ProtectedRoute />}>
-              
               <Route path="sell_plates" element={<SellPlatesPage />} />
               <Route path="confirm_plate" element={<ConfirmPlate />} />
               <Route path="profile" element={<MyProfile />}>
-                  <Route index element={<MyProfileComponent />} />
-                  <Route path="personal_info" element={<PersonalInformation />} />
-                  <Route path="change_password" element={<ChangePassword />} />
-                  <Route path="favorite_plates" element={<FavPlates />} />
-                  <Route path="ads" element={<MyAdsComponent />} />
-                  <Route path="allAds" element={<AllAds />} />
-                  <Route path="settings" element={<Settings />} />
-                  <Route
-                    path="analytics"
-                    element={<AnalyticalDashboard />}
-                  />
-                </Route>
+                <Route index element={<MyProfileComponent />} />
+                <Route path="personal_info" element={<PersonalInformation />} />
+                <Route path="change_password" element={<ChangePassword />} />
+                <Route path="favorite_plates" element={<FavPlates />} />
+                <Route path="ads" element={<MyAdsComponent />} />
+                <Route path="allAds" element={<AllAds />} />
+                <Route path="settings" element={<Settings />} />
+                <Route path="analytics" element={<AnalyticalDashboard />} />
+              </Route>
             </Route>
           </Route>
 
