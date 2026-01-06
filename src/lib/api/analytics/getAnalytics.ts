@@ -23,6 +23,7 @@ export interface AdsCounts {
   sold_ads: number;
   paused_ads: number;
   total_ads: number;
+  remaining_ads: number;
 }
 
 export interface GetAnalyticsParams {

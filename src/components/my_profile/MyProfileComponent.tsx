@@ -165,13 +165,10 @@ const MyProfileComponent = () => {
 
           <div className="w-[180px] h-[75px] bg-[#FEFEFE] rounded-[10px] flex flex-col items-center justify-center gap-1">
             <p className="text-[#192540] text-xl font-medium">
-              {user?.created_at
-                ? new Date().getFullYear() -
-                  new Date(user.created_at).getFullYear()
-                : 0}
+                {adsLoading ? "-" : adsCounts?.remaining_ads ?? 0}
             </p>
             <p className="text-[#717171] text-base font-medium">
-              {t('active_years')}
+              {t('remaining_ads')}
             </p>
           </div>
         </div>
