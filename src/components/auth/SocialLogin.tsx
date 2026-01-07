@@ -67,7 +67,8 @@ const SocialLogin = () => {
     if (window.AppleID) {
       try {
         const baseURL =
-          import.meta.env.VITE_API_BASE_URL || "https://numra.motofy.io/api";
+          import.meta.env.VITE_API_BASE_URL ||
+          "https://numra-deploy.vercel.app";
         window.AppleID.auth.init({
           clientId: "ae.numra.apple",
           scope: "email name",
