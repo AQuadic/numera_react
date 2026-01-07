@@ -28,7 +28,6 @@ const PlateImage = ({
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-
   useEffect(() => {
     setIsLoading(true);
     setHasError(false);
@@ -75,6 +74,8 @@ const DrawPlatesPattern = () => {
 
   // Direct URL to the plate image (cross-origin, for display only)
   const { t, i18n } = useTranslation("draw");
+  const isRtl = i18n.language === "ar";
+
   const [plates, setPlates] = useState<PlateData[]>([
     { emirate: "", letters: "", numbers: "", price: "" },
   ]);
@@ -504,6 +505,7 @@ const DrawPlatesPattern = () => {
           )}
 
           <Select
+            dir={isRtl ? "rtl" : "ltr"}
             onValueChange={(value) =>
               setPlates((prev) =>
                 prev.map((p, i) => (i === index ? { ...p, emirate: value } : p))

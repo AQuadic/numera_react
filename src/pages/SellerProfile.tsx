@@ -1,6 +1,7 @@
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { getSellerProfile, type SellerProfile as SellerProfileType } from "../lib/api/getSellerProfile";
+import { getSellerCount, type SellerCountResponse } from "../lib/api/getSellerCount";
 
 import HomeCategories from "../components/home/HomeCategories"
 import WhyChooseNumra from "../components/home/WhyChooseNumra"
@@ -21,16 +22,25 @@ const SellerProfile = () => {
   const { user } = useAuthStore();
   const isOwnerProfile = user?.id === id;
 
-  const { data: profile, isLoading, isError } = useQuery<SellerProfileType>({
+  const { data: profile, isLoading: isProfileLoading, isError: isProfileError } = useQuery<SellerProfileType>({
     queryKey: ["sellerProfile", id],
     queryFn: () => getSellerProfile(id),
     enabled: !!id,
   });
 
-  if (isLoading) return <div className="flex items-center justify-center py-20">
-    <Spinner />
-  </div>;
-  if (isError || !profile) return <div className="text-center py-20">Failed to load profile.</div>;
+  const { data: counts, isLoading: isCountsLoading } = useQuery<SellerCountResponse>({
+    queryKey: ["sellerCounts", id],
+    queryFn: () => getSellerCount(id),
+    enabled: !!id,
+  });
+
+  if (isProfileLoading || isCountsLoading) return (
+    <div className="flex items-center justify-center py-20">
+      <Spinner />
+    </div>
+  );
+
+  if (isProfileError || !profile) return <div className="text-center py-20">Failed to load profile.</div>;
 
     return (
         <section className="md:py-[58px]">
@@ -111,17 +121,17 @@ const SellerProfile = () => {
 
                 <div className="flex flex-wrap justify-center items-center gap-6 mt-4 lg:mt-6">
                     <div className="w-[180px] h-[75px] bg-[#FEFEFE] rounded-[10px] flex flex-col items-center justify-center gap-1">
-                        <p className="text-[#192540] text-xl font-medium">-</p>
+                        <p className="text-[#192540] text-xl font-medium">{counts?.total ?? "-"}</p>
                         <p className="text-[#717171] text-base font-medium">{t('total_plates')}</p>
                     </div>
 
                     <div className="w-[180px] h-[75px] bg-[#FEFEFE] rounded-[10px] flex flex-col items-center justify-center gap-1">
-                        <p className="text-[#EBAF29] text-xl font-medium">-</p>
+                        <p className="text-[#EBAF29] text-xl font-medium">{counts?.premium ?? "-"}</p>
                         <p className="text-[#717171] text-base font-medium">{t('premium')}</p>
                     </div>
 
                     <div className="w-[180px] h-[75px] bg-[#FEFEFE] rounded-[10px] flex flex-col items-center justify-center gap-1">
-                        <p className="text-[#192540] text-xl font-medium">-</p>
+                        <p className="text-[#192540] text-xl font-medium">{counts?.sold ?? "-"}</p>
                         <p className="text-[#717171] text-base font-medium">{t('sold')}</p>
                     </div>
                 </div>
