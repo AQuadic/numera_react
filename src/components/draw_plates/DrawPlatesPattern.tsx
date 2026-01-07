@@ -137,8 +137,39 @@ const DrawPlatesPattern = () => {
     setIsDownloading(true);
 
     try {
-      // Get dimensions from the container
+      // Wait for all plate images to be loaded before proceeding
       const container = plateContainerRef.current;
+      const imageElements = Array.from(
+        container.querySelectorAll(".plate-image")
+      ) as HTMLImageElement[];
+
+      // Wait for all images to load or error out
+      await Promise.all(
+        imageElements.map(
+          (img) =>
+            new Promise<void>((resolve) => {
+              if (img.complete) {
+                // Image already loaded or cached
+                resolve();
+              } else {
+                const onLoad = () => {
+                  img.removeEventListener("load", onLoad);
+                  img.removeEventListener("error", onError);
+                  resolve();
+                };
+                const onError = () => {
+                  img.removeEventListener("load", onLoad);
+                  img.removeEventListener("error", onError);
+                  resolve(); // Resolve even on error to continue download
+                };
+                img.addEventListener("load", onLoad);
+                img.addEventListener("error", onError);
+              }
+            })
+        )
+      );
+
+      // Get dimensions from the container
       const rect = container.getBoundingClientRect();
       const scale = 2; // High resolution
       const width = rect.width * scale;
@@ -306,9 +337,20 @@ const DrawPlatesPattern = () => {
           ".plate-price"
         ) as HTMLParagraphElement;
         if (priceEl) {
-          const priceRect = priceEl.getBoundingClientRect();
-          const px = priceRect.left - rect.left + priceRect.width / 2;
-          const py = priceRect.top - rect.top + priceRect.height / 2;
+          // Calculate position relative to container using offsetLeft/offsetTop
+          let offsetLeft = priceEl.offsetLeft;
+          let offsetTop = priceEl.offsetTop;
+
+          // Walk up the DOM tree to accumulate offsets until we reach the container
+          let current = priceEl.offsetParent as HTMLElement | null;
+          while (current && current !== container) {
+            offsetLeft += current.offsetLeft;
+            offsetTop += current.offsetTop;
+            current = current.offsetParent as HTMLElement | null;
+          }
+
+          const px = offsetLeft + priceEl.offsetWidth / 2;
+          const py = offsetTop + priceEl.offsetHeight / 2;
 
           ctx.fillStyle =
             bgColor === "black" || bgColor === "#000" || bgColor === "#000000"
