@@ -12,11 +12,14 @@ import Verified from "../components/icons/plates/Verified"
 import Whatsapp from "../components/icons/plates/Whatsapp"
 import Spinner from "../components/icons/general/Spinner";
 import { useTranslation } from "react-i18next";
+import { useAuthStore } from "../store";
 
 const SellerProfile = () => {
   const { t } = useTranslation("home");
   const { userId } = useParams<{ userId: string }>();
   const id = Number(userId);
+  const { user } = useAuthStore();
+  const isOwnerProfile = user?.id === id;
 
   const { data: profile, isLoading, isError } = useQuery<SellerProfileType>({
     queryKey: ["sellerProfile", id],
@@ -70,40 +73,41 @@ const SellerProfile = () => {
                 <p className="text-[#717171] text-base font-medium mt-1">
                     {t("member_since", { year: new Date(profile.created_at).getFullYear() })}
                     </p>
+                {!isOwnerProfile && (
+                    <div className="flex flex-wrap justify-center items-center gap-6 mt-4 lg:mt-6">
+                    {profile.phone ? (
+                        <a
+                        href={`tel:${profile.phone}`}
+                        className="w-[180px] h-[102px] bg-[#192540] rounded-[10px] flex flex-col items-center justify-center gap-2 hover:opacity-90 transition"
+                        >
+                        <Phone />
+                        <p className="text-[#FEFEFE] text-xl font-medium">{t('call')}</p>
+                        </a>
+                    ) : (
+                        <div className="w-[180px] h-[102px] bg-[#192540] rounded-[10px] flex flex-col items-center justify-center gap-2 opacity-50 cursor-not-allowed">
+                        <Phone />
+                        <p className="text-[#FEFEFE] text-xl font-medium">{t('call')}</p>
+                        </div>
+                    )}
 
-                <div className="flex flex-wrap justify-center items-center gap-6 mt-4 lg:mt-6">
-                {profile.phone ? (
-                    <a
-                    href={`tel:${profile.phone}`}
-                    className="w-[180px] h-[102px] bg-[#192540] rounded-[10px] flex flex-col items-center justify-center gap-2 hover:opacity-90 transition"
-                    >
-                    <Phone />
-                    <p className="text-[#FEFEFE] text-xl font-medium">{t('call')}</p>
-                    </a>
-                ) : (
-                    <div className="w-[180px] h-[102px] bg-[#192540] rounded-[10px] flex flex-col items-center justify-center gap-2 opacity-50 cursor-not-allowed">
-                    <Phone />
-                    <p className="text-[#FEFEFE] text-xl font-medium">{t('call')}</p>
+                    {profile.phone ? (
+                        <a
+                        href={`https://wa.me/${profile.phone.replace(/\D/g, "")}`} 
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-[180px] h-[102px] bg-[#19AA3D] rounded-[10px] flex flex-col items-center justify-center gap-2 hover:opacity-90 transition"
+                        >
+                        <Whatsapp />
+                        <p className="text-[#FEFEFE] text-xl font-medium">{t('whatsapp')}</p>
+                        </a>
+                    ) : (
+                        <div className="w-[180px] h-[102px] bg-[#19AA3D] rounded-[10px] flex flex-col items-center justify-center gap-2 opacity-50 cursor-not-allowed">
+                        <Whatsapp />
+                        <p className="text-[#FEFEFE] text-xl font-medium">{t('whatsapp')}</p>
+                        </div>
+                    )}
                     </div>
                 )}
-
-                {profile.phone ? (
-                    <a
-                    href={`https://wa.me/${profile.phone.replace(/\D/g, "")}`} 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-[180px] h-[102px] bg-[#19AA3D] rounded-[10px] flex flex-col items-center justify-center gap-2 hover:opacity-90 transition"
-                    >
-                    <Whatsapp />
-                    <p className="text-[#FEFEFE] text-xl font-medium">{t('whatsapp')}</p>
-                    </a>
-                ) : (
-                    <div className="w-[180px] h-[102px] bg-[#19AA3D] rounded-[10px] flex flex-col items-center justify-center gap-2 opacity-50 cursor-not-allowed">
-                    <Whatsapp />
-                    <p className="text-[#FEFEFE] text-xl font-medium">{t('whatsapp')}</p>
-                    </div>
-                )}
-                </div>
 
                 <div className="flex flex-wrap justify-center items-center gap-6 mt-4 lg:mt-6">
                     <div className="w-[180px] h-[75px] bg-[#FEFEFE] rounded-[10px] flex flex-col items-center justify-center gap-1">
