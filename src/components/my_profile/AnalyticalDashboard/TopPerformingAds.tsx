@@ -35,7 +35,7 @@ const  TopPerformingAds = ({ analytics }: TopPerformingAdsProps) => {
                                 </div>
                                 <div>
                                 <h2 className="text-[#192540] md:text-base text-sm font-medium">
-                                    {ad.ad_model}
+                                    {ad.ad_model.numbers} {ad.ad_model.letters}
                                 </h2>
                                 <p className="text-[#A3A3A3] md:text-sm text-sm mt-1">
                                     {t("best_performing_ad", { number: index + 1 })}

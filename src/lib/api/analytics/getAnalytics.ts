@@ -1,8 +1,9 @@
 import { axios } from "../../axios";
+import type { Plate } from "../plates";
 
 export interface TopPerformingAd {
   model_type: string;
-  ad_model: string;
+  ad_model: Plate;
   views_count: number;
   inquiries_count: number;
 }

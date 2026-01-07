@@ -9,10 +9,19 @@ interface ViewsOverviewProps {
 
 const ViewsOverview = ({ analytics }: ViewsOverviewProps) => {
   const { t } = useTranslation("profile");
-  const data = analytics?.views_over_days?.map((views, index) => ({
-    day: index + 1,
-    views: views
-  })) || [];
+  const rawViews = analytics?.views_over_days;
+
+  const data = Array.isArray(rawViews)
+    ? rawViews.map((views, index) => ({
+        day: index + 1,
+        views,
+      }))
+    : rawViews && typeof rawViews === "object"
+    ? Object.values(rawViews).map((views, index) => ({
+        day: index + 1,
+        views: Number(views),
+      }))
+    : [];
 
   if (!data.length) {
     return (
