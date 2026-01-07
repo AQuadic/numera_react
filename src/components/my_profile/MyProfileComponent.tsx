@@ -21,6 +21,7 @@ import DeleteAccountDialog from "./DeleteAccountDialog";
 import Heart from "../icons/home/Heart";
 import type { UserImage } from "../../lib/api/auth";
 import { useTranslation } from "react-i18next";
+import { getResponsiveImageUrl } from "../../lib/utils/imageUtils";
 
 const MyProfileComponent = () => {
   const { t } = useTranslation("profile");
@@ -52,9 +53,9 @@ const MyProfileComponent = () => {
 
   // Calculate "Member since" from created_at
   const getMemberSince = () => {
-    if (!user?.created_at) return t('member_since_unknown');
+    if (!user?.created_at) return t("member_since_unknown");
     const date = new Date(user.created_at);
-    return t('member_since', { year: date.getFullYear() });
+    return t("member_since", { year: date.getFullYear() });
   };
 
   // Get verification status badge
@@ -93,16 +94,6 @@ const MyProfileComponent = () => {
     setIsSubmittedOpen(true);
   };
 
-  // Helper to safely extract image URL from `user.image` which may be a string or an object
-  const getUserImage = (img?: string | UserImage | null): string | null => {
-    if (!img) return null;
-    if (typeof img === "string") return img;
-    const ui = img as UserImage;
-    if (Array.isArray(ui.responsive_urls)) return ui.responsive_urls[0] ?? null;
-    if (typeof ui.url === "string") return ui.url;
-    return null;
-  };
-
   const getInitials = (fullName?: string | null) => {
     const parts = (fullName || user?.name || "")
       .trim()
@@ -113,7 +104,7 @@ const MyProfileComponent = () => {
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   };
 
-  const imageUrl = getUserImage(user?.image);
+  const imageUrl = getResponsiveImageUrl(user?.image as UserImage, "thumbnail");
 
   return (
     <section className="lg:py-[72px]">
@@ -138,7 +129,7 @@ const MyProfileComponent = () => {
         </div>
 
         <p className="text-[#717171] text-base font-medium mt-2">
-          {user?.type === "personal" ? t('personal_user') : t('business_user')}
+          {user?.type === "personal" ? t("personal_user") : t("business_user")}
         </p>
         <p className="text-[#717171] text-base font-medium mt-1">
           {getMemberSince()}
@@ -150,7 +141,7 @@ const MyProfileComponent = () => {
               {adsLoading ? "-" : adsCounts?.sold_ads ?? 0}
             </p>
             <p className="text-[#717171] text-base font-medium">
-              {t('sold_plate')}
+              {t("sold_plate")}
             </p>
           </div>
 
@@ -159,16 +150,16 @@ const MyProfileComponent = () => {
               {adsLoading ? "-" : adsCounts?.active_ads ?? 0}
             </p>
             <p className="text-[#717171] text-base font-medium">
-              {t('active_ads')}
+              {t("active_ads")}
             </p>
           </div>
 
           <div className="w-[180px] h-[75px] bg-[#FEFEFE] rounded-[10px] flex flex-col items-center justify-center gap-1">
             <p className="text-[#192540] text-xl font-medium">
-                {adsLoading ? "-" : adsCounts?.remaining_ads ?? 0}
+              {adsLoading ? "-" : adsCounts?.remaining_ads ?? 0}
             </p>
             <p className="text-[#717171] text-base font-medium">
-              {t('remaining_ads')}
+              {t("remaining_ads")}
             </p>
           </div>
         </div>
@@ -182,7 +173,7 @@ const MyProfileComponent = () => {
           <div className="flex items-center gap-2">
             <Profile />
             <p className="text-[#192540] text-base font-medium">
-              {t('personal_info')}{" "}
+              {t("personal_info")}{" "}
             </p>
           </div>
           <ArrowLeft />
@@ -197,7 +188,7 @@ const MyProfileComponent = () => {
           <div className="flex items-center gap-2">
             <ChangePassword />
             <p className="text-[#192540] text-base font-medium">
-              {t('change_password')}
+              {t("change_password")}
             </p>
           </div>
           <ArrowLeft />
@@ -220,7 +211,7 @@ const MyProfileComponent = () => {
           <div className="flex items-center gap-2">
             {user?.verification_status === "verified" && <Verified />}
             <p className="text-[#192540] text-base font-medium">
-              {t('account_verification')}
+              {t("account_verification")}
             </p>
           </div>
 
@@ -251,10 +242,10 @@ const MyProfileComponent = () => {
             </DialogTitle>
             <DialogDescription className="mt-14 text-center">
               <h2 className="text-[#192540] text-2xl font-semibold">
-                {t('verification_submitted_title')}
+                {t("verification_submitted_title")}
               </h2>
               <p className="text-[#717171] text-lg font-medium mt-4">
-                {t('verification_submitted_desc')}
+                {t("verification_submitted_desc")}
               </p>
             </DialogDescription>
           </DialogHeader>
@@ -264,7 +255,7 @@ const MyProfileComponent = () => {
               className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold flex items-center justify-center"
               onClick={() => setIsSubmittedOpen(false)}
             >
-              {t('back_to_home')}
+              {t("back_to_home")}
             </Link>
           </div>
         </DialogContent>
@@ -282,10 +273,10 @@ const MyProfileComponent = () => {
             </DialogTitle>
             <DialogDescription className="mt-6 text-center">
               <h2 className="text-[#192540] text-2xl font-semibold">
-                {t('verification_rejected')}
+                {t("verification_rejected")}
               </h2>
               <p className="text-[#717171] text-lg font-medium mt-4">
-                {t('verification_rejected_desc')}
+                {t("verification_rejected_desc")}
               </p>
             </DialogDescription>
           </DialogHeader>
@@ -294,14 +285,14 @@ const MyProfileComponent = () => {
               to="/"
               className="w-full h-14 border border-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold flex items-center justify-center"
             >
-              {t('cancel')}
+              {t("cancel")}
             </Link>
             <Link
               to="/contact_us"
               className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold flex items-center justify-center"
               onClick={() => setIsRejectedOpen(false)}
             >
-              {t('contact_support')}
+              {t("contact_support")}
             </Link>
           </div>
         </DialogContent>
@@ -315,7 +306,7 @@ const MyProfileComponent = () => {
           <div className="flex items-center gap-2">
             <Heart />
             <p className="text-[#192540] text-base font-medium">
-              {t('fav_plate')}
+              {t("fav_plate")}
             </p>
           </div>
           <ArrowLeft />
@@ -329,7 +320,7 @@ const MyProfileComponent = () => {
               <div className="flex items-center gap-2">
                 <DeleteAccount />
                 <p className="text-[#D71F1F] text-base font-medium">
-                  {t('delete_account')}
+                  {t("delete_account")}
                 </p>
               </div>
               <ArrowLeft />

@@ -1,90 +1,77 @@
-/**
- * Utility functions for handling responsive images from the API
- */
+export interface ApiImage {
+  url?: string;
+  responsive_urls?: string[];
+  // Allow other properties that might come from the API
+  [key: string]: any;
+}
+
+export type ImageSize = "small" | "medium" | "large" | "thumbnail";
 
 /**
- * Gets the most appropriate responsive URL based on the requested size
- * @param responsiveUrls - Array of responsive URLs from the API
- * @param fallbackUrl - Original URL to use if no responsive URLs are available
- * @param preferredSize - Preferred image size ('small' | 'medium' | 'large')
- * @returns The most appropriate image URL
+ * Gets the most appropriate responsive URL based on the requested size.
+ * - 'large' -> largest available (index 0)
+ * - 'medium' -> middle quality
+ * - 'small' -> lower quality (~2/3 down the list)
+ * - 'thumbnail' -> smallest available (last index)
  */
 export function getResponsiveImageUrl(
-  responsiveUrls: string[] | undefined,
-  fallbackUrl: string,
-  preferredSize: "small" | "medium" | "large" = "medium"
+  image: ApiImage | null | undefined,
+  size: ImageSize = "medium"
 ): string {
-  if (!responsiveUrls || responsiveUrls.length === 0) {
-    return fallbackUrl;
+  if (!image) return "";
+
+  const urls = image.responsive_urls;
+
+  // Use main url if no responsive urls are present
+  if (!urls || !Array.isArray(urls) || urls.length === 0) {
+    return image.url || "";
   }
 
-  // Responsive URLs are typically ordered from largest to smallest
-  // Index 0: 980x980, Index 1: 819x819, Index 2: 685x685
-  const sizeIndexMap = {
-    large: 0, // 980x980
-    medium: 1, // 819x819
-    small: 2, // 685x685
-  };
+  const count = urls.length;
+  let index = 0;
 
-  const index = sizeIndexMap[preferredSize];
-  return responsiveUrls[index] || responsiveUrls[0] || fallbackUrl;
+  switch (size) {
+    case "large":
+      index = 0;
+      break;
+    case "medium":
+      // Approximately middle index
+      index = Math.floor((count - 1) / 2);
+      break;
+    case "small":
+      // Approximately 2/3rds index
+      index = Math.floor((count - 1) * (2 / 3));
+      break;
+    case "thumbnail":
+      // Last index (smallest)
+      index = count - 1;
+      break;
+    default:
+      index = 0;
+  }
+
+  // Ensure index is within valid bounds
+  index = Math.max(0, Math.min(index, count - 1));
+
+  return urls[index] || image.url || "";
 }
 
 /**
- * Generates srcSet string for Next.js Image component
- * @param responsiveUrls - Array of responsive URLs from the API
- * @returns srcSet string or undefined if no responsive URLs
+ * Helper to get standard img props (src) for an ApiImage.
  */
-export function generateSrcSet(
-  responsiveUrls: string[] | undefined
-): string | undefined {
-  if (!responsiveUrls || responsiveUrls.length === 0) {
-    return undefined;
-  }
-
-  // Assuming the API returns URLs in descending order of size
-  // Index 0: 980w, Index 1: 819w, Index 2: 685w
-  const sizes = [980, 819, 685];
-
-  return responsiveUrls
-    .map((url, index) => {
-      const width = sizes[index] || sizes.at(-1);
-      return `${url} ${width}w`;
-    })
-    .join(", ");
-}
-
-/**
- * Gets the best image source and srcSet for use with Next.js Image component
- * @param responsiveUrls - Array of responsive URLs from the API
- * @param fallbackUrl - Original URL to use if no responsive URLs are available
- * @param preferredSize - Preferred image size for the src attribute
- * @returns Object with src and srcSet properties
- */
-export function getImageProps(
-  responsiveUrls: string[] | undefined,
-  fallbackUrl: string,
-  preferredSize: "small" | "medium" | "large" = "medium"
+export function getImgProps(
+  image: ApiImage | null | undefined,
+  alt: string = "",
+  preferredSize: ImageSize = "medium"
 ) {
-  const src = getResponsiveImageUrl(responsiveUrls, fallbackUrl, preferredSize);
-  const srcSet = generateSrcSet(responsiveUrls);
+  if (!image) {
+    return { src: "", alt };
+  }
+
+  const src = getResponsiveImageUrl(image, preferredSize);
 
   return {
     src,
-    ...(srcSet && { srcSet }),
+    alt,
   };
-}
-
-/**
- * Type guard to check if an image object has responsive URLs
- */
-export function hasResponsiveUrls(
-  image: { url: string; responsive_urls?: string[] } | undefined | null
-): image is { url: string; responsive_urls: string[] } {
-  return (
-    !!image &&
-    !!image.responsive_urls &&
-    Array.isArray(image.responsive_urls) &&
-    image.responsive_urls.length > 0
-  );
 }

@@ -1,4 +1,5 @@
 import { axios } from "../axios";
+import type { ApiImage } from "../utils/imageUtils";
 
 // Types
 export interface User {
@@ -28,13 +29,7 @@ export interface Operator {
   order_column: number;
   created_at: string;
   updated_at: string;
-  image: {
-    id: number;
-    uuid: string;
-    size: number;
-    url: string;
-    responsive_urls: string[];
-  };
+  image: ApiImage;
 }
 
 export interface Sim {

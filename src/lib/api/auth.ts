@@ -1,15 +1,9 @@
 import { axios, setToken, removeToken } from "../axios";
 import type { AxiosError } from "axios";
+import type { ApiImage } from "../utils/imageUtils";
 
 // Types for API responses
-export interface UserImage {
-  id: number;
-  uuid?: string;
-  size?: number;
-  url?: string;
-  responsive_urls?: string[];
-  [key: string]: any;
-}
+export type UserImage = ApiImage;
 
 export interface User {
   id: number;

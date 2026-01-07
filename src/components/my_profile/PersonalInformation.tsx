@@ -13,6 +13,7 @@ import { PhoneInput, type PhoneValue } from "../compound/PhoneInput";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import Photo from "../icons/profile/Photo";
 import { useTranslation } from "react-i18next";
+import { getResponsiveImageUrl } from "../../lib/utils/imageUtils";
 
 const PersonalInformation: FC = () => {
   const { t, i18n } = useTranslation("profile");
@@ -32,26 +33,9 @@ const PersonalInformation: FC = () => {
     number: "",
   });
 
-  // Safely extract an image URL from the API's `image` field which may be a string or an object
-  const getUserImage = (img?: string | UserImage | null): string | null => {
-    if (!img) return null;
-    if (typeof img === "string") return img;
-
-    const ui = img as UserImage;
-    if (Array.isArray(ui.responsive_urls)) {
-      return ui.responsive_urls[0] ?? null;
-    }
-
-    if (typeof ui.url === "string") {
-      return ui.url;
-    }
-
-    return null;
-  };
-
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(
-    getUserImage(user?.image)
+    getResponsiveImageUrl(user?.image as UserImage, "thumbnail")
   );
 
   // helper to derive initials from name
@@ -77,7 +61,9 @@ const PersonalInformation: FC = () => {
         user.type === "company" ? "company" : "personal";
       setMemberType(type);
       setCompanyName(user.company_name || "");
-      setImagePreview(getUserImage(user?.image));
+      setImagePreview(
+        getResponsiveImageUrl(user?.image as UserImage, "thumbnail")
+      );
     }
   }, [user]);
 
@@ -95,7 +81,10 @@ const PersonalInformation: FC = () => {
     }
 
     // keep the user's currently saved image so we can revert to it if upload fails
-    const previousSavedImage = getUserImage(user?.image);
+    const previousSavedImage = getResponsiveImageUrl(
+      user?.image as UserImage,
+      "thumbnail"
+    );
 
     setIsUpdating(true);
     try {
@@ -111,7 +100,7 @@ const PersonalInformation: FC = () => {
 
       await updateUser(formData);
       await refetchUser();
-      toast.success(t('profile_updated'));
+      toast.success(t("profile_updated"));
     } catch (err) {
       console.log("Error updating profile:", err);
       // axios interceptor handles toast; revert the image preview and clear the selected file
@@ -126,7 +115,7 @@ const PersonalInformation: FC = () => {
   return (
     <div className="py-10">
       <h2 className="text-[#192540] text-2xl font-medium">
-        {t('personal_information')}
+        {t("personal_information")}
       </h2>
       <form onSubmit={handleSubmit} autoComplete="off">
         <div className="mt-10 flex items-center justify-center relative">
@@ -162,7 +151,10 @@ const PersonalInformation: FC = () => {
                 }
               }}
             />
-            <label htmlFor="uploadPhoto" className="absolute top-16 ltr:-left-14 rtl:-right-14">
+            <label
+              htmlFor="uploadPhoto"
+              className="absolute top-16 ltr:-left-14 rtl:-right-14"
+            >
               <Photo />
             </label>
           </div>
@@ -170,7 +162,7 @@ const PersonalInformation: FC = () => {
 
         <div className="px-2 mt-6">
           <label htmlFor="name" className="text-[#192540] text-xl font-medium">
-            {t('name')}
+            {t("name")}
           </label>
           <input
             type="text"
@@ -178,13 +170,13 @@ const PersonalInformation: FC = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full h-12 border rounded-md mt-2 px-2"
-            placeholder={t('enter_name')}
+            placeholder={t("enter_name")}
           />
         </div>
 
         <div className="px-2 mt-6">
           <label htmlFor="phone" className="text-[#192540] text-xl font-medium">
-            {t('phone_number')}
+            {t("phone_number")}
           </label>
           <div className="mt-3">
             <PhoneInput value={phone} onChange={setPhone} />
@@ -193,7 +185,7 @@ const PersonalInformation: FC = () => {
 
         <div className="px-2 mt-6">
           <label htmlFor="email" className="text-[#192540] text-xl font-medium">
-            {t('email')}
+            {t("email")}
           </label>
           <input
             type="email"
@@ -201,13 +193,13 @@ const PersonalInformation: FC = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full h-12 border rounded-md mt-2 px-2"
-            placeholder={t('enter_email')}
+            placeholder={t("enter_email")}
           />
         </div>
 
         <div className="px-2 mt-6">
           <h2 className="text-[#192540] text-xl font-medium">
-            {t('membre_type')}
+            {t("membre_type")}
           </h2>
           <RadioGroup
             value={memberType}
@@ -216,7 +208,7 @@ const PersonalInformation: FC = () => {
                 setMemberType(value);
             }}
             className="flex md:gap-60 mt-4"
-            dir={i18n.language === "ar" ? "rtl" : "ltr"} 
+            dir={i18n.language === "ar" ? "rtl" : "ltr"}
           >
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="personal" id="option-one" />
@@ -224,7 +216,7 @@ const PersonalInformation: FC = () => {
                 htmlFor="option-one"
                 className="text-[#192540] text-lg font-medium"
               >
-                {t('individuals')}
+                {t("individuals")}
               </label>
             </div>
             <div className="flex items-center space-x-2">
@@ -233,7 +225,7 @@ const PersonalInformation: FC = () => {
                 htmlFor="option-two"
                 className="text-[#192540] text-lg font-medium"
               >
-                {t('companies')}
+                {t("companies")}
               </label>
             </div>
           </RadioGroup>
@@ -245,7 +237,7 @@ const PersonalInformation: FC = () => {
               htmlFor="companyName"
               className="text-[#192540] text-xl font-medium"
             >
-              {t('company_name')}
+              {t("company_name")}
             </label>
             <input
               type="text"
@@ -253,7 +245,7 @@ const PersonalInformation: FC = () => {
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
               className="w-full h-12 border rounded-md mt-2 px-2"
-              placeholder={t('enter_company_name')}
+              placeholder={t("enter_company_name")}
             />
           </div>
         )}
@@ -264,7 +256,7 @@ const PersonalInformation: FC = () => {
             disabled={isUpdating}
             className="w-full h-12 bg-[#EBAF29] rounded-md text-[#192540] text-base font-semibold cursor-pointer hover:bg-[#d9a025] transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isUpdating ? t('saving') : t('save_changes')}
+            {isUpdating ? t("saving") : t("save_changes")}
           </button>
         </div>
       </form>

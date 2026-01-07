@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { useQuery } from "@tanstack/react-query";
 import { getSlider, type SliderItem } from "../../lib/api/slider/getSlider";
 import { Skeleton } from "../ui/skeleton";
+import { getImgProps } from "../../lib/utils/imageUtils";
 
 export default function SimpleSlider() {
   const { data: sliderItems, isLoading } = useQuery({
@@ -31,23 +32,23 @@ export default function SimpleSlider() {
       </Slider>
     );
 
-    return (
-        <Slider {...settings}>
-        {sliderItems?.map((item: SliderItem, i: number) => {
-            const imageUrl = item.ar_image?.url || item.en_image?.url || "";
+  return (
+    <Slider {...settings}>
+      {sliderItems?.map((item: SliderItem, i: number) => {
+        const imageObj = item.ar_image || item.en_image;
+        const imgProps = getImgProps(imageObj, item.name, "large");
 
-            return (
-            <div key={i}>
-              <a href={item.url} rel="noopener noreferrer">
-                <img
-                src={imageUrl}
-                alt={item.name}
+        return (
+          <div key={i}>
+            <a href={item.url} rel="noopener noreferrer">
+              <img
+                {...imgProps}
                 className="rounded-[50px] w-full md:h-[597px] cursor-pointer"
-                />
-              </a>
-            </div>
-            );
-        })}
-        </Slider>
-    );
+              />
+            </a>
+          </div>
+        );
+      })}
+    </Slider>
+  );
 }

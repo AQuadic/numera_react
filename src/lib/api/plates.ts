@@ -1,4 +1,5 @@
 import { axios } from "../axios";
+import type { ApiImage } from "../utils/imageUtils";
 
 // Types
 export interface User {
@@ -57,10 +58,10 @@ export interface Plate {
   favorites_count: number;
   is_favorite: boolean | null;
   image_url: string;
+  image?: ApiImage;
   share_url: string;
   user: User;
 }
-
 
 export interface PaginationLink {
   url: string | null;
@@ -118,7 +119,7 @@ export const getPlates = async (
   if (filters?.letters) params.letters = filters.letters;
   // if (filters?.numbers) params.numbers = filters.numbers;
   if (filters?.numbers && filters.numbers.trim() !== "") {
-    params.numbers = filters.numbers.trim(); 
+    params.numbers = filters.numbers.trim();
   }
   if (filters?.price_from) params.price_from = filters.price_from.toString();
   if (filters?.price_to) params.price_to = filters.price_to.toString();

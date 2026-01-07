@@ -6,6 +6,7 @@ import { toggleFavorite } from "../../lib/api/toggleFavorite";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "../../store";
 import { useTranslation } from "react-i18next";
+import { getImgProps } from "../../lib/utils/imageUtils";
 
 interface PlateCardProps {
   plate: Plate;
@@ -125,8 +126,11 @@ const PlateCard = ({ plate }: PlateCardProps) => {
               </div>
             )}
             <img
-              src={plate.image_url}
-              alt={`Plate ${plate.letters}${plate.numbers}`}
+              {...getImgProps(
+                plate.image || { url: plate.image_url, responsive_urls: [] },
+                `Plate ${plate.letters}${plate.numbers}`,
+                "small"
+              )}
               className={`w-full h-[54px] object-contain bg-white transition-opacity duration-300 ${
                 imageLoaded ? "opacity-100" : "opacity-0"
               }`}
