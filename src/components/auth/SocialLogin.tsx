@@ -160,7 +160,7 @@ const SocialLogin = () => {
         type="button"
         onClick={handleGoogleLogin}
         disabled={isLoading}
-        className="w-full h-[56px] flex items-center justify-center gap-3 bg-white border border-[#EAEAEA] rounded-[12px] hover:bg-gray-50 transition-colors"
+        className="cursor-pointer w-full h-[56px] flex items-center justify-center gap-3 bg-white border border-[#EAEAEA] rounded-[12px] hover:bg-gray-50 transition-colors"
       >
         <svg
           width="24"
@@ -195,7 +195,7 @@ const SocialLogin = () => {
         type="button"
         onClick={handleAppleLogin}
         disabled={isLoading}
-        className="w-full h-[56px] flex items-center justify-center gap-3 bg-white border border-[#EAEAEA] rounded-[12px] hover:bg-gray-50 transition-colors mt-3"
+        className="cursor-pointer w-full h-[56px] flex items-center justify-center gap-3 bg-white border border-[#EAEAEA] rounded-[12px] hover:bg-gray-50 transition-colors mt-3"
       >
         <svg
           width="24"
