@@ -7,10 +7,12 @@ import Spinner from "../icons/general/Spinner";
 import NoPlatesEmptyState from "../home/NoPlatesEmptyState";
 import { getSims, type Sim } from "../../lib/api";
 import type { PaginatedResponse } from "../../lib/api/sims";
+import { useTranslation } from "react-i18next";
 
 type Item = Plate | Sim;
 
 const SellerPlates = () => {
+  const { t } = useTranslation("home");
   const { userId } = useParams<{ userId: string }>();
   const id = Number(userId);
 
@@ -60,14 +62,14 @@ const SellerPlates = () => {
   return (
     <section className="container md:py-[58px] py-8">
       <h2 className="text-[#192540] text-2xl font-medium leading-[100%]">
-        Seller Items
+        {t('seller_plates')}
       </h2>
 
       <Tabs defaultValue="all" className="mt-8 w-full">
         <TabsList className="bg-[#FDFAF3] py-10 rounded-[74px] w-full px-40 flex justify-center gap-6">
-          <TabsTrigger value="all">All</TabsTrigger>
-          <TabsTrigger value="premium">Premium</TabsTrigger>
-          <TabsTrigger value="sold">Sold</TabsTrigger>
+          <TabsTrigger value="all">{t('all')}</TabsTrigger>
+          <TabsTrigger value="premium">{t('premium')}</TabsTrigger>
+          <TabsTrigger value="sold">{t('sold')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all">{renderPlates(allPlates)}</TabsContent>

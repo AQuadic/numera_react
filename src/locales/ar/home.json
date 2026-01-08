@@ -94,5 +94,7 @@
   "negotiable": "قابل للتفاوض",
   "clear_filters": "حذف التصفية",
   "shared_successfully": "تمت المشاركة بنجاح",
-  "member-since": "عضو منذ"
+  "member-since": "عضو منذ",
+  "seller_plates": "لوحات البائع",
+  "all" :"الكل"
 }

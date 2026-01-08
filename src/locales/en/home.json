@@ -95,5 +95,7 @@
   "negotiable": "Negotiable",
   "clear_filters": "Clear filters",
   "shared_successfully": "Shared successfully!",
-  "member-since": "Member since"
+  "member-since": "Member since",
+  "seller_plates": "Seller plates",
+  "all" :"All"
 }
