@@ -1,29 +1,40 @@
 import { Link } from "react-router";
 import React, { useState } from "react";
 import Heart from "../icons/home/Heart";
-import type { Plate } from "../../lib/api";
-import { toggleFavorite } from "../../lib/api/toggleFavorite";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "../../store";
 import { useTranslation } from "react-i18next";
 import { getImgProps } from "../../lib/utils/imageUtils";
+import { getFavorites } from "../../lib/api/getFavorites";
+import { useToggleFavorite } from "../../hooks/useToggleFavorite";
 
 interface PlateCardProps {
-  plate: Plate;
+  plate: any;
 }
 
 const PlateCard = ({ plate }: PlateCardProps) => {
   const { t } = useTranslation("home");
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [isFavorited, setIsFavorited] = useState(plate.is_favorite ?? false);
-  const [isLoading, setIsLoading] = useState(false);
-  const queryClient = useQueryClient();
+  const { mutate: toggleFav } = useToggleFavorite();
+
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-AE").format(price);
   };
 
   const packageName = plate.package_user?.package?.name?.en ?? "Free";
   const user = useAuthStore((s) => s.user);
+
+  const { data: favorites } = useQuery({
+    queryKey: ["favorites"],
+    queryFn: getFavorites,
+    enabled: !!user,
+  });
+
+  const isFavorited = favorites
+    ? favorites.some(
+        (fav) => fav.favorable_type === "plate" && fav.favorable_id === plate.id
+      )
+    : plate.is_favorite ?? false;
 
   const badgeStyle =
     packageName === "Gold"
@@ -47,29 +58,15 @@ const PlateCard = ({ plate }: PlateCardProps) => {
       ? "linear-gradient(90deg, rgba(138,138,138,0.5) 23.87%, #F0F0F0 100%)"
       : "#8A8A8A";
 
-  const handleToggleFavorite = async (
-    e: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleToggleFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (isLoading) return;
-    setIsFavorited((prev) => !prev);
-
-    try {
-      setIsLoading(true);
-      const res = await toggleFavorite({
-        favorable_id: plate.id,
-        favorable_type: "plate",
-      });
-      setIsFavorited(res.is_favorited);
-      queryClient.invalidateQueries({ queryKey: ["favorites"] });
-    } catch (error) {
-      setIsFavorited((prev) => !prev);
-      console.error("Failed to toggle favorite", error);
-    } finally {
-      setIsLoading(false);
-    }
+    toggleFav({
+      favorable_id: plate.id,
+      favorable_type: "plate",
+      favorableData: plate,
+    } as any);
   };
 
   return (
@@ -105,11 +102,7 @@ const PlateCard = ({ plate }: PlateCardProps) => {
             </div>
 
             {user && (
-              <button
-                onClick={handleToggleFavorite}
-                disabled={isLoading}
-                className="cursor-pointer"
-              >
+              <button onClick={handleToggleFavorite} className="cursor-pointer">
                 <Heart active={isFavorited} />
               </button>
             )}
