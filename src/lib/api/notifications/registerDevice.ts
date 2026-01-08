@@ -1,4 +1,7 @@
-import { axios } from "../../axios";
+import { axios, addToastExcludeEndpoint } from "../../axios";
+
+// Exclude this endpoint from showing API toasts
+addToastExcludeEndpoint("/device");
 
 export interface RegisterDeviceParams {
   device_type: "ios" | "android" | "web";
