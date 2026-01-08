@@ -19,7 +19,7 @@ import {
 import DownloadApp from "./DownloadApp";
 import XIcon from "../icons/header/XIcon";
 import Bell from "../icons/header/Bell";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { getBroadcastNotifications } from "../../lib/api/notifications/getNotifications";
 import NotificationsEmptyState from "./NotificationsEmptyState";
 import Spinner from "../icons/general/Spinner";
@@ -39,13 +39,26 @@ const Header = () => {
   // immediately when authenticated.
   const hasUser = !!user;
 
-  const { data: notificationsData, isLoading } = useQuery({
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useInfiniteQuery({
     queryKey: ["broadcastNotifications"],
-    queryFn: () => getBroadcastNotifications({ pagination: "simple" }),
-    enabled: hasUser,
+    queryFn: async ({ pageParam }: { pageParam?: string | null }) => {
+      return getBroadcastNotifications({
+        pagination: "simple",
+        cursor: pageParam ?? undefined,
+      });
+    },
+    getNextPageParam: (lastPage) => lastPage.meta?.next_cursor ?? null,
+    initialPageParam: null,
+    enabled: !!user,
   });
 
-  const notifications = notificationsData?.data ?? [];
+  const notifications = data?.pages?.flatMap(page => page.data ?? []) ?? [];
 
   return (
     <>
@@ -178,6 +191,16 @@ const Header = () => {
                         </p>
                       </div>
                     ))}
+                    {hasNextPage && (
+                          <button
+                            onClick={() => fetchNextPage()}
+                            className="py-2 text-sm text-center text-[#192540]"
+                          >
+                            {isFetchingNextPage ? <div className="flex items-center justify-center py-5">
+                              <Spinner />
+                            </div> : t("load_more")}
+                          </button>
+                        )}
                   </div>
                 </motion.div>
               </>

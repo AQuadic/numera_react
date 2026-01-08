@@ -6,6 +6,7 @@ export interface BroadcastNotificationParams {
   per_page?: number;
   from_date?: string;
   to_date?: string;
+  cursor?: string | null;
 }
 
 export interface BroadcastNotification {
