@@ -5,6 +5,7 @@ import Axios, {
 } from "axios";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../store/useAuthStore";
+import { deleteFcmToken } from "./firebase";
 import i18n from "../i18n";
 
 const TOKEN_KEY = "numra_token";
@@ -17,6 +18,13 @@ const API_BASE_URL =
 export const getToken = (): string | undefined => {
   if (globalThis.window === undefined) return undefined;
   return localStorage.getItem(TOKEN_KEY) ?? undefined;
+};
+
+// A set of endpoint substrings for which we should NOT show API-toasts
+export const toastExcludedEndpoints: Set<string> = new Set();
+
+export const addToastExcludeEndpoint = (endpoint: string) => {
+  toastExcludedEndpoints.add(endpoint);
 };
 
 /** Save the token to localStorage */
@@ -112,10 +120,16 @@ axios.interceptors.response.use(
   (response: AxiosResponse) => {
     // Show success toast if API returns a message (for mutating requests)
     const method = response.config.method?.toLowerCase();
+    const url = response.config?.url ?? "";
+    const isExcluded = Array.from(toastExcludedEndpoints).some((ep) =>
+      url.includes(ep)
+    );
     if (method && ["post", "put", "patch", "delete"].includes(method)) {
-      const message = getSuccessMessageFromResponse(response);
-      if (message) {
-        toast.success(message);
+      if (!isExcluded) {
+        const message = getSuccessMessageFromResponse(response);
+        if (message) {
+          toast.success(message);
+        }
       }
     }
     return response;
@@ -124,13 +138,26 @@ axios.interceptors.response.use(
     // Log the error for debugging
     console.error("API Error:", error.response?.status, error.response?.data);
 
-    // Show error toast
+    // Show error toast (unless the endpoint is excluded)
+    const errUrl = error.config?.url ?? "";
+    const isErrExcluded = Array.from(toastExcludedEndpoints).some((ep) =>
+      errUrl.includes(ep)
+    );
     const errorMessage = getErrorMessageFromResponse(error);
-    toast.error(errorMessage);
+    if (!isErrExcluded) {
+      toast.error(errorMessage);
+    }
 
     // Handle 401 Unauthorized: logout and redirect to signin
     if (error.response?.status === 401) {
       try {
+        // Attempt to remove FCM token before logging out
+        try {
+          deleteFcmToken();
+        } catch (err) {
+          console.warn("Failed to delete FCM token on 401:", err);
+        }
+
         // Clear auth state (removes token and clears user)
         // Use getState().logout() so we can call it outside of React components
         useAuthStore.getState().logout();

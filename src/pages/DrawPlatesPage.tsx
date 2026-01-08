@@ -4,7 +4,7 @@ import DrawPlatesPattern from "../components/draw_plates/DrawPlatesPattern";
 const DrawPlatesPage = () => {
   return (
     <div className="md:py-[35px]">
-      <div className="flex gap-6 relative">
+      <div className="flex gap-6 relative ">
         <DrawPlatesPattern />
       </div>
 

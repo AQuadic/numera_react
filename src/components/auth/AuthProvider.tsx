@@ -3,6 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { getCurrentUser } from "../../lib/api/auth";
 import { getToken } from "../../lib/axios";
 import { useAuthStore } from "../../store/useAuthStore";
+import { deleteFcmToken } from "../../lib/firebase";
 import { getSlider } from "../../lib/api/slider/getSlider";
 import GlobalLoader from "../general/GlobalLoader";
 
@@ -44,6 +45,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             }
           })()
         );
+      } else {
+        // No token present: ensure any existing FCM token/local markers are removed
+        try {
+          deleteFcmToken();
+        } catch {}
       }
 
       // Wait for all to complete

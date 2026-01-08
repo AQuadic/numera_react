@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { messaging, requestForToken } from "../lib/firebase";
 import { onMessage } from "firebase/messaging";
 import { registerDevice } from "../lib/api/notifications/registerDevice";
@@ -20,7 +20,12 @@ export const useNotifications = () => {
     },
   });
 
-  const setupNotifications = async () => {
+  const setupNotifications = useCallback(async () => {
+    if (typeof window === "undefined" || !("Notification" in window)) {
+      console.log("Notifications are not supported in this browser.");
+      return;
+    }
+
     if (Notification.permission === "denied") {
       console.log("Notification permission denied previously.");
       return;
@@ -69,11 +74,31 @@ export const useNotifications = () => {
     } catch (err) {
       console.error("Failed to setup notifications:", err);
     }
-  };
+  }, [user, mutation]);
 
   useEffect(() => {
-    // Request permission and setup token on mount (as soon as they enter the website)
-    setupNotifications();
+    let timeoutId: number | undefined;
+
+    const handleInteraction = () => {
+      setupNotifications();
+      window.removeEventListener("click", handleInteraction);
+      window.removeEventListener("touchstart", handleInteraction);
+    };
+
+    const hasNotificationSupport =
+      typeof window !== "undefined" && "Notification" in window;
+
+    if (hasNotificationSupport) {
+      if (Notification.permission === "granted") {
+        setupNotifications();
+      } else if (Notification.permission === "default") {
+        // Wait for a short delay (e.g., 1 second) then for user interaction to request permission
+        timeoutId = setTimeout(() => {
+          window.addEventListener("click", handleInteraction);
+          window.addEventListener("touchstart", handleInteraction);
+        }, 1000);
+      }
+    }
 
     const unsubscribe = onMessage(messaging, (payload) => {
       console.log("Foreground message received:", payload);
@@ -82,9 +107,12 @@ export const useNotifications = () => {
     });
 
     return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      window.removeEventListener("click", handleInteraction);
+      window.removeEventListener("touchstart", handleInteraction);
       unsubscribe();
     };
-  }, [user, queryClient]);
+  }, [user, queryClient, setupNotifications]);
 
   return { setupNotifications };
 };
