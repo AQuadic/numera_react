@@ -10,7 +10,7 @@ export const useNotifications = () => {
   const user = useAuthStore((state) => state.user);
   const queryClient = useQueryClient();
 
-  const mutation = useMutation({
+  const { mutate } = useMutation({
     mutationFn: registerDevice,
     onSuccess: () => {
       console.log("Device registered for notifications");
@@ -53,7 +53,7 @@ export const useNotifications = () => {
           }
 
           console.log("Registering device for user:", user.id || user.name);
-          mutation.mutate(
+          mutate(
             {
               device_type: "web",
               device_token: getDeviceId(),
@@ -66,6 +66,7 @@ export const useNotifications = () => {
             {
               onSuccess: () => {
                 localStorage.setItem(storageKey, token);
+                localStorage.setItem("is_notifications_enabled", "true");
               },
             }
           );
@@ -74,7 +75,7 @@ export const useNotifications = () => {
     } catch (err) {
       console.error("Failed to setup notifications:", err);
     }
-  }, [user, mutation]);
+  }, [user, mutate]);
 
   useEffect(() => {
     let timeoutId: number | undefined;
