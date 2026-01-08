@@ -37,7 +37,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   const { t } = useTranslation("profile");
   const [isLoading, setIsLoading] = useState(false);
   const [isRepublishing, setIsRepublishing] = useState(false);
-  const [isPaused, setIsPaused] = useState(!plate.paused_at);
+  const [isPaused, setIsPaused] = useState(!!plate.paused_at);
   const [isPauseDialogOpen, setIsPauseDialogOpen] = useState(false);
   const [isSoldDialogOpen, setIsSoldDialogOpen] = useState(false);
   const [isMarkingSold, setIsMarkingSold] = useState(false);
@@ -46,7 +46,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   const [showRepublishLimitDialog, setShowRepublishLimitDialog] = useState(false);
 
   useEffect(() => {
-    setIsPaused(!plate.paused_at);
+    setIsPaused(!!plate.paused_at);
   }, [plate.paused_at]);
 
   if (!plate) return null;
@@ -54,7 +54,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   const handleTogglePause = async (plateId: number) => {
     setIsLoading(true);
     try {
-      if (!isPaused) {
+      if (isPaused) {
         await continuePlate({ plate_id: plateId });
       } else {
         await pauseSim({ plate_id: plateId });
