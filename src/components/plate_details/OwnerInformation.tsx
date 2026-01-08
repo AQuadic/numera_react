@@ -28,7 +28,7 @@ interface OwnerInformationProps {
 }
 
 const OwnerInformation = ({ user }: OwnerInformationProps) => {
-  const { t } = useTranslation("home");
+  const { t, i18n } = useTranslation("home");
   const getUserTypeLabel = (type: string) => {
     return type === "personal" ? t("individual_seller") : t("premium_dealer");
   };
@@ -43,6 +43,16 @@ const OwnerInformation = ({ user }: OwnerInformationProps) => {
   loggedUser?.id != null &&
   Number(loggedUser.id) === Number(user.id);
 
+  const formattedDate = user.created_at
+    ? new Intl.DateTimeFormat(
+        i18n.language === "ar" ? "ar-EG" : "en-GB",
+        {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        }
+      ).format(new Date(user.created_at))
+    : t("unknown_date");
 
   return (
     <section className="container md:py-[58px] py-10">
@@ -72,7 +82,13 @@ const OwnerInformation = ({ user }: OwnerInformationProps) => {
               <p className="text-[#717171] text-base font-medium mt-2">
                 {getUserTypeLabel(user.type)}
               </p>
-              {/* Member since intentionally hidden for single-item owner display */}
+                <p className="mt-2 flex items-center gap-1 text-sm text-gray-500">
+                  <span>{t('member-since')}</span>
+                  <span className="font-medium text-gray-500 text-xs">
+                    {formattedDate}
+                  </span>
+                </p>
+                              
             </div>
           </Link>
 
