@@ -13,7 +13,7 @@ const Settings = () => {
   const { t } = useTranslation("profile");
   const user = useAuthStore((state) => state.user);
   const [notificationsEnabled, setNotificationsEnabled] = useState(
-    Notification.permission === "granted"
+    localStorage.getItem("is_notifications_enabled") === "true"
   );
 
   const mutation = useMutation({
@@ -28,6 +28,7 @@ const Settings = () => {
 
   const handleToggle = async (checked: boolean) => {
     setNotificationsEnabled(checked);
+    localStorage.setItem("is_notifications_enabled", String(checked));
     const token = await requestForToken();
     if (token) {
       mutation.mutate({
