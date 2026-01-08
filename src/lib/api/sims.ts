@@ -84,13 +84,14 @@ export interface SimFilters {
   price_from?: number;
   price_to?: number;
   page?: number;
+  user_id?: number;
 }
 
 // API Functions
 export const getSims = async (
   filters?: SimFilters
 ): Promise<PaginatedResponse<Sim>> => {
-  const params: Record<string, string> = {
+  const params: Record<string, string | number> = {
     pagination: "normal",
   };
 
@@ -98,6 +99,7 @@ export const getSims = async (
   if (filters?.price_from) params.price_from = filters.price_from.toString();
   if (filters?.price_to) params.price_to = filters.price_to.toString();
   if (filters?.page) params.page = filters.page.toString();
+  if (filters?.user_id) params.user_id = filters.user_id;
 
   const response = await axios.get<PaginatedResponse<Sim>>("/sims", {
     params,

@@ -1,12 +1,12 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { useQuery, type UseQueryResult } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getUserPlates, type Plate } from "../../lib/api/getUserPlates";
+import { getSims, type Sim } from "../../lib/api";
 import PlateCard from "../home/PlateCard";
+import SimCard from "../home/SimCard";
 import { useSearchParams, useParams } from "react-router";
 import Spinner from "../icons/general/Spinner";
 import NoPlatesEmptyState from "../home/NoPlatesEmptyState";
-import { getSims, type Sim } from "../../lib/api";
-import type { PaginatedResponse } from "../../lib/api/sims";
 import { useTranslation } from "react-i18next";
 
 type Item = Plate | Sim;
@@ -17,30 +17,41 @@ const SellerPlates = () => {
   const id = Number(userId);
 
   const [searchParams] = useSearchParams();
-  const vehicleType = searchParams.get("type");
+  const type = searchParams.get("type");
 
-  const { data, isLoading }: UseQueryResult<PaginatedResponse<Item>> = useQuery({
-    queryKey: ["user-items", id, vehicleType],
+  const isSim = type === "sims";
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["seller-items", id, type],
     queryFn: async () => {
-      if (vehicleType === "sims") {
-        return await getSims({ page: 1 }) as PaginatedResponse<Item>;
-      } else {
-        return await getUserPlates(id, 1, vehicleType ?? undefined) as PaginatedResponse<Item>;
+      if (isSim) {
+        return getSims({
+          page: 1,
+          user_id: id,
+        });
       }
+
+      return getUserPlates(
+        id,
+        1,
+        type ?? undefined
+      );
     },
+    enabled: !!id,
   });
 
-  const plates: Plate[] = (data?.data ?? []).filter(
-    (p): p is Plate => "id" in p && "package_user_id" in p
-  );
+  const items: Item[] = data?.data ?? [];
 
-  const allPlates = plates;
-  const soldPlates = plates.filter((p) => p.is_sold);
-  const premiumPlates = plates.filter(
-    (p) => p.package_user?.package?.name?.en !== "Free"
-  );
+  const allItems = items;
+  const soldItems = items.filter((item) => item.is_sold);
+  const premiumItems = items.filter((item) => {
+    if ("package_user" in item)
+      return item.package_user?.package?.name?.en !== "Free";
+    if ("package" in item) return item.package !== "Free";
+    return false;
+  });
 
-  const renderPlates = (plates: Plate[]) => {
+  const renderItems = (items: Item[]) => {
     if (isLoading)
       return (
         <div className="flex items-center justify-center py-10">
@@ -48,33 +59,37 @@ const SellerPlates = () => {
         </div>
       );
 
-    if (!plates.length) return <NoPlatesEmptyState />;
+    if (!items.length) return <NoPlatesEmptyState />;
 
     return (
       <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-6 mt-10">
-        {plates.map((plate) => (
-          <PlateCard key={plate.id} plate={plate} />
-        ))}
+        {items.map((item) =>
+          isSim ? (
+            <SimCard key={item.id} sim={item as Sim} />
+          ) : (
+            <PlateCard key={item.id} plate={item as Plate} />
+          )
+        )}
       </div>
     );
   };
 
   return (
     <section className="container md:py-[58px] py-8">
-      <h2 className="text-[#192540] text-2xl font-medium leading-[100%]">
-        {t('seller_plates')}
+      <h2 className="text-[#192540] text-2xl font-medium">
+        {isSim ? t("mobile_numbers") : t("seller_plates")}
       </h2>
 
       <Tabs defaultValue="all" className="mt-8 w-full">
         <TabsList className="bg-[#FDFAF3] py-10 rounded-[74px] w-full px-40 flex justify-center gap-6">
-          <TabsTrigger value="all">{t('all')}</TabsTrigger>
-          <TabsTrigger value="premium">{t('premium')}</TabsTrigger>
-          <TabsTrigger value="sold">{t('sold')}</TabsTrigger>
+          <TabsTrigger value="all">{t("all")}</TabsTrigger>
+          <TabsTrigger value="premium">{t("premium")}</TabsTrigger>
+          <TabsTrigger value="sold">{t("sold")}</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="all">{renderPlates(allPlates)}</TabsContent>
-        <TabsContent value="premium">{renderPlates(premiumPlates)}</TabsContent>
-        <TabsContent value="sold">{renderPlates(soldPlates)}</TabsContent>
+        <TabsContent value="all">{renderItems(allItems)}</TabsContent>
+        <TabsContent value="premium">{renderItems(premiumItems)}</TabsContent>
+        <TabsContent value="sold">{renderItems(soldItems)}</TabsContent>
       </Tabs>
     </section>
   );
