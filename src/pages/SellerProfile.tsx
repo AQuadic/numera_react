@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
   getSellerProfile,
@@ -9,7 +9,6 @@ import {
   type SellerCountResponse,
 } from "../lib/api/getSellerCount";
 
-import HomeCategories from "../components/home/HomeCategories";
 import WhyChooseNumra from "../components/home/WhyChooseNumra";
 // import Filter from "../components/icons/home/Filter"
 // import Search from "../components/icons/home/Search"
@@ -21,6 +20,8 @@ import Spinner from "../components/icons/general/Spinner";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "../store";
 import { getImgProps } from "../lib/utils/imageUtils";
+import Car from "../components/icons/home/Car";
+import Bike from "../components/icons/home/Bike";
 
 const SellerProfile = () => {
   const { t } = useTranslation("home");
@@ -55,6 +56,30 @@ const SellerProfile = () => {
 
   if (isProfileError || !profile)
     return <div className="text-center py-20">Failed to load profile.</div>;
+
+  const categories = [
+    {
+      title: t("car_plates"),
+      bg: "#ECEDEF",
+      textColor: "#192540",
+      icon: <Car />,
+      type: "cars",
+    },
+    {
+      title: t("fun"),
+      bg: "#FCF8ED",
+      textColor: "#966A08",
+      icon: <Bike />,
+      type: "fun",
+    },
+    {
+      title: t("mobile_numbers"),
+      bg: "#F1FCEE",
+      textColor: "#154D23",
+      icon: <Phone />,
+      isSim: true,
+    },
+  ];
 
   return (
     <section className="md:py-[58px]">
@@ -179,7 +204,25 @@ const SellerProfile = () => {
         </div>
       </div>
 
-      <HomeCategories />
+      <div className="mt-12 container">
+        <h2 className="text-[#192540] md:text-[32px] text-2xl font-medium">{t("categories")}</h2>
+        <div className="mt-8 flex flex-wrap gap-6">
+          {categories.map((item) => (
+            <Link
+              key={item.title}
+              to={`/seller_plates/${id}?type=${item.isSim ? "sims" : item.type}`}
+              className="md:w-[384px] w-full h-[134px] rounded-md flex flex-col items-center justify-center gap-3 hover:shadow-lg transition-shadow"
+              style={{ backgroundColor: item.bg }}
+            >
+              {item.icon}
+              <p className="md:text-2xl text-xl font-semibold" style={{ color: item.textColor }}>
+                {item.title}
+              </p>
+            </Link>
+          ))}
+        </div>
+      </div>
+
       <WhyChooseNumra />
     </section>
   );

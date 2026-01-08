@@ -31,6 +31,7 @@ import ChangePassword from "./components/my_profile/ChangePassword";
 import FavPlates from "./components/my_profile/FavPlates";
 import AllAds from "./components/my_profile/AllAds";
 import Settings from "./components/my_profile/Settings";
+import SellerPlates from "./components/seller/SellerPlates";
 
 function App() {
   useNotifications();
@@ -56,6 +57,7 @@ function App() {
             {/* Protected routes - require authentication */}
             <Route element={<ProtectedRoute />}>
               <Route path="sell_plates" element={<SellPlatesPage />} />
+              <Route path="seller_plates/:userId" element={<SellerPlates />} />
               <Route path="confirm_plate" element={<ConfirmPlate />} />
               <Route path="profile" element={<MyProfile />}>
                 <Route index element={<MyProfileComponent />} />
