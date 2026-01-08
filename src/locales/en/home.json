@@ -94,5 +94,6 @@
   "member_since": "Member since {{year}}",
   "negotiable": "Negotiable",
   "clear_filters": "Clear filters",
-  "shared_successfully": "Shared successfully!"
+  "shared_successfully": "Shared successfully!",
+  "member-since": "Member since"
 }

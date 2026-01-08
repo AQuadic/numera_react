@@ -517,7 +517,7 @@ const DrawPlatesPattern = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="dubai">{t("emirates.dubai")}</SelectItem>
-              <SelectItem value="abu-dhabi">
+              <SelectItem value="abu_dhuabi">
                 {t("emirates.abu_dhabi")}
               </SelectItem>
               <SelectItem value="sharjah">{t("emirates.sharjah")}</SelectItem>

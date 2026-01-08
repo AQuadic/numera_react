@@ -93,5 +93,6 @@
   "member_since": "عضو منذ {{year}}",
   "negotiable": "قابل للتفاوض",
   "clear_filters": "حذف التصفية",
-  "shared_successfully": "تمت المشاركة بنجاح"
+  "shared_successfully": "تمت المشاركة بنجاح",
+  "member-since": "عضو منذ"
 }
