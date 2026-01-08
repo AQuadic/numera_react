@@ -334,33 +334,26 @@ const DrawPlatesPattern = () => {
         }
 
         // Find price
-        const priceEl = wrapper.querySelector(
-          ".plate-price"
-        ) as HTMLParagraphElement;
-        if (priceEl) {
-          // Calculate position relative to container using offsetLeft/offsetTop
-          let offsetLeft = priceEl.offsetLeft;
-          let offsetTop = priceEl.offsetTop;
+        try {
+          const priceEl = wrapper.querySelector(
+            ".plate-price"
+          ) as HTMLParagraphElement;
+          if (priceEl) {
+            const priceRect = priceEl.getBoundingClientRect();
+            const px = priceRect.left - rect.left + priceRect.width / 2;
+            const py = priceRect.top - rect.top + priceRect.height / 2;
 
-          // Walk up the DOM tree to accumulate offsets until we reach the container
-          let current = priceEl.offsetParent as HTMLElement | null;
-          while (current && current !== container) {
-            offsetLeft += current.offsetLeft;
-            offsetTop += current.offsetTop;
-            current = current.offsetParent as HTMLElement | null;
+            ctx.fillStyle =
+              bgColor === "black" || bgColor === "#000" || bgColor === "#000000"
+                ? "#ffffff"
+                : "#000000";
+            ctx.font = "500 18px sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(priceEl.innerText, px, py);
           }
-
-          const px = offsetLeft + priceEl.offsetWidth / 2;
-          const py = offsetTop + priceEl.offsetHeight / 2;
-
-          ctx.fillStyle =
-            bgColor === "black" || bgColor === "#000" || bgColor === "#000000"
-              ? "#ffffff"
-              : "#000000";
-          ctx.font = "500 18px sans-serif";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.fillText(priceEl.innerText, px, py);
+        } catch (e) {
+          console.warn("Failed to draw price", e);
         }
       }
 
