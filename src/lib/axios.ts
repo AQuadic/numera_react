@@ -5,6 +5,7 @@ import Axios, {
 } from "axios";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../store/useAuthStore";
+import { deleteFcmToken } from "./firebase";
 import i18n from "../i18n";
 
 const TOKEN_KEY = "numra_token";
@@ -150,6 +151,13 @@ axios.interceptors.response.use(
     // Handle 401 Unauthorized: logout and redirect to signin
     if (error.response?.status === 401) {
       try {
+        // Attempt to remove FCM token before logging out
+        try {
+          deleteFcmToken();
+        } catch (err) {
+          console.warn("Failed to delete FCM token on 401:", err);
+        }
+
         // Clear auth state (removes token and clears user)
         // Use getState().logout() so we can call it outside of React components
         useAuthStore.getState().logout();

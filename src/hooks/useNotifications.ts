@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { messaging, requestForToken } from "../lib/firebase";
 import { onMessage } from "firebase/messaging";
 import { registerDevice } from "../lib/api/notifications/registerDevice";
@@ -20,7 +20,7 @@ export const useNotifications = () => {
     },
   });
 
-  const setupNotifications = async () => {
+  const setupNotifications = useCallback(async () => {
     if (typeof window === "undefined" || !("Notification" in window)) {
       console.log("Notifications are not supported in this browser.");
       return;
@@ -74,10 +74,10 @@ export const useNotifications = () => {
     } catch (err) {
       console.error("Failed to setup notifications:", err);
     }
-  };
+  }, [user, mutation]);
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: number | undefined;
 
     const handleInteraction = () => {
       setupNotifications();
@@ -112,7 +112,7 @@ export const useNotifications = () => {
       window.removeEventListener("touchstart", handleInteraction);
       unsubscribe();
     };
-  }, [user, queryClient]);
+  }, [user, queryClient, setupNotifications]);
 
   return { setupNotifications };
 };

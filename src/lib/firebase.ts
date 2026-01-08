@@ -1,6 +1,11 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import {
+  getMessaging,
+  getToken,
+  onMessage,
+  deleteToken,
+} from "firebase/messaging";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCBBZqKtN2PKeArZwSbJX6lWWcOPa9iZnk",
@@ -38,3 +43,34 @@ export const onMessageListener = () =>
       resolve(payload);
     });
   });
+
+/**
+ * Delete the current FCM token (client-side) and remove any local storage
+ * markers related to FCM registration.
+ */
+export const deleteFcmToken = async () => {
+  try {
+    const currentToken = await getToken(messaging);
+    if (currentToken) {
+      try {
+        await deleteToken(messaging);
+        console.log("FCM token deleted from Firebase messaging.");
+      } catch (err) {
+        console.warn("Failed to delete FCM token via SDK:", err);
+      }
+    }
+  } catch (err) {
+    console.warn("Could not retrieve FCM token before deletion:", err);
+  }
+
+  // Remove any localStorage markers related to FCM
+  try {
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith("fcm_registered_")) {
+        localStorage.removeItem(key);
+      }
+    });
+  } catch (err) {
+    // ignore
+  }
+};

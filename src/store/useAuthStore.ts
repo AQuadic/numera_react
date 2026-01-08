@@ -4,7 +4,8 @@ import {
   getCurrentUser,
   type User,
 } from "../lib/api/auth";
-import { axios, getToken } from "../lib/axios";
+import { axios, getToken, removeToken } from "../lib/axios";
+import { deleteFcmToken } from "../lib/firebase";
 
 interface AuthState {
   // State
@@ -69,8 +70,29 @@ export const useAuthStore = create<AuthState>()((set) => ({
    * Logout the current user
    */
   logout: () => {
-    logoutApi();
-    localStorage.removeItem("token");
+    // Attempt server-side logout
+    try {
+      logoutApi();
+    } catch {
+      // ignore - best-effort
+    }
+
+    // Remove stored auth token(s)
+    try {
+      removeToken();
+    } catch {}
+    try {
+      localStorage.removeItem("token");
+    } catch (e) {}
+
+    // Try to remove FCM token and any local markers
+    try {
+      // fire-and-forget
+      deleteFcmToken();
+    } catch {
+      // ignore
+    }
+
     delete axios.defaults.headers.common["Authorization"];
     set({ user: null, error: null });
   },
