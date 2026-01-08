@@ -5,7 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { getFavorites } from "../../lib/api/getFavorites";
 import FavEmpty from "./FavEmpty";
 import Spinner from "../icons/general/Spinner";
-import { getPlateById } from "../../lib/api";
 import { useTranslation } from "react-i18next";
 
 const FavPlates = () => {
@@ -23,46 +22,32 @@ const FavPlates = () => {
     (fav) => fav.favorable_type === "plate"
   );
 
-  const { data: fullPlatesData = [], isLoading: isPlatesLoading } = useQuery({
-    queryKey: ["favoritePlatesFull"],
-    queryFn: async () => {
-      const plates = await Promise.all(
-        favoritePlatesOnly.map(async (fav) => {
-          const plate = await getPlateById(fav.favorable.id);
-          return { ...plate, is_favorite: true };
-        })
-      );
-      return plates;
-    },
-    enabled: favoritePlatesOnly.length > 0,
-  });
-
   return (
     <section className="py-12">
-      <h2 className="text-[#192540] text-2xl font-medium">{t('favorites')}</h2>
+      <h2 className="text-[#192540] text-2xl font-medium">{t("favorites")}</h2>
 
-      <Tabs
-        defaultValue="plates"
-        className="flex items-center justify-center"
-      >
+      <Tabs defaultValue="plates" className="flex items-center justify-center">
         <TabsList className="bg-[#FDFAF3] flex items-center justify-center mt-13 md:gap-[68px] mb-12 py-8 px-8 rounded-[74px]">
           <TabsTrigger value="plates" className="xl:w-[494px] w-full">
-            {t('plates')}
+            {t("plates")}
           </TabsTrigger>
           <TabsTrigger value="phone_number" className="xl:w-[494px] w-full">
-            {t('phone_number')}
+            {t("phone_number")}
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="plates">
-          {isLoading || isPlatesLoading ? (
+          {isLoading ? (
             <Spinner />
-          ) : fullPlatesData.length === 0 ? (
+          ) : favoritePlatesOnly.length === 0 ? (
             <FavEmpty />
           ) : (
             <div className="grid xl:grid-cols-4 md:grid-cols-2 gap-6">
-              {fullPlatesData.map((plate) => (
-                <PlateCard key={plate.id} plate={plate} />
+              {favoritePlatesOnly.map((fav) => (
+                <PlateCard
+                  key={fav.favorable?.id ?? fav.id}
+                  plate={{ ...fav.favorable, is_favorite: true }}
+                />
               ))}
             </div>
           )}

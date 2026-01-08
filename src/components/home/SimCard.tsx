@@ -2,10 +2,11 @@ import { Link } from "react-router";
 import { useState } from "react";
 import Heart from "../icons/home/Heart";
 import type { Sim } from "../../lib/api";
-import { toggleFavorite } from "../../lib/api/toggleFavorite";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "../../store";
 import { useTranslation } from "react-i18next";
+import { getFavorites } from "../../lib/api/getFavorites";
+import { useToggleFavorite } from "../../hooks/useToggleFavorite";
 
 interface SimCardProps {
   sim: Sim;
@@ -14,36 +15,33 @@ interface SimCardProps {
 const SimCard = ({ sim }: SimCardProps) => {
   const { t } = useTranslation("home");
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [isFavorited, setIsFavorited] = useState(sim.is_favorite ?? false);
-  const [isLoading, setIsLoading] = useState(false);
-  const queryClient = useQueryClient();
+  const { mutate: toggleFav } = useToggleFavorite();
   const user = useAuthStore((s) => s.user);
+
+  const { data: favorites } = useQuery({
+    queryKey: ["favorites"],
+    queryFn: getFavorites,
+    enabled: !!user,
+  });
+
+  const isFavorited = favorites
+    ? favorites.some(
+        (fav) => fav.favorable_type === "sim" && fav.favorable_id === sim.id
+      )
+    : sim.is_favorite ?? false;
 
   // const formatPrice = (price: number) => {
   //   return new Intl.NumberFormat("en-AE").format(price);
   // };
-  const handleToggleFavorite = async (
-    e: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleToggleFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    if (isLoading) return;
 
-    setIsFavorited((prev) => !prev);
-    setIsLoading(true);
-
-    try {
-      await toggleFavorite({
-        favorable_id: sim.id,
-        favorable_type: "sim",
-      });
-      queryClient.invalidateQueries({ queryKey: ["favorites"] });
-    } catch (error) {
-      setIsFavorited((prev) => !prev);
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
+    toggleFav({
+      favorable_id: sim.id,
+      favorable_type: "sim",
+      favorableData: sim,
+    } as any);
   };
 
   return (
@@ -76,11 +74,7 @@ const SimCard = ({ sim }: SimCardProps) => {
           )}
         </div>
         {user && (
-          <button
-            onClick={handleToggleFavorite}
-            disabled={isLoading}
-            className="cursor-pointer"
-          >
+          <button onClick={handleToggleFavorite} className="cursor-pointer">
             <Heart active={isFavorited} />
           </button>
         )}
