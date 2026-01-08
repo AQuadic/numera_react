@@ -1,8 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toggleFavorite } from "../lib/api/toggleFavorite";
 import type { Favorite } from "../lib/api/getFavorites";
-import type { Plate } from "../lib/api/plates";
-import type { Sim } from "../lib/api/sims";
 import { useAuthStore } from "../store";
 
 export const useToggleFavorite = () => {
@@ -65,7 +63,7 @@ export const useToggleFavorite = () => {
       return { previousFavorites };
     },
     // If the mutation fails, use the context returned from onMutate to roll back
-    onError: (err, newTodo, context) => {
+    onError: (_err, _newTodo, context) => {
       queryClient.setQueryData(["favorites"], context?.previousFavorites);
     },
     // Always refetch after error or success:

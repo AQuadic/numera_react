@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 import React, { useState } from "react";
 import Heart from "../icons/home/Heart";
-import type { Plate } from "../../lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "../../store";
 import { useTranslation } from "react-i18next";
@@ -10,7 +9,7 @@ import { getFavorites } from "../../lib/api/getFavorites";
 import { useToggleFavorite } from "../../hooks/useToggleFavorite";
 
 interface PlateCardProps {
-  plate: Plate;
+  plate: any;
 }
 
 const PlateCard = ({ plate }: PlateCardProps) => {
