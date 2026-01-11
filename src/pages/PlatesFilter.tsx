@@ -3,16 +3,26 @@ import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router";
 import PlateCard from "../components/home/PlateCard";
 import { getPlates, getCities } from "../lib/api";
-import type { Plate, City, PlateFilters as ApiPlateFilters } from "../lib/api";
+import type {
+  Plate,
+  City,
+  PlateFilters as ApiPlateFilters,
+  Package,
+} from "../lib/api";
 import FilterIcon from "../components/icons/draw_plates/Filter";
+import { getPackages } from "../lib/api/getPackages";
 
 const PlatesFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [plates, setPlates] = useState<Plate[]>([]);
   const [, setCities] = useState<City[]>([]);
+  const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const { t, i18n } = useTranslation("plates");
+  const { t: ht } = useTranslation("home");
+
   const emirateValues = [
     "abu_dhuabi",
     "dubai",
@@ -49,16 +59,20 @@ const PlatesFilter = () => {
   });
 
   useEffect(() => {
-    const fetchCities = async () => {
+    const fetchData = async () => {
       try {
-        const data = await getCities();
-        setCities(data);
+        const [citiesData, packagesData] = await Promise.all([
+          getCities(),
+          getPackages(),
+        ]);
+        setCities(citiesData);
+        setPackages(packagesData);
       } catch (error) {
-        console.error("Error fetching cities:", error);
+        console.error("Error fetching initial data:", error);
       }
     };
 
-    fetchCities();
+    fetchData();
   }, []);
 
   // Fetch plates
@@ -92,6 +106,16 @@ const PlatesFilter = () => {
       ...prev,
       [key]: value,
     }));
+
+    // Update URL params
+    const params = new URLSearchParams(searchParams);
+    if (value === undefined || value === "") {
+      params.delete(key === "package_id" ? "package" : key);
+    } else {
+      params.set(key === "package_id" ? "package" : key, String(value));
+    }
+    setSearchParams(params);
+
     setCurrentPage(1);
   };
 
@@ -124,24 +148,26 @@ const PlatesFilter = () => {
       numbers: "",
       price_from: undefined,
       price_to: undefined,
-      package_id: filters.package_id,
+      package_id: undefined,
     });
 
-    const params = new URLSearchParams();
-    if (filters.package_id) {
-      params.set("package", String(filters.package_id));
-    }
-    setSearchParams(params);
-
+    setSearchParams(new URLSearchParams());
     setCurrentPage(1);
   };
 
-  const { t } = useTranslation("plates");
+  const selectedPackage = packages.find((p) => p.id === filters.package_id);
+  const pageTitle = selectedPackage
+    ? `${ht("ads")} ${
+        i18n.language === "ar"
+          ? selectedPackage.name.ar
+          : selectedPackage.name.en
+      }`
+    : t("title");
 
   return (
     <section className="container md:py-[58px] py-5">
       <h2 className="text-[#192540] md:text-[32px] text-2xl font-medium mb-8">
-        {t("title")}
+        {pageTitle}
       </h2>
 
       <div className="flex flex-col lg:flex-row gap-8">
@@ -160,6 +186,42 @@ const PlatesFilter = () => {
             >
               {t("clearAll")}
             </button>
+          </div>
+
+          {/* Packages */}
+          <div className="mb-6">
+            <h4 className="text-sm font-semibold text-[#192540] mb-3">
+              {ht("packages_title") || ht("ads")}
+            </h4>
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="package"
+                  checked={!filters.package_id}
+                  onChange={() => handleFilterChange("package_id", undefined)}
+                  className="w-4 h-4 accent-[#EBAF29]"
+                />
+                <span className="text-sm text-[#192540]">{ht("all")}</span>
+              </label>
+              {packages.map((pkg) => (
+                <label
+                  key={pkg.id}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <input
+                    type="radio"
+                    name="package"
+                    checked={filters.package_id === pkg.id}
+                    onChange={() => handleFilterChange("package_id", pkg.id)}
+                    className="w-4 h-4 accent-[#EBAF29]"
+                  />
+                  <span className="text-sm text-[#192540]">
+                    {i18n.language === "ar" ? pkg.name.ar : pkg.name.en}
+                  </span>
+                </label>
+              ))}
+            </div>
           </div>
 
           {/* Vehicle Types */}
@@ -195,10 +257,7 @@ const PlatesFilter = () => {
             <select
               value={filters.emirate_id || ""}
               onChange={(e) =>
-                handleFilterChange(
-                  "emirate_id",
-                  e.target.value || undefined
-                )
+                handleFilterChange("emirate_id", e.target.value || undefined)
               }
               className="w-full px-3 py-2 border border-[#F0F0F0] rounded-md text-sm"
             >
