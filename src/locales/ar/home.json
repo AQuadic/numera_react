@@ -41,8 +41,8 @@
   "price_zero_meaning": "قيمة السعر 0 تعني السعر عند الطلب",
 
   "header_notifications": "الإشعارات",
-  "header_log_in": "تسجيل الدخول"
-  ,"no_notifications_image_alt": "لا إشعارات",
+  "header_log_in": "تسجيل الدخول",
+  "no_notifications_image_alt": "لا إشعارات",
   "no_notifications_yet": "لا توجد إشعارات حتى الآن",
 
   "plate_details": "تفاصيل اللوحة",
@@ -78,7 +78,7 @@
     "om_qauquan": "أم القيوين",
     "ras_alkhima": "رأس الخيمة"
   },
-  "search": "بحث",
+  "search": "بحث برقم اللوحة",
   "email_required": "البريد الالكتروني مطلوب",
   "no_results": "لا توجد نتائج مطابقة",
   "classic": "كلاسيك",
@@ -96,6 +96,6 @@
   "shared_successfully": "تمت المشاركة بنجاح",
   "member-since": "عضو منذ",
   "seller_plates": "لوحات البائع",
-  "all" :"الكل",
+  "all": "الكل",
   "load_more": "تحميل المزيد"
 }

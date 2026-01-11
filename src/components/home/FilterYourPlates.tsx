@@ -156,12 +156,15 @@ const FilterYourPlates = () => {
                   <input
                     type="text"
                     value={searchQuery}
-                    onChange={(e) =>
-                      setSearchQueries((prev) => ({
-                        ...prev,
-                        [pkg.id]: e.target.value,
-                      }))
-                    }
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === "" || /^[0-9]+$/.test(value)) {
+                        setSearchQueries((prev) => ({
+                          ...prev,
+                          [pkg.id]: value,
+                        }));
+                      }
+                    }}
                     className="lg:w-[384px] w-full h-14 border border-[#F0F0F0] rounded-md px-12"
                     placeholder={t("search")}
                   />

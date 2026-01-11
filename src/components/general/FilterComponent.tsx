@@ -131,7 +131,12 @@ const FilterComponent = ({ onApply, initialFilters }: FilterComponentProps) => {
 
               <input
                 value={numbers}
-                onChange={(e) => setNumbers(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === "" || /^[0-9]+$/.test(value)) {
+                    setNumbers(value);
+                  }
+                }}
                 placeholder={t("numbers")}
                 className="w-full border rounded-md p-2"
               />

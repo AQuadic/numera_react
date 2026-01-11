@@ -41,9 +41,9 @@
   "price_zero_meaning": "A price of 0 means Price on request",
 
   "header_notifications": "Notifications",
-  "header_log_in": "Log In"
+  "header_log_in": "Log In",
 
-  ,"no_notifications_image_alt": "No notifications",
+  "no_notifications_image_alt": "No notifications",
   "no_notifications_yet": "You have no notifications yet.",
 
   "plate_details": "Plate Details",
@@ -79,7 +79,7 @@
     "om_qauquan": "Umm Al Quwain",
     "ras_alkhima": "Ras Al Khaimah"
   },
-  "search": "Search",
+  "search": "Search with plate number",
   "email_required": "Email is required",
   "no_results": "No matching results",
   "classic": "Classic",
@@ -97,6 +97,6 @@
   "shared_successfully": "Shared successfully!",
   "member-since": "Member since",
   "seller_plates": "Seller plates",
-  "all" :"All",
+  "all": "All",
   "load_more": "Load more"
 }
