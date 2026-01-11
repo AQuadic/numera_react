@@ -54,6 +54,8 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
     const radiusLeft = radius === "md" ? "rounded-l-md" : "rounded-l-full";
     const radiusRight = radius === "md" ? "rounded-r-md" : "rounded-r-full";
 
+    const { i18n } = useTranslation();
+
     // Get current selected country. support both iso2 and dial code values for backwards compatibility
     const selectedCountry = React.useMemo(() => {
       // if value.code matches an iso2 directly, prefer that
@@ -163,7 +165,7 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       <div className={cn("relative w-full", className)} dir="ltr">
         <div
           className={cn(
-            "relative flex items-center h-12 border border-[#F0F0F0] transition-colors !rounded-md",
+            "relative flex items-center h-12 border border-[#F0F0F0] transition-colors rounded-md!",
             "hover:border-foreground/50",
             "bg-background text-foreground",
             "dark:border-white/20 dark:hover:border-white/40 dark:bg-transparent dark:text-white",
@@ -193,7 +195,7 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
               alt={`${selectedCountry.name} flag`}
               width={24}
               height={16}
-              className="w-6 h-4 object-cover rounded-sm flex-shrink-0"
+              className="w-6 h-4 object-cover rounded-sm shrink-0"
               draggable={false}
             />
             {/* Country code */}
@@ -202,14 +204,14 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
             </span>
             {/* Dropdown arrow */}
             {isOpen ? (
-              <ChevronUp size={16} className="opacity-50 flex-shrink-0" />
+              <ChevronUp size={16} className="opacity-50 shrink-0" />
             ) : (
-              <ChevronDown size={16} className="opacity-50 flex-shrink-0" />
+              <ChevronDown size={16} className="opacity-50 shrink-0" />
             )}
           </button>
 
           {/* Vertical separator */}
-          <div className="h-full w-px bg-muted flex-shrink-0" />
+          <div className="h-full w-px bg-muted shrink-0" />
 
           {/* Phone number input */}
           <input
@@ -239,7 +241,7 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
         {isOpen && (
           <div
             ref={dropdownRef}
-            className="absolute top-full start-0 end-0 z-99 mt-2 rounded-md border border-input bg-popover text-popover-foreground shadow-md max-h-60 overflow-hidden bg-white"
+            className="absolute top-full start-0 end-0 z-99 mt-2 rounded-md border border-input text-popover-foreground shadow-md max-h-60 overflow-hidden bg-white"
             dir={i18n.language === "ar" ? "rtl" : "ltr"}
           >
             {/* Search input */}
@@ -274,7 +276,7 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
                       alt={`${country.name} flag`}
                       width={24}
                       height={16}
-                      className="w-6 h-4 object-cover rounded-sm flex-shrink-0"
+                      className="w-6 h-4 object-cover rounded-sm shrink-0"
                       draggable={false}
                     />
                     {/* Country name */}

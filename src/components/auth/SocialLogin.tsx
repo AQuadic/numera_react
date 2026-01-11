@@ -159,7 +159,7 @@ const SocialLogin = () => {
         type="button"
         onClick={handleGoogleLogin}
         disabled={isLoading}
-        className="cursor-pointer w-full h-[56px] flex items-center justify-center gap-3 bg-white border border-[#EAEAEA] rounded-[12px] hover:bg-gray-50 transition-colors"
+        className="cursor-pointer w-full h-14 flex items-center justify-center gap-3 bg-white border border-[#EAEAEA] rounded-[12px] hover:bg-gray-50 transition-colors"
       >
         <GoogleIcon />
         <span className="text-[#192540] text-base font-medium">
@@ -171,7 +171,7 @@ const SocialLogin = () => {
         type="button"
         onClick={handleAppleLogin}
         disabled={isLoading}
-        className="cursor-pointer w-full h-[56px] flex items-center justify-center gap-3 bg-white border border-[#EAEAEA] rounded-[12px] hover:bg-gray-50 transition-colors mt-3"
+        className="cursor-pointer w-full h-14 flex items-center justify-center gap-3 bg-white border border-[#EAEAEA] rounded-[12px] hover:bg-gray-50 transition-colors mt-3"
       >
         <AppleIcon />
         <span className="text-[#192540] text-base font-medium">

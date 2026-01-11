@@ -89,7 +89,7 @@ export const useNotifications = () => {
       }
     }
 
-    const unsubscribe = onMessage(messaging, (payload) => {
+    const unsubscribe = onMessage(messaging, () => {
       // Invalidate notifications query to refresh the list in the header
       queryClient.invalidateQueries({ queryKey: ["broadcastNotifications"] });
     });
