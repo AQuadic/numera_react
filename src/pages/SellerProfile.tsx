@@ -1,5 +1,6 @@
-import { Link, useParams } from "react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router";
+import { useState } from "react";
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import {
   getSellerProfile,
   type SellerProfile as SellerProfileType,
@@ -22,6 +23,17 @@ import { useAuthStore } from "../store";
 import { getImgProps } from "../lib/utils/imageUtils";
 import Car from "../components/icons/home/Car";
 import Bike from "../components/icons/home/Bike";
+import { getUserPlates, type Plate } from "../lib/api/getUserPlates";
+import { getSims, type Sim, type PaginatedResponse } from "../lib/api";
+import PlateCard from "../components/home/PlateCard";
+import SimCard from "../components/home/SimCard";
+import NoPlatesEmptyState from "../components/home/NoPlatesEmptyState";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/ui/tabs";
 
 const SellerProfile = () => {
   const { t, i18n } = useTranslation("home");
@@ -30,6 +42,8 @@ const SellerProfile = () => {
   const { user } = useAuthStore();
   const isOwnerProfile = user?.id === id;
   const isRtl = i18n.language === "ar";
+
+  const [selectedType, setSelectedType] = useState<string>("cars");
 
   const getInitials = (fullName?: string | null) => {
     const parts = (fullName || "").trim().split(/\s+/).filter(Boolean);
@@ -54,6 +68,33 @@ const SellerProfile = () => {
       queryFn: () => getSellerCount(id),
       enabled: !!id,
     });
+
+  const {
+    data: itemsData,
+    isLoading: isItemsLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery<PaginatedResponse<Plate | Sim>>({
+    queryKey: ["sellerItems", id, selectedType],
+    queryFn: async ({ pageParam = 1 }) => {
+      if (selectedType === "sims") {
+        const response = await getSims({
+          page: pageParam as number,
+          user_id: id,
+        });
+        return response as PaginatedResponse<Plate | Sim>;
+      }
+      const response = await getUserPlates(id, pageParam as number, selectedType);
+      return response as PaginatedResponse<Plate | Sim>;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.current_page < lastPage.last_page
+        ? lastPage.current_page + 1
+        : undefined,
+    enabled: !!id,
+  });
 
   if (isProfileLoading || isCountsLoading)
     return (
@@ -85,9 +126,52 @@ const SellerProfile = () => {
       bg: "#F1FCEE",
       textColor: "#154D23",
       icon: <Phone />,
-      isSim: true,
+      type: "sims",
     },
   ];
+
+  const allItems: (Plate | Sim)[] = itemsData
+    ? itemsData.pages.reduce<(Plate | Sim)[]>(
+        (acc, page) => [...acc, ...page.data],
+        []
+      )
+    : [];
+
+  const renderItems = (items: (Plate | Sim)[]) => {
+    if (isItemsLoading)
+      return (
+        <div className="flex items-center justify-center py-10">
+          <Spinner />
+        </div>
+      );
+
+    if (!items.length) return <NoPlatesEmptyState />;
+
+    return (
+      <>
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 mt-10 justify-items-center">
+          {items.map((item) =>
+            selectedType === "sims" ? (
+              <SimCard key={item.id} sim={item as Sim} />
+            ) : (
+              <PlateCard key={item.id} plate={item as Plate} />
+            )
+          )}
+        </div>
+        {hasNextPage && (
+          <div className="flex justify-center mt-8">
+            <button
+              onClick={() => fetchNextPage()}
+              disabled={isFetchingNextPage}
+              className="px-6 py-2 bg-[#192540] text-white rounded-md disabled:opacity-50"
+            >
+              {isFetchingNextPage ? <Spinner /> : t("load_more")}
+            </button>
+          </div>
+        )}
+      </>
+    );
+  };
 
   return (
     <section className="md:py-[58px] text-start" dir={isRtl ? "rtl" : "ltr"}>
@@ -197,12 +281,14 @@ const SellerProfile = () => {
         </h2>
         <div className="mt-8 flex flex-wrap gap-6">
           {categories.map((item) => (
-            <Link
+            <button
               key={item.title}
-              to={`/seller_plates/${id}?type=${
-                item.isSim ? "sims" : item.type
+              onClick={() => setSelectedType(item.type)}
+              className={`md:w-[384px] w-full h-[134px] rounded-md flex flex-col items-center justify-center gap-3 hover:shadow-lg transition-shadow border-2 ${
+                selectedType === item.type
+                  ? "border-[#192540]"
+                  : "border-transparent"
               }`}
-              className="md:w-[384px] w-full h-[134px] rounded-md flex flex-col items-center justify-center gap-3 hover:shadow-lg transition-shadow"
               style={{ backgroundColor: item.bg }}
             >
               {item.icon}
@@ -212,8 +298,48 @@ const SellerProfile = () => {
               >
                 {item.title}
               </p>
-            </Link>
+            </button>
           ))}
+        </div>
+
+        <div className="mt-12">
+          <Tabs defaultValue="all" className="w-full">
+            <TabsList className="bg-[#FDFAF3] py-8 rounded-[74px] w-full flex justify-center gap-6 mb-8">
+              <TabsTrigger
+                value="all"
+                className="px-8 py-2 data-[state=active]:bg-[#192540] data-[state=active]:text-white rounded-full"
+              >
+                {t("all")}
+              </TabsTrigger>
+              <TabsTrigger
+                value="premium"
+                className="px-8 py-2 data-[state=active]:bg-[#192540] data-[state=active]:text-white rounded-full"
+              >
+                {t("premium")}
+              </TabsTrigger>
+              <TabsTrigger
+                value="sold"
+                className="px-8 py-2 data-[state=active]:bg-[#192540] data-[state=active]:text-white rounded-full"
+              >
+                {t("sold")}
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="all">{renderItems(allItems)}</TabsContent>
+            <TabsContent value="premium">
+              {renderItems(
+                allItems.filter((item: Plate | Sim) => {
+                  if ("package_user" in item)
+                    return (item as Plate).package_user?.package?.name?.en !== "Free";
+                  if ("package" in item) return (item as Sim).package !== "Free";
+                  return false;
+                })
+              )}
+            </TabsContent>
+            <TabsContent value="sold">
+              {renderItems(allItems.filter((item: Plate | Sim) => item.is_sold))}
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
 
