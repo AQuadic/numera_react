@@ -138,47 +138,27 @@ const SellerProfile = () => {
             year: new Date(profile.created_at).getFullYear(),
           })}
         </p>
-        {!isOwnerProfile && (
+        {!isOwnerProfile && profile.phone && (
           <div className="flex flex-wrap justify-center items-center gap-6 mt-4 lg:mt-6">
-            {profile.phone ? (
-              <a
-                href={`tel:${profile.phone}`}
-                className="w-[180px] h-[102px] bg-[#192540] rounded-[10px] flex flex-col items-center justify-center gap-2 hover:opacity-90 transition"
-              >
-                <Phone />
-                <p className="text-[#FEFEFE] text-xl font-medium">
-                  {t("call")}
-                </p>
-              </a>
-            ) : (
-              <div className="w-[180px] h-[102px] bg-[#192540] rounded-[10px] flex flex-col items-center justify-center gap-2 opacity-50 cursor-not-allowed">
-                <Phone />
-                <p className="text-[#FEFEFE] text-xl font-medium">
-                  {t("call")}
-                </p>
-              </div>
-            )}
+            <a
+              href={`tel:${profile.phone}`}
+              className="w-[180px] h-[102px] bg-[#192540] rounded-[10px] flex flex-col items-center justify-center gap-2 hover:opacity-90 transition"
+            >
+              <Phone />
+              <p className="text-[#FEFEFE] text-xl font-medium">{t("call")}</p>
+            </a>
 
-            {profile.phone ? (
-              <a
-                href={`https://wa.me/${profile.phone.replace(/\D/g, "")}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-[180px] h-[102px] bg-[#19AA3D] rounded-[10px] flex flex-col items-center justify-center gap-2 hover:opacity-90 transition"
-              >
-                <Whatsapp />
-                <p className="text-[#FEFEFE] text-xl font-medium">
-                  {t("whatsapp")}
-                </p>
-              </a>
-            ) : (
-              <div className="w-[180px] h-[102px] bg-[#19AA3D] rounded-[10px] flex flex-col items-center justify-center gap-2 opacity-50 cursor-not-allowed">
-                <Whatsapp />
-                <p className="text-[#FEFEFE] text-xl font-medium">
-                  {t("whatsapp")}
-                </p>
-              </div>
-            )}
+            <a
+              href={`https://wa.me/${profile.phone.replace(/\D/g, "")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-[180px] h-[102px] bg-[#19AA3D] rounded-[10px] flex flex-col items-center justify-center gap-2 hover:opacity-90 transition"
+            >
+              <Whatsapp />
+              <p className="text-[#FEFEFE] text-xl font-medium">
+                {t("whatsapp")}
+              </p>
+            </a>
           </div>
         )}
 
