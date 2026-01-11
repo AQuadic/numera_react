@@ -77,6 +77,14 @@ const PlateCard = ({ plate }: PlateCardProps) => {
     >
       <div className="rounded-md p-px" style={{ background: borderGradient }}>
         <div className="bg-white rounded-md h-full w-full py-4 px-2 relative">
+          {user && !isOwner && (
+            <button
+              onClick={handleToggleFavorite}
+              className="cursor-pointer absolute top-4 end-2 z-10"
+            >
+              <Heart active={isFavorited} />
+            </button>
+          )}
           {packageName !== "Free" && badgeStyle && (
             <div
               style={badgeStyle}
@@ -86,9 +94,9 @@ const PlateCard = ({ plate }: PlateCardProps) => {
             </div>
           )}
 
-          <div className="flex items-center justify-between mt-4">
+          <div className="flex items-center justify-between mt-4 gap-2">
             <div
-              className={`w-1/2 rounded-md font-medium flex items-center justify-center text-sm ${
+              className={`flex-1 h-6 rounded-md font-medium flex items-center justify-center text-[10px] ${
                 plate.is_sold ? "text-[#D32F2F]" : "text-[#1E7634]"
               }`}
               style={{
@@ -102,10 +110,10 @@ const PlateCard = ({ plate }: PlateCardProps) => {
               {plate.is_sold ? t("sold") : t("available")}
             </div>
 
-            {user && !isOwner && (
-              <button onClick={handleToggleFavorite} className="cursor-pointer">
-                <Heart active={isFavorited} />
-              </button>
+            {plate.is_negotiable && (
+              <div className="flex-1 h-6 rounded-[20px] bg-[#E4FBEA] text-[#1E7634] text-[10px] font-medium flex items-center justify-center border border-[#1E7634]">
+                {t("negotiable")}
+              </div>
             )}
           </div>
 

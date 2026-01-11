@@ -31,9 +31,9 @@ const SimCard = ({ sim }: SimCardProps) => {
       )
     : sim.is_favorite ?? false;
 
-  // const formatPrice = (price: number) => {
-  //   return new Intl.NumberFormat("en-AE").format(price);
-  // };
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("en-AE").format(price);
+  };
   const handleToggleFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -75,16 +75,44 @@ const SimCard = ({ sim }: SimCardProps) => {
           )}
         </div>
         {user && !isOwner && (
-          <button onClick={handleToggleFavorite} className="cursor-pointer">
+          <button
+            onClick={handleToggleFavorite}
+            className="cursor-pointer z-10"
+          >
             <Heart active={isFavorited} />
           </button>
         )}
       </div>
 
+      <div className="flex items-center justify-between mt-6 gap-2">
+        <div
+          className={`flex-1 h-6 rounded-md font-medium flex items-center justify-center text-[10px] ${
+            sim.is_sold ? "text-[#D32F2F]" : "text-[#1E7634]"
+          }`}
+          style={{
+            backgroundImage: sim.is_sold
+              ? 'url("/images/plates/sold_img.png")'
+              : 'url("/images/plates/available_img.png")',
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          {sim.is_sold ? t("sold") : t("available")}
+        </div>
+
+        {sim.is_negotiable && (
+          <div className="flex-1 h-6 rounded-[20px] bg-[#E4FBEA] text-[#1E7634] text-[10px] font-medium flex items-center justify-center border border-[#1E7634]">
+            {t("negotiable")}
+          </div>
+        )}
+      </div>
+
       {/* Number Display */}
       <div className="mt-6 text-center">
-        <h2 className="w-[199px] text-[#192540] text-2xl font-bold tracking-wider border-3 border-black py-4 rounded-2xl mx-auto">
-          {sim.numbers}
+        <h2 className="w-full max-w-[199px] text-[#192540] text-2xl font-bold tracking-wider border-3 border-black py-4 rounded-2xl mx-auto truncate px-2">
+          {sim.numbers.length > 14
+            ? sim.numbers.slice(0, 14) + "..."
+            : sim.numbers}
         </h2>
       </div>
 
@@ -104,21 +132,22 @@ const SimCard = ({ sim }: SimCardProps) => {
         </div>
       </div> */}
 
-      {/* Price and Action */}
-      {/* <div className="mt-4 flex flex-wrap gap-2 items-center justify-between">
-        <h2 className="text-[#192540] md:text-xl text-lg font-semibold">
-          {formatPrice(sim.price)}{" "}
-          <span className="md:text-sm text-xs relative md:top-1">AED</span>
+      <div className="mt-6 flex gap-2 items-center justify-between">
+        <h2 className="text-[#192540] md:text-sm text-[10px] font-semibold">
+          {sim.price && sim.price > 0 ? (
+            <>
+              {formatPrice(sim.price)}{" "}
+              <span className="text-xs relative md:top-1">{t("aed")}</span>
+            </>
+          ) : (
+            t("price_on_request")
+          )}
         </h2>
 
-        <div className="w-[147px] h-12 bg-[#EBAF29] rounded-[10px] text-[#192540] text-base font-semibold flex items-center justify-center hover:bg-[#d9a01f] transition-colors">
-          View Details
+        <div className="md:w-[147px] w-full md:h-12 h-8 bg-[#EBAF29] rounded-[10px] text-[#192540] md:text-base text-xs font-semibold flex items-center justify-center hover:bg-[#d9a01f] transition-colors">
+          {t("view_details")}
         </div>
-      </div> */}
-      <button className="w-full h-12 bg-[#EBAF29] rounded-[10px] mt-6 text-[#192540] text-base font-semibold cursor-pointer">
-        {t("price_on_request")}
-      </button>
-      {/* Negotiable tag removed from card */}
+      </div>
     </Link>
   );
 };
