@@ -4,8 +4,8 @@ import ChangeLanguage from "../../general/ChangeLanguage";
 
 const ForgetPassPage = () => {
   return (
-    <div className="min-h-screen w-full flex bg-white">
-      <div className="hidden md:block md:w-1/2 h-screen">
+    <div className="min-h-screen w-full flex bg-white mb-8">
+      <div className="hidden md:block md:fixed md:inset-y-0 md:left-0 md:w-1/2 h-screen">
         <img
           src="/images/auth/auth_image.png"
           alt="numera"
@@ -13,7 +13,7 @@ const ForgetPassPage = () => {
         />
       </div>
 
-      <div className="flex-1 flex items-center justify-center px-6 md:px-12 lg:px-24 relative max-w-screen">
+      <div className="flex-1 flex items-center justify-center px-6 md:px-12 lg:px-24 md:ml-[50%] relative max-w-screen">
         <div className="absolute top-6 right-6 z-20">
           <ChangeLanguage />
         </div>

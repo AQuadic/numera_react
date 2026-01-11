@@ -151,6 +151,14 @@ const SignInForm = () => {
             {t("signIn.signUpLink")}
           </Link>
         </div>
+        <div>
+          <Link
+            to="/"
+            className="sm:text-lg font-semibold text-center mx-auto block mt-10"
+          >
+            Continue as a guest
+          </Link>
+        </div>
       </form>
     </div>
   );
