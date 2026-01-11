@@ -25,7 +25,7 @@ const emirateValues = [
 
 const vehicleTypes = ["classic", "bikes", "cars", "fun"];
 
-const FilterComponent = ({ onApply, initialFilters  }: FilterComponentProps) => {
+const FilterComponent = ({ onApply, initialFilters }: FilterComponentProps) => {
   const { t } = useTranslation("home");
   const [selectedEmirate, setSelectedEmirate] = useState<string | undefined>();
   const [selectedVehicleTypes, setSelectedVehicleTypes] = useState<string[]>(
@@ -35,18 +35,18 @@ const FilterComponent = ({ onApply, initialFilters  }: FilterComponentProps) => 
   const [numbers, setNumbers] = useState("");
 
   useEffect(() => {
-  if (!initialFilters) return;
+    if (!initialFilters) return;
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  setSelectedEmirate(initialFilters.emirate_id);
-  setSelectedVehicleTypes(initialFilters.vehicle_types || []);
-  setLetters(initialFilters.letters || "");
-  setNumbers(initialFilters.numbers || "");
-}, [initialFilters]);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSelectedEmirate(initialFilters.emirate_id);
+    setSelectedVehicleTypes(initialFilters.vehicle_types || []);
+    setLetters(initialFilters.letters || "");
+    setNumbers(initialFilters.numbers || "");
+  }, [initialFilters]);
 
   return (
     <div className="px-6">
-      <h2 className="text-[#192540] text-2xl font-medium ltr:text-left rtl:text-right">
+      <h2 className="text-[#192540] text-2xl font-medium text-start">
         {t("filter")}
       </h2>
 

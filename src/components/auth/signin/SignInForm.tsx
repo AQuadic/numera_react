@@ -111,14 +111,14 @@ const SignInForm = () => {
             type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full h-14 border border-[#F0F0F0] rounded-md mt-3 px-3 pr-10 placeholder:text-sm placeholder:font-medium"
+            className="w-full h-14 border border-[#F0F0F0] rounded-md mt-3 px-3 pe-10 placeholder:text-sm placeholder:font-medium"
             placeholder={t("signIn.passwordPlaceholder")}
             disabled={isLoading}
           />
           <button
             type="button"
             onClick={() => setShowPassword((prev) => !prev)}
-            className="absolute top-[70%] ltr:right-3 rtl:left-3 -translate-y-1/2 text-gray-500"
+            className="absolute top-[70%] end-3 -translate-y-1/2 text-gray-500"
           >
             {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
           </button>

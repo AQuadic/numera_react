@@ -15,7 +15,7 @@ const BackButton = () => {
     <button
       onClick={handleBack}
       aria-label={t("back")}
-      className="md:hidden absolute left-4 top-6 z-20 inline-flex items-center gap-3 rounded-full bg-white/95 px-3 py-2 text-sm font-medium shadow-sm transition hover:shadow-md rtl:flex-row-reverse"
+      className="md:hidden absolute start-4 top-6 z-20 inline-flex items-center gap-3 rounded-full bg-white/95 px-3 py-2 text-sm font-medium shadow-sm transition hover:shadow-md"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +23,7 @@ const BackButton = () => {
         fill="none"
         stroke="currentColor"
         strokeWidth={2}
-        className="h-4 w-4"
+        className="h-4 w-4 rtl:rotate-180"
         aria-hidden
       >
         <path

@@ -115,7 +115,7 @@ const Header = () => {
             >
               <Notifications />
               {notifications.length > 0 && (
-                <span className="absolute top-0 right-0 w-2 h-2 rounded-full bg-[#D71F1F]" />
+                <span className="absolute top-0 end-0 w-2 h-2 rounded-full bg-[#D71F1F]" />
               )}
             </button>
           )}
@@ -132,11 +132,11 @@ const Header = () => {
                 />
 
                 <motion.div
-                  initial={{ x: "100%" }}
+                  initial={{ x: lang === "ar" ? "-100%" : "100%" }}
                   animate={{ x: 0 }}
-                  exit={{ x: "100%" }}
+                  exit={{ x: lang === "ar" ? "-100%" : "100%" }}
                   transition={{ type: "spring", stiffness: 200, damping: 25 }}
-                  className="fixed top-0 right-0 h-full w-[360px] bg-white shadow-lg z-50 flex flex-col"
+                  className="fixed top-0 end-0 h-full w-[360px] bg-white shadow-lg z-50 flex flex-col"
                 >
                   <div className="flex items-center justify-between">
                     <h2 className="text-[#192540] text-xl font-semibold mb-4 p-6">
@@ -246,11 +246,11 @@ const Header = () => {
             />
 
             <motion.div
-              initial={{ x: "100%" }}
+              initial={{ x: lang === "ar" ? "-100%" : "100%" }}
               animate={{ x: 0 }}
-              exit={{ x: "100%" }}
+              exit={{ x: lang === "ar" ? "-100%" : "100%" }}
               transition={{ type: "spring", stiffness: 200, damping: 25 }}
-              className="fixed top-0 right-0 h-full w-[75%] bg-white shadow-lg z-50 p-6 flex flex-col"
+              className="fixed top-0 end-0 h-full w-[75%] bg-white shadow-lg z-50 p-6 flex flex-col"
             >
               <button
                 className="text-3xl mb-6 text-[#192540]"

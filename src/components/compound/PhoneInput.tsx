@@ -239,18 +239,18 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
         {isOpen && (
           <div
             ref={dropdownRef}
-            className="absolute top-full left-0 right-0 z-99 mt-2 rounded-md border border-input bg-popover text-popover-foreground shadow-md max-h-60 overflow-hidden bg-white"
-            dir="ltr"
+            className="absolute top-full start-0 end-0 z-99 mt-2 rounded-md border border-input bg-popover text-popover-foreground shadow-md max-h-60 overflow-hidden bg-white"
+            dir={i18n.language === "ar" ? "rtl" : "ltr"}
           >
             {/* Search input */}
             <div className="p-2 border-b border-muted">
               <input
                 type="text"
-                dir="ltr"
+                dir={i18n.language === "ar" ? "rtl" : "ltr"}
                 placeholder={resolvedSearchPlaceholder}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="h-9 rounded-md bg-popover text-popover-foreground placeholder:text-muted-foreground text-sm ltr:text-left rtl:text-right"
+                className="h-9 rounded-md bg-popover text-popover-foreground placeholder:text-muted-foreground text-sm text-start"
               />
             </div>
 
@@ -278,10 +278,7 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
                       draggable={false}
                     />
                     {/* Country name */}
-                    <span
-                      className="flex-1 text-sm truncate text-popover-foreground pl-3 text-left"
-                      dir="ltr"
-                    >
+                    <span className="flex-1 text-sm truncate text-popover-foreground ps-3 text-start">
                       {getCountryName(country)}
                     </span>
                     <span className="text-sm text-muted-foreground font-medium">

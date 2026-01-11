@@ -55,10 +55,10 @@ const ConfirmPlate = () => {
               <DialogDescription>
                 <div className="flex items-center justify-between rtl:flex-row-reverse">
                   <div className="flex-1">
-                    <h2 className="text-[#192540] text-[32px] font-medium px-8 text-left rtl:text-right">
+                    <h2 className="text-[#192540] text-[32px] font-medium px-8 text-start">
                       {t("downloadApp.title")}
                     </h2>
-                    <p className="text-[#717171] text-xl font-medium mt-6 px-8 text-left rtl:text-right">
+                    <p className="text-[#717171] text-xl font-medium mt-6 px-8 text-start">
                       {t("downloadApp.description")}
                     </p>
 

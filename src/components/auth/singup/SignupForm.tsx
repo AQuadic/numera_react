@@ -162,7 +162,7 @@ const SignUpForm = () => {
             <button
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute ltr:right-3 rtl:left-3 top-1/2 -translate-y-1/2 text-[#717171] hover:text-[#192540]"
+              className="absolute end-3 top-1/2 -translate-y-1/2 text-[#717171] hover:text-[#192540]"
             >
               {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
             </button>
@@ -182,7 +182,7 @@ const SignUpForm = () => {
               type={showConfirmPassword ? "text" : "password"}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full h-14 border border-[#F0F0F0] rounded-md px-3 pr-12 placeholder:text-sm placeholder:font-medium"
+              className="w-full h-14 border border-[#F0F0F0] rounded-md px-3 pe-12 placeholder:text-sm placeholder:font-medium"
               placeholder={t("signUp.confirmPasswordPlaceholder")}
               disabled={isLoading}
             />
@@ -190,7 +190,7 @@ const SignUpForm = () => {
             <button
               type="button"
               onClick={() => setShowConfirmPassword((prev) => !prev)}
-              className="absolute ltr:right-3 rtl:left-3 top-1/2 -translate-y-1/2 text-[#717171] hover:text-[#192540]"
+              className="absolute end-3 top-1/2 -translate-y-1/2 text-[#717171] hover:text-[#192540]"
             >
               {showConfirmPassword ? <Eye size={20} /> : <EyeOff size={20} />}
             </button>

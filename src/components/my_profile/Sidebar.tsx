@@ -39,14 +39,14 @@ const Sidebar = ({ onSelect }: SidebarProps) => {
   ];
 
   return (
-    <section className="w-[260px] md:w-[300px] h-[calc(100vh-90px)] bg-[#F0F0F0] pl-6 lg:py-12 flex flex-col justify-between l lg:self-start overflow-y-auto">
+    <section className="w-[260px] md:w-[300px] h-[calc(100vh-90px)] bg-[#F0F0F0] ps-6 lg:py-12 flex flex-col justify-between lg:self-start overflow-y-auto">
       <div>
         {sidebarLinks.map((item) => (
           <div
             key={item.id}
             onClick={() => onSelect(item.id)}
             className={`
-                            flex items-center gap-3 py-3 cursor-pointer rounded-tl-[20px] rounded-bl-[20px] mt-6 px-2 transition
+                            flex items-center gap-3 py-3 cursor-pointer rounded-s-[20px] mt-6 px-2 transition
                             ${
                               isActive(item.id)
                                 ? "bg-[#FEFEFE]"
@@ -64,7 +64,7 @@ const Sidebar = ({ onSelect }: SidebarProps) => {
 
       <Dialog>
         <DialogTrigger asChild>
-          <div className="flex items-center gap-3 py-3 cursor-pointer rounded-tl-[20px] rounded-bl-[20px] mt-6 px-2 hover:bg-[#E5E5E5]">
+          <div className="flex items-center gap-3 py-3 cursor-pointer rounded-s-[20px] mt-6 px-2 hover:bg-[#E5E5E5]">
             <Logout />
             <span className="text-[#192540] text-base font-medium">
               {t("logout")}

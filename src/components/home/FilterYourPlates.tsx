@@ -165,11 +165,11 @@ const FilterYourPlates = () => {
                     className="lg:w-[384px] w-full h-14 border border-[#F0F0F0] rounded-md px-12"
                     placeholder={t("search")}
                   />
-                  <div className="absolute top-4 left-4">
+                  <div className="absolute top-4 start-4">
                     <Search />
                   </div>
                   {isSearching && (
-                    <div className="absolute top-4 right-4">
+                    <div className="absolute top-4 end-4">
                       <div className="animate-spin h-5 w-5 border-2 border-[#EBAF29] border-t-transparent rounded-full" />
                     </div>
                   )}
@@ -202,7 +202,10 @@ const FilterYourPlates = () => {
                             setFiltersByPackage((prev) => {
                               const updated = { ...prev };
 
-                              if (!newFilters || Object.keys(newFilters).length === 0) {
+                              if (
+                                !newFilters ||
+                                Object.keys(newFilters).length === 0
+                              ) {
                                 delete updated[pkg.id];
                               } else {
                                 updated[pkg.id] = newFilters;

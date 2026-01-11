@@ -43,7 +43,8 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
   const [isMarkingSold, setIsMarkingSold] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [showRepublishLimitDialog, setShowRepublishLimitDialog] = useState(false);
+  const [showRepublishLimitDialog, setShowRepublishLimitDialog] =
+    useState(false);
 
   useEffect(() => {
     setIsPaused(!!plate.paused_at);
@@ -155,7 +156,9 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                 ? t("status_paused")
                 : t("status_continue")}
             </div>
-            <p className="text-[#717171] text-[10px]">{t("expires_in_25_days")}</p>
+            <p className="text-[#717171] text-[10px]">
+              {t("expires_in_25_days")}
+            </p>
           </div>
 
           <Popover>
@@ -169,7 +172,9 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
               </div> */}
               <div className="flex items-center gap-2 cursor-pointer mt-4">
                 <Share />
-                <p className="text-[#192540] text-lg font-medium">{t("action_share")}</p>
+                <p className="text-[#192540] text-lg font-medium">
+                  {t("action_share")}
+                </p>
               </div>
               <Dialog
                 open={isSoldDialogOpen}
@@ -178,7 +183,9 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                 <DialogTrigger className="w-full">
                   <div className="flex items-center gap-2 cursor-pointer mt-4">
                     <SoldActions />
-                    <p className="text-[#192540] text-lg font-medium">{t("action_sold")}</p>
+                    <p className="text-[#192540] text-lg font-medium">
+                      {t("action_sold")}
+                    </p>
                   </div>
                 </DialogTrigger>
                 <DialogContent className="w-[860px] px-0!">
@@ -211,7 +218,9 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                             disabled={isMarkingSold}
                             className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            {isMarkingSold ? t("processing") : t("dialog_mark_as_sold")}
+                            {isMarkingSold
+                              ? t("processing")
+                              : t("dialog_mark_as_sold")}
                           </button>
                         </div>
                       </div>
@@ -226,7 +235,9 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                 <DialogTrigger className="w-full">
                   <div className="flex items-center gap-2 cursor-pointer mt-4">
                     <Delete />
-                    <p className="text-[#D71F1F] text-lg font-medium">{t("action_delete")}</p>
+                    <p className="text-[#D71F1F] text-lg font-medium">
+                      {t("action_delete")}
+                    </p>
                   </div>
                 </DialogTrigger>
                 <DialogContent className="w-[860px] px-0!">
@@ -342,10 +353,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                   <DialogDescription>
                     <div>
                       <div className="flex flex-col items-center justify-center">
-                        <img
-                          src="/images/republish.png"
-                          alt="republish"
-                        />
+                        <img src="/images/republish.png" alt="republish" />
                         <h2 className="text-[#192540] text-2xl font-semibold mt-4">
                           {t("dialog_republish_ad")}
                         </h2>
@@ -364,7 +372,9 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                           disabled={isRepublishing}
                           className="w-full h-14 bg-[#EBAF29] rounded-md text-[#192540] text-lg font-semibold cursor-pointer"
                         >
-                          {isRepublishing ? t("publishing") : t("dialog_republish_now")}
+                          {isRepublishing
+                            ? t("publishing")
+                            : t("dialog_republish_now")}
                         </button>
                       </div>
                     </div>
@@ -397,7 +407,9 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
                           className="w-[245px] h-[245px]"
                         />
                         <h2 className="text-[#192540] text-2xl font-semibold mt-4">
-                          {isPaused ? t("dialog_continue_ad") : t("dialog_pause_ad")}
+                          {isPaused
+                            ? t("dialog_continue_ad")
+                            : t("dialog_pause_ad")}
                         </h2>
                         <p className="text-[#717171] text-lg font-medium mt-4 text-center px-8">
                           {isPaused
@@ -448,7 +460,6 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
               </DialogHeader>
             </DialogContent>
           </Dialog>
-
         </div>
       </div>
     </section>

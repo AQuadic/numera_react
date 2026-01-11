@@ -5,8 +5,11 @@ import { useQuery } from "@tanstack/react-query";
 import { getSlider, type SliderItem } from "../../lib/api/slider/getSlider";
 import { Skeleton } from "../ui/skeleton";
 import { getImgProps } from "../../lib/utils/imageUtils";
+import { useTranslation } from "react-i18next";
 
 export default function SimpleSlider() {
+  const { i18n } = useTranslation();
+  const isRtl = i18n.language === "ar";
   const { data: sliderItems, isLoading } = useQuery({
     queryKey: ["slider"],
     queryFn: getSlider,
@@ -19,6 +22,7 @@ export default function SimpleSlider() {
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
+    rtl: isRtl,
   };
 
   if (isLoading)

@@ -12,7 +12,7 @@ import {
   DialogHeader,
   // DialogTitle,
   DialogDescription,
-} from "../components/ui/dialog"; 
+} from "../components/ui/dialog";
 
 const MyProfile = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -34,14 +34,14 @@ const MyProfile = () => {
       return;
     }
 
-  if (id === "profile") {
-    navigate("/profile");
-  } else {
-    navigate(`/profile/${id}`);
-  }
+    if (id === "profile") {
+      navigate("/profile");
+    } else {
+      navigate(`/profile/${id}`);
+    }
 
-  setOpenDrawer(false);
-};
+    setOpenDrawer(false);
+  };
 
   return (
     <section>
@@ -58,9 +58,13 @@ const MyProfile = () => {
         />
       )}
 
-    <div
-        className={`fixed top-0 left-0 h-full w-[260px] bg-white z-50 overflow-y-auto transform transition-transform duration-300
-          ${openDrawer ? "translate-x-0" : "-translate-x-full"}
+      <div
+        className={`fixed top-0 start-0 h-full w-[260px] bg-white z-50 overflow-y-auto transform transition-transform duration-300
+          ${
+            openDrawer
+              ? "translate-x-0"
+              : "ltr:-translate-x-full rtl:translate-x-full"
+          }
         `}
       >
         <Sidebar onSelect={handleSelect} />
