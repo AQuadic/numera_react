@@ -39,37 +39,34 @@ const Header = () => {
   // immediately when authenticated.
   const hasUser = !!user;
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useInfiniteQuery({
-    queryKey: ["broadcastNotifications"],
-    queryFn: async ({ pageParam }: { pageParam?: string | null }) => {
-      return getBroadcastNotifications({
-        pagination: "simple",
-        cursor: pageParam ?? undefined,
-      });
-    },
-    getNextPageParam: (lastPage) => lastPage.meta?.next_cursor ?? null,
-    initialPageParam: null,
-    enabled: !!user,
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery({
+      queryKey: ["broadcastNotifications"],
+      queryFn: async ({ pageParam }: { pageParam?: string | null }) => {
+        return getBroadcastNotifications({
+          pagination: "simple",
+          cursor: pageParam ?? undefined,
+        });
+      },
+      getNextPageParam: (lastPage) => lastPage.meta?.next_cursor ?? null,
+      initialPageParam: null,
+      enabled: !!user,
+    });
 
-  const notifications = data?.pages?.flatMap(page => page.data ?? []) ?? [];
+  const notifications = data?.pages?.flatMap((page) => page.data ?? []) ?? [];
 
   return (
     <>
       <header className="container py-3 flex items-center justify-between px-4 md:px-10">
-        <Link to="/">
-          <img
-            src="/images/header/numra_logo.png"
-            className="w-32"
-            alt="Numra logo"
-          />
-        </Link>
+        <div className="w-[244px]">
+          <Link to="/">
+            <img
+              src="/images/header/numra_logo.png"
+              className="w-32"
+              alt="Numra logo"
+            />
+          </Link>
+        </div>
 
         <div className="hidden lg:flex items-center gap-6">
           {navLinks.map((link) =>
@@ -192,15 +189,19 @@ const Header = () => {
                       </div>
                     ))}
                     {hasNextPage && (
-                          <button
-                            onClick={() => fetchNextPage()}
-                            className="py-2 text-sm text-center text-[#192540]"
-                          >
-                            {isFetchingNextPage ? <div className="flex items-center justify-center py-5">
-                              <Spinner />
-                            </div> : t("load_more")}
-                          </button>
+                      <button
+                        onClick={() => fetchNextPage()}
+                        className="py-2 text-sm text-center text-[#192540]"
+                      >
+                        {isFetchingNextPage ? (
+                          <div className="flex items-center justify-center py-5">
+                            <Spinner />
+                          </div>
+                        ) : (
+                          t("load_more")
                         )}
+                      </button>
+                    )}
                   </div>
                 </motion.div>
               </>

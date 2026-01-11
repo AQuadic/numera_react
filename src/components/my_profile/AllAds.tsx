@@ -13,7 +13,7 @@ import { Skeleton } from "../ui/skeleton";
 import { useTranslation } from "react-i18next";
 
 const AllAds = () => {
-  const { t } = useTranslation("profile");
+  const { t, i18n } = useTranslation("profile");
   const [tab, setTab] = useState<"all" | "active" | "sold" | "paused">("all");
   const [searchParams] = useSearchParams();
 
@@ -56,10 +56,15 @@ const AllAds = () => {
       <div className="flex items-center justify-center">
         <Tabs
           value={tab}
-          onValueChange={(val) => setTab(val as any)}
+          onValueChange={(val: string) =>
+            setTab(val as "all" | "active" | "sold" | "paused")
+          }
           className="flex items-center justify-center"
         >
-          <TabsList className="bg-transparent flex md:gap-[68px] mb-12">
+          <TabsList
+            dir={i18n.language === "ar" ? "rtl" : "ltr"}
+            className="bg-transparent flex md:gap-[68px] mb-12"
+          >
             <TabsTrigger value="all">{t("tab_all_ads")}</TabsTrigger>
             <TabsTrigger value="active">{t("tab_active")}</TabsTrigger>
             <TabsTrigger value="sold">{t("tab_sold")}</TabsTrigger>
@@ -68,13 +73,19 @@ const AllAds = () => {
 
           <TabsContent value={tab}>
             {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div
+                dir={i18n.language === "ar" ? "rtl" : "ltr"}
+                className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"
+              >
                 {[...Array(6)].map((_, i) => (
                   <Skeleton key={i} className="h-[220px] w-full rounded-lg" />
                 ))}
               </div>
             ) : data?.data && data.data.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div
+                dir={i18n.language === "ar" ? "rtl" : "ltr"}
+                className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"
+              >
                 {data.data.map((plate) => (
                   <ProfilePlates
                     key={plate.id}

@@ -41,7 +41,6 @@ export const useNotifications = () => {
             return;
           }
 
-          
           mutate(
             {
               device_type: "web",
