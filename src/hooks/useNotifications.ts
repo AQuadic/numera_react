@@ -12,9 +12,7 @@ export const useNotifications = () => {
 
   const { mutate } = useMutation({
     mutationFn: registerDevice,
-    onSuccess: () => {
-      console.log("Device registered for notifications");
-    },
+    onSuccess: () => {},
     onError: (error) => {
       console.error("Error registering device:", error);
     },
@@ -22,37 +20,28 @@ export const useNotifications = () => {
 
   const setupNotifications = useCallback(async () => {
     if (typeof window === "undefined" || !("Notification" in window)) {
-      console.log("Notifications are not supported in this browser.");
       return;
     }
 
     if (Notification.permission === "denied") {
-      console.log("Notification permission denied previously.");
       return;
     }
 
     try {
-      console.log("Requesting notification permission...");
       const permission = await Notification.requestPermission();
-      console.log("Notification permission result:", permission);
 
       if (permission === "granted") {
-        console.log("Getting FCM token...");
         const token = await requestForToken();
-        console.log("FCM Token retrieved:", token);
 
         if (token && user) {
           const storageKey = `fcm_registered_${user.id || user.email}`;
           const lastRegisteredToken = localStorage.getItem(storageKey);
 
           if (lastRegisteredToken === token) {
-            console.log(
-              "Device already registered for this user with this token."
-            );
             return;
           }
 
-          console.log("Registering device for user:", user.id || user.name);
+          
           mutate(
             {
               device_type: "web",
@@ -102,7 +91,6 @@ export const useNotifications = () => {
     }
 
     const unsubscribe = onMessage(messaging, (payload) => {
-      console.log("Foreground message received:", payload);
       // Invalidate notifications query to refresh the list in the header
       queryClient.invalidateQueries({ queryKey: ["broadcastNotifications"] });
     });

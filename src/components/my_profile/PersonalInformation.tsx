@@ -102,7 +102,6 @@ const PersonalInformation: FC = () => {
       await refetchUser();
       toast.success(t("profile_updated"));
     } catch (err) {
-      console.log("Error updating profile:", err);
       // axios interceptor handles toast; revert the image preview and clear the selected file
       setImageFile(null);
       // revert to the previously saved image (or null to show initials)

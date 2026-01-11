@@ -27,13 +27,9 @@ export const requestForToken = async () => {
     const currentToken = await getToken(messaging);
     if (currentToken) {
       return currentToken;
-    } else {
-      console.log(
-        "No registration token available. Request permission to generate one."
-      );
     }
   } catch (err) {
-    console.log("An error occurred while retrieving token. ", err);
+    // swallow token retrieval errors
   }
 };
 
@@ -54,7 +50,6 @@ export const deleteFcmToken = async () => {
     if (currentToken) {
       try {
         await deleteToken(messaging);
-        console.log("FCM token deleted from Firebase messaging.");
       } catch (err) {
         console.warn("Failed to delete FCM token via SDK:", err);
       }
