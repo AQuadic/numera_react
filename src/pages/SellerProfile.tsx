@@ -30,6 +30,13 @@ const SellerProfile = () => {
   const { user } = useAuthStore();
   const isOwnerProfile = user?.id === id;
 
+  const getInitials = (fullName?: string | null) => {
+    const parts = (fullName || "").trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return "";
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  };
+
   const {
     data: profile,
     isLoading: isProfileLoading,
@@ -102,17 +109,16 @@ const SellerProfile = () => {
             </div> */}
 
       <div className="container mt-[58px] w-full p-6 bg-[#F0F0F0] rounded-md flex flex-col items-center justify-center">
-        <img
-          {...getImgProps(
-            profile.image || {
-              url: "/images/plates/owner_img.jpg",
-              responsive_urls: [],
-            },
-            "owner image",
-            "thumbnail"
-          )}
-          className="w-[167px] h-[167px] rounded-full object-cover"
-        />
+        {profile.image?.url ? (
+          <img
+            {...getImgProps(profile.image, profile.name, "thumbnail")}
+            className="w-[167px] h-[167px] rounded-full object-cover"
+          />
+        ) : (
+          <div className="w-[167px] h-[167px] rounded-full bg-[#FEFEFE] flex items-center justify-center text-4xl font-semibold text-[#192540]">
+            {getInitials(profile.name)}
+          </div>
+        )}
         <div className="mt-4 flex items-center gap-3">
           <h2 className="text-[#192540] text-2xl font-medium">
             {profile.name}
@@ -205,17 +211,24 @@ const SellerProfile = () => {
       </div>
 
       <div className="mt-12 container">
-        <h2 className="text-[#192540] md:text-[32px] text-2xl font-medium">{t("categories")}</h2>
+        <h2 className="text-[#192540] md:text-[32px] text-2xl font-medium">
+          {t("categories")}
+        </h2>
         <div className="mt-8 flex flex-wrap gap-6">
           {categories.map((item) => (
             <Link
               key={item.title}
-              to={`/seller_plates/${id}?type=${item.isSim ? "sims" : item.type}`}
+              to={`/seller_plates/${id}?type=${
+                item.isSim ? "sims" : item.type
+              }`}
               className="md:w-[384px] w-full h-[134px] rounded-md flex flex-col items-center justify-center gap-3 hover:shadow-lg transition-shadow"
               style={{ backgroundColor: item.bg }}
             >
               {item.icon}
-              <p className="md:text-2xl text-xl font-semibold" style={{ color: item.textColor }}>
+              <p
+                className="md:text-2xl text-xl font-semibold"
+                style={{ color: item.textColor }}
+              >
                 {item.title}
               </p>
             </Link>
