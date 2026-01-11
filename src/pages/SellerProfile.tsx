@@ -24,11 +24,12 @@ import Car from "../components/icons/home/Car";
 import Bike from "../components/icons/home/Bike";
 
 const SellerProfile = () => {
-  const { t } = useTranslation("home");
+  const { t, i18n } = useTranslation("home");
   const { userId } = useParams<{ userId: string }>();
   const id = Number(userId);
   const { user } = useAuthStore();
   const isOwnerProfile = user?.id === id;
+  const isRtl = i18n.language === "ar";
 
   const getInitials = (fullName?: string | null) => {
     const parts = (fullName || "").trim().split(/\s+/).filter(Boolean);
@@ -89,7 +90,7 @@ const SellerProfile = () => {
   ];
 
   return (
-    <section className="md:py-[58px]">
+    <section className="md:py-[58px] text-start" dir={isRtl ? "rtl" : "ltr"}>
       {/* <div className="flex items-center gap-6">
                 <div className="relative">
                         <input 

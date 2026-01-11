@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 type Item = Plate | Sim;
 
 const SellerPlates = () => {
-  const { t } = useTranslation("home");
+  const { t, i18n } = useTranslation("home");
   const { userId } = useParams<{ userId: string }>();
   const id = Number(userId);
 
@@ -20,6 +20,7 @@ const SellerPlates = () => {
   const type = searchParams.get("type");
 
   const isSim = type === "sims";
+  const isRtl = i18n.language === "ar";
 
   const { data, isLoading } = useQuery({
     queryKey: ["seller-items", id, type],
@@ -31,11 +32,7 @@ const SellerPlates = () => {
         });
       }
 
-      return getUserPlates(
-        id,
-        1,
-        type ?? undefined
-      );
+      return getUserPlates(id, 1, type ?? undefined);
     },
     enabled: !!id,
   });
@@ -62,7 +59,7 @@ const SellerPlates = () => {
     if (!items.length) return <NoPlatesEmptyState />;
 
     return (
-      <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-6 mt-10">
+      <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 mt-10 justify-items-center">
         {items.map((item) =>
           isSim ? (
             <SimCard key={item.id} sim={item as Sim} />
@@ -75,13 +72,20 @@ const SellerPlates = () => {
   };
 
   return (
-    <section className="container md:py-[58px] py-8">
+    <section
+      className="container md:py-[58px] py-8 text-start"
+      dir={isRtl ? "rtl" : "ltr"}
+    >
       <h2 className="text-[#192540] text-2xl font-medium">
         {isSim ? t("mobile_numbers") : t("seller_plates")}
       </h2>
 
-      <Tabs defaultValue="all" className="mt-8 w-full">
-        <TabsList className="bg-[#FDFAF3] py-10 rounded-[74px] w-full px-40 flex justify-center gap-6">
+      <Tabs
+        defaultValue="all"
+        className="mt-8 w-full"
+        dir={isRtl ? "rtl" : "ltr"}
+      >
+        <TabsList className="bg-[#FDFAF3] py-10 rounded-[74px] w-full md:px-40 px-4 flex justify-center gap-6">
           <TabsTrigger value="all">{t("all")}</TabsTrigger>
           <TabsTrigger value="premium">{t("premium")}</TabsTrigger>
           <TabsTrigger value="sold">{t("sold")}</TabsTrigger>
