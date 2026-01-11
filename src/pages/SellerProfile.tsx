@@ -85,7 +85,11 @@ const SellerProfile = () => {
         });
         return response as PaginatedResponse<Plate | Sim>;
       }
-      const response = await getUserPlates(id, pageParam as number, selectedType);
+      const response = await getUserPlates(
+        id,
+        pageParam as number,
+        selectedType
+      );
       return response as PaginatedResponse<Plate | Sim>;
     },
     initialPageParam: 1,
@@ -330,14 +334,19 @@ const SellerProfile = () => {
               {renderItems(
                 allItems.filter((item: Plate | Sim) => {
                   if ("package_user" in item)
-                    return (item as Plate).package_user?.package?.name?.en !== "Free";
-                  if ("package" in item) return (item as Sim).package !== "Free";
+                    return (
+                      (item as Plate).package_user?.package?.name?.en !== "Free"
+                    );
+                  if ("package" in item)
+                    return (item as Sim).package !== "Free";
                   return false;
                 })
               )}
             </TabsContent>
             <TabsContent value="sold">
-              {renderItems(allItems.filter((item: Plate | Sim) => item.is_sold))}
+              {renderItems(
+                allItems.filter((item: Plate | Sim) => item.is_sold)
+              )}
             </TabsContent>
           </Tabs>
         </div>
