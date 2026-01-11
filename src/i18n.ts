@@ -46,20 +46,23 @@ i18n
       },
     },
 
-    fallbackLng: "en",
+    fallbackLng: "ar",
     defaultNS: "home",
+    load: "languageOnly",
     interpolation: {
       escapeValue: false,
     },
     detection: {
       order: ["localStorage", "navigator"],
+      lookupLocalStorage: "i18nextLng",
       caches: ["localStorage"],
     },
   });
 
 i18n.on("languageChanged", (lng) => {
-  document.documentElement.dir = lng === "ar" ? "rtl" : "ltr";
-  document.documentElement.lang = lng;
+  const baseLng = lng.split("-")[0];
+  document.documentElement.dir = baseLng === "ar" ? "rtl" : "ltr";
+  document.documentElement.lang = baseLng;
 });
 
 export default i18n;
