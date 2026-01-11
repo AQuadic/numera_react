@@ -4,7 +4,7 @@ import Heart from "../icons/home/Heart";
 import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "../../store";
 import { useTranslation } from "react-i18next";
-import { getImgProps } from "../../lib/utils/imageUtils";
+import { getImgProps, getPlateImageUrl } from "../../lib/utils/imageUtils";
 import { getFavorites } from "../../lib/api/getFavorites";
 import { useToggleFavorite } from "../../hooks/useToggleFavorite";
 
@@ -120,7 +120,10 @@ const PlateCard = ({ plate }: PlateCardProps) => {
             )}
             <img
               {...getImgProps(
-                plate.image || { url: plate.image_url, responsive_urls: [] },
+                plate.image || {
+                  url: plate.image_url || getPlateImageUrl(plate),
+                  responsive_urls: [],
+                },
                 `Plate ${plate.letters}${plate.numbers}`,
                 "small"
               )}

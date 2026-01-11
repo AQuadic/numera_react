@@ -27,6 +27,7 @@ import toast from "react-hot-toast";
 import { deletePlate } from "../../lib/api/deletePlate";
 import { useTranslation } from "react-i18next";
 import DownloadApp from "../general/DownloadApp";
+import { getPlateImageUrl } from "../../lib/utils/imageUtils";
 
 interface ProfilePlatesProps {
   plate: any;
@@ -286,7 +287,7 @@ const ProfilePlates = ({ plate, refetch }: ProfilePlatesProps) => {
         </div>
 
         <div className="mt-3 flex flex-wrap gap-4">
-          <img src={plate.image_url} alt="plate" />
+          <img src={plate.image_url || getPlateImageUrl(plate)} alt="plate" />
           <div>
             <h2 className="text-[#192540] text-base font-medium">
               {plate.price && plate.price > 0 ? (

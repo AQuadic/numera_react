@@ -8,6 +8,7 @@ import { useState } from "react";
 import { toggleFavorite } from "../../lib/api/toggleFavorite";
 import { useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import { getPlateImageUrl } from "../../lib/utils/imageUtils";
 
 interface PlateDetailsHeaderProps {
   plate: Plate;
@@ -43,8 +44,9 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
     if (diffDays === 0) return t("today");
     if (diffDays === 1) return t("1_day_ago");
     if (diffDays < 7) return t("days_ago", { count: diffDays });
-    if (diffDays < 30) return t("weeks_ago", { count: Math.floor(diffDays / 7) });
-    
+    if (diffDays < 30)
+      return t("weeks_ago", { count: Math.floor(diffDays / 7) });
+
     return date.toLocaleDateString(i18n.language);
   };
 
@@ -61,60 +63,60 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
     return labels[emirateId] || emirateId;
   };
 
-    const handleToggleFavorite = async (
-      e: React.MouseEvent<HTMLButtonElement>
-    ) => {
-      e.preventDefault();
-      e.stopPropagation();
-  
-      if (isLoading) return;
+  const handleToggleFavorite = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (isLoading) return;
+    setIsFavorited((prev) => !prev);
+
+    try {
+      setIsLoading(true);
+      const res = await toggleFavorite({
+        favorable_id: plate.id,
+        favorable_type: "plate",
+      });
+      setIsFavorited(res.is_favorited);
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
+    } catch (error) {
       setIsFavorited((prev) => !prev);
-  
+      console.error("Failed to toggle favorite", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleShare = async () => {
+    const shareUrl = `${window.location.origin}/plate/${plate.id}`;
+
+    if (navigator.share) {
       try {
-        setIsLoading(true);
-        const res = await toggleFavorite({
-          favorable_id: plate.id,
-          favorable_type: "plate",
+        await navigator.share({
+          title: `Plate ${plate.letters ?? ""}${plate.numbers}`,
+          url: shareUrl,
         });
-        setIsFavorited(res.is_favorited);
-        queryClient.invalidateQueries({ queryKey: ["favorites"] });
-      } catch (error) {
-        setIsFavorited((prev) => !prev);
-        console.error("Failed to toggle favorite", error);
-      } finally {
-        setIsLoading(false);
+        toast.success(t("shared_successfully"));
+      } catch (err) {
+        console.error("Error sharing:", err);
       }
-    };
-
-    const handleShare = async () => {
-      const shareUrl = `${window.location.origin}/plate/${plate.id}`;
-
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: `Plate ${plate.letters ?? ""}${plate.numbers}`,
-            url: shareUrl,
-          });
-          toast.success(t('shared_successfully'));
-        } catch (err) {
-          console.error("Error sharing:", err);
-        }
-      } else {
-        try {
-          await navigator.clipboard.writeText(shareUrl);
-          toast.success("Link copied to clipboard!");
-        } catch (err) {
-          console.error("Failed to copy link", err);
-          toast.error("Failed to copy link");
-        }
+    } else {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        toast.success("Link copied to clipboard!");
+      } catch (err) {
+        console.error("Failed to copy link", err);
+        toast.error("Failed to copy link");
       }
-    };
-    
+    }
+  };
+
   return (
     <section className="container md:py-[58px] py-10">
       <div className="flex flex-wrap gap-6">
         <img
-          src={plate.image_url}
+          src={plate.image_url || getPlateImageUrl(plate)}
           alt={`Plate ${plate.letters}${plate.numbers}`}
           className="md:w-[486px] w-full h-[287px] object-contain rounded-md bg-white border"
         />
@@ -126,29 +128,28 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
             </h2>
             <h2 className="text-[#966A08] md:text-2xl font-bold mt-3">
               {plate.price ? (
-                  <>
-                    {formatPrice(plate.price)}{" "}
-                    <span className="text-sm relative top-1">{t('aed')}</span>
-                  </>
-                ) : (
-                  t("price_on_request")
-                )}
-
+                <>
+                  {formatPrice(plate.price)}{" "}
+                  <span className="text-sm relative top-1">{t("aed")}</span>
+                </>
+              ) : (
+                t("price_on_request")
+              )}
             </h2>
 
             {plate.is_negotiable && (
               <div className="mt-3">
                 <span className="inline-block px-3 py-1 bg-[#E3F2FD] text-[#1976D2] text-sm font-medium rounded-full">
-                  {t('negotiable')}
+                  {t("negotiable")}
                 </span>
               </div>
             )}
 
             <h3 className="text-[#192540] md:text-base font-medium mt-5">
-              {t('plate_details')}
+              {t("plate_details")}
             </h3>
             <p className="text-[#717171] md:text-lg font-medium mt-5">
-              {t('plate_number')} {" "}
+              {t("plate_number")}{" "}
               <span className="text-[#192540] md:text-xl">
                 {plate.letters ? `${plate.letters} ` : ""}
                 {plate.numbers}
@@ -156,21 +157,21 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
             </p>
 
             <p className="text-[#717171] md:text-lg font-medium mt-4">
-              {t('type')}{" "}
+              {t("type")}{" "}
               <span className="text-[#192540] md:text-xl">
                 {getVehicleTypeLabel(plate.vehicle_type)}
               </span>
             </p>
 
             <p className="text-[#717171] md:text-lg font-medium mt-4">
-              {t('emirate')}{" "}
+              {t("emirate")}{" "}
               <span className="text-[#192540] md:text-xl">
                 {getEmirateLabel(plate.emirate_id)}
               </span>
             </p>
 
             <p className="text-[#717171] md:text-lg font-medium mt-4">
-              {t('listed_date')}{" "}
+              {t("listed_date")}{" "}
               <span className="text-[#192540] md:text-xl">
                 {formatDate(plate.published_at)}
               </span>
@@ -181,7 +182,7 @@ const PlateDetailsHeader = ({ plate }: PlateDetailsHeaderProps) => {
             {plate.is_sold && (
               <div className="mt-4">
                 <span className="inline-block px-4 py-2 bg-[#FFE5E5] text-[#D32F2F] text-base font-semibold rounded-md">
-                  {t('sold')}
+                  {t("sold")}
                 </span>
               </div>
             )}

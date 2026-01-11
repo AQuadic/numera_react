@@ -75,3 +75,22 @@ export function getImgProps(
     alt,
   };
 }
+
+/**
+ * Generates the URL for a plate image based on its properties.
+ * Used as a fallback when the API doesn't provide an image_url.
+ */
+export function getPlateImageUrl(plate: {
+  letters?: string;
+  numbers?: string;
+  emirate_id?: string;
+  emirate?: string;
+  vehicle_type?: string;
+}) {
+  const letters = plate.letters || "";
+  const numbers = plate.numbers || "";
+  const emirate = plate.emirate_id || plate.emirate || "dubai";
+  const type = plate.vehicle_type || "cars";
+
+  return `https://numra.motofy.io/plate-generate/${type}/${letters}/${numbers}/${emirate}`;
+}
