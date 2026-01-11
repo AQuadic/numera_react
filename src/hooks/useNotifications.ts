@@ -5,6 +5,7 @@ import { registerDevice } from "../lib/api/notifications/registerDevice";
 import { useAuthStore } from "../store/useAuthStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getDeviceId } from "../lib/utils";
+import toast from "react-hot-toast";
 
 export const useNotifications = () => {
   const user = useAuthStore((state) => state.user);
@@ -89,9 +90,16 @@ export const useNotifications = () => {
       }
     }
 
-    const unsubscribe = onMessage(messaging, () => {
+    const unsubscribe = onMessage(messaging, (payload) => {
       // Invalidate notifications query to refresh the list in the header
       queryClient.invalidateQueries({ queryKey: ["broadcastNotifications"] });
+
+      const notificationsEnabled =
+        localStorage.getItem("is_notifications_enabled") === "true";
+
+      if (notificationsEnabled && payload.notification) {
+        toast.success(payload.notification.title || "New Notification");
+      }
     });
 
     return () => {
