@@ -23,6 +23,7 @@ const PlateCard = ({ plate }: PlateCardProps) => {
 
   const packageName = plate.package_user?.package?.name?.en ?? "Free";
   const user = useAuthStore((s) => s.user);
+  const isOwner = user?.id === plate.user_id || user?.id === plate.user?.id;
 
   const { data: favorites } = useQuery({
     queryKey: ["favorites"],
@@ -101,7 +102,7 @@ const PlateCard = ({ plate }: PlateCardProps) => {
               {plate.is_sold ? t("sold") : t("available")}
             </div>
 
-            {user && (
+            {user && !isOwner && (
               <button onClick={handleToggleFavorite} className="cursor-pointer">
                 <Heart active={isFavorited} />
               </button>

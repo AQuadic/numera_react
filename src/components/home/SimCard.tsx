@@ -17,6 +17,7 @@ const SimCard = ({ sim }: SimCardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const { mutate: toggleFav } = useToggleFavorite();
   const user = useAuthStore((s) => s.user);
+  const isOwner = user?.id === sim.user_id || user?.id === sim.user?.id;
 
   const { data: favorites } = useQuery({
     queryKey: ["favorites"],
@@ -73,7 +74,7 @@ const SimCard = ({ sim }: SimCardProps) => {
             />
           )}
         </div>
-        {user && (
+        {user && !isOwner && (
           <button onClick={handleToggleFavorite} className="cursor-pointer">
             <Heart active={isFavorited} />
           </button>

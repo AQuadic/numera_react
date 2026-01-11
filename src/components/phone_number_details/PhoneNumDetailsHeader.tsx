@@ -13,6 +13,11 @@ import {
 } from "../ui/dialog";
 import type { Sim } from "../../lib/api";
 import { useTranslation } from "react-i18next";
+import { useAuthStore } from "../../store";
+import { useState } from "react";
+import { toggleFavorite } from "../../lib/api/toggleFavorite";
+import { useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 interface PhoneNumDetailsHeaderProps {
   sim: Sim;
@@ -20,6 +25,61 @@ interface PhoneNumDetailsHeaderProps {
 
 const PhoneNumDetailsHeader = ({ sim }: PhoneNumDetailsHeaderProps) => {
   const { t } = useTranslation("profile");
+  const user = useAuthStore((s) => s.user);
+  const [isFavorited, setIsFavorited] = useState(sim.is_favorite ?? false);
+  const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
+  const isOwner = user?.id === sim.user?.id || user?.id === sim.user_id;
+
+  const handleToggleFavorite = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (isLoading) return;
+    setIsFavorited((prev) => !prev);
+
+    try {
+      setIsLoading(true);
+      const res = await toggleFavorite({
+        favorable_id: sim.id,
+        favorable_type: "sim",
+      });
+      setIsFavorited(res.is_favorited);
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
+    } catch (error) {
+      setIsFavorited((prev) => !prev);
+      console.error("Failed to toggle favorite", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleShare = async () => {
+    const shareUrl = `${window.location.origin}/sim/${sim.id}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `SIM ${sim.numbers}`,
+          url: shareUrl,
+        });
+        toast.success(t("shared_successfully"));
+      } catch (err) {
+        console.error("Error sharing:", err);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        toast.success("Link copied to clipboard!");
+      } catch (err) {
+        console.error("Failed to copy link", err);
+        toast.error("Failed to copy link");
+      }
+    }
+  };
+
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-AE").format(price);
   };
@@ -27,7 +87,9 @@ const PhoneNumDetailsHeader = ({ sim }: PhoneNumDetailsHeaderProps) => {
   // Member since hidden for single-item view
 
   const getUserTypeLabel = (type: string) => {
-    return type === "personal" ? t("user_individual") : t("user_premium_dealer");
+    return type === "personal"
+      ? t("user_individual")
+      : t("user_premium_dealer");
   };
 
   const sellerPhoneForWA = (
@@ -48,8 +110,18 @@ const PhoneNumDetailsHeader = ({ sim }: PhoneNumDetailsHeaderProps) => {
             <div className="w-[126px] h-9" />
           )}
           <div className="flex items-center gap-3">
-            <Share />
-            <Heart />
+            <button onClick={handleShare} className="cursor-pointer">
+              <Share />
+            </button>
+            {user && !isOwner && (
+              <button
+                onClick={handleToggleFavorite}
+                disabled={isLoading}
+                className="cursor-pointer"
+              >
+                <Heart active={isFavorited} />
+              </button>
+            )}
           </div>
         </div>
         <div
@@ -74,7 +146,9 @@ const PhoneNumDetailsHeader = ({ sim }: PhoneNumDetailsHeaderProps) => {
           {t("plates_number_details")}
         </h2>
         <div className="mt-6 flex items-center justify-between">
-          <p className="text-[#717171] md:text-xl font-medium">{t("plates_operator_label")}</p>
+          <p className="text-[#717171] md:text-xl font-medium">
+            {t("plates_operator_label")}
+          </p>
           <div className="flex items-center gap-3">
             {sim.operator?.image?.url && (
               <img
@@ -99,7 +173,9 @@ const PhoneNumDetailsHeader = ({ sim }: PhoneNumDetailsHeaderProps) => {
         </div>
 
         <div className="mt-6 flex items-center justify-between">
-          <p className="text-[#717171] md:text-xl font-medium">{t("plates_package_label")}</p>
+          <p className="text-[#717171] md:text-xl font-medium">
+            {t("plates_package_label")}
+          </p>
           <p className="text-[#192540] md:text-2xl font-semibold">
             {sim.package}
           </p>
@@ -145,7 +221,9 @@ const PhoneNumDetailsHeader = ({ sim }: PhoneNumDetailsHeaderProps) => {
                       className="w-full h-14 bg-[#192540] rounded-[10px] flex items-center justify-center gap-2 hover:bg-[#2a3650] transition-colors"
                     >
                       <Call />
-                      <p className="text-[#FEFEFE] text-lg font-medium">{t("action_call")}</p>
+                      <p className="text-[#FEFEFE] text-lg font-medium">
+                        {t("action_call")}
+                      </p>
                     </a>
                   )}
 
