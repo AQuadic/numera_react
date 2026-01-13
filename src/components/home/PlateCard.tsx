@@ -70,9 +70,13 @@ const PlateCard = ({ plate }: PlateCardProps) => {
     } as any);
   };
 
+  const plateSlug = plate.letters
+    ? `${plate.letters}-${plate.numbers}`
+    : plate.numbers;
+
   return (
     <Link
-      to={`/plate/${plate.id}`}
+      to={`/plate/${plate.id}/${plateSlug}`}
       className="md:w-[274px] w-full rounded-md hover:shadow-lg transition-shadow relative"
     >
       <div className="rounded-md p-px" style={{ background: borderGradient }}>

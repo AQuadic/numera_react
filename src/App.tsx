@@ -53,8 +53,10 @@ function App() {
             <Route path="seller_plates/:userId" element={<SellerPlates />} />
             <Route path="plate" element={<PlateDetails />} />
             <Route path="plate/:id" element={<PlateDetails />} />
+            <Route path="plate/:id/:slug" element={<PlateDetails />} />
             <Route path="sim" element={<PhoneNumberDetails />} />
             <Route path="sim/:id" element={<PhoneNumberDetails />} />
+            <Route path="sim/:id/:slug" element={<PhoneNumberDetails />} />
             {/* Protected routes - require authentication */}
             <Route element={<ProtectedRoute />}>
               <Route path="sell_plates" element={<SellPlatesPage />} />
