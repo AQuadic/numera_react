@@ -57,6 +57,7 @@ export interface SignUpRequest {
   phone_country: string;
   password: string;
   password_confirmation?: string;
+  recaptcha_token?: string;
 }
 
 // Login Request
@@ -66,6 +67,7 @@ export interface LoginRequest {
   // iso2 country code (e.g. "EG")
   phone_country: string;
   password: string;
+  recaptcha_token?: string;
 }
 
 export interface SocialLoginRequest {
@@ -110,6 +112,7 @@ export const signUp = async (payload: SignUpRequest): Promise<AuthResponse> => {
     phone_country: payload.phone_country,
     password: payload.password,
     password_confirmation: payload.password_confirmation || payload.password,
+    recaptcha_token: payload.recaptcha_token,
   };
 
   const response = await axios.post("/user/signup", body);
@@ -141,6 +144,7 @@ export const login = async (payload: LoginRequest): Promise<AuthResponse> => {
     phone: payload.phone,
     phone_country: payload.phone_country,
     password: payload.password,
+    recaptcha_token: payload.recaptcha_token,
   };
 
   const response = await axios.post("/user/login", body);
@@ -238,6 +242,7 @@ export interface ForgotPasswordRequest {
   phone_country: string;
   // backend expects "sms" for phone flow
   reset_type?: "sms";
+  recaptcha_token?: string;
 }
 
 export interface ForgotPasswordResponse {
@@ -254,6 +259,7 @@ export const requestPasswordReset = async (
     phone: payload.phone,
     phone_country: payload.phone_country,
     reset_type: payload.reset_type ?? "sms",
+    recaptcha_token: payload.recaptcha_token,
   };
 
   const response = await axios.post<ForgotPasswordResponse>(

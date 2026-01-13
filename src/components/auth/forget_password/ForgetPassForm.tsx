@@ -25,6 +25,35 @@ const ForgetPassForm = () => {
     // Fresh flow each time the screen opens
     setStep("request");
     setResetToken(null);
+
+    // Load reCAPTCHA script only for this page
+    const script = document.createElement("script");
+    script.src =
+      "https://www.google.com/recaptcha/enterprise.js?render=explicit";
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+
+    script.onload = () => {
+      // @ts-ignore
+      window.grecaptcha?.enterprise?.ready(() => {
+        // @ts-ignore
+        window.grecaptcha.enterprise.render("recaptcha-container", {
+          sitekey: "6LfKH0gsAAAAALpAx8M4VCa8y_eGpOsoQ25X4jeB",
+          badge: "inline",
+          size: "invisible",
+        });
+      });
+    };
+
+    return () => {
+      // Cleanup script and badge on unmount
+      document.head.removeChild(script);
+      const badges = document.querySelectorAll(".grecaptcha-badge");
+      badges.forEach(
+        (badge) => ((badge as HTMLElement).style.display = "none")
+      );
+    };
   }, [setResetToken, setStep]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -39,6 +68,29 @@ const ForgetPassForm = () => {
     setIsLoading(true);
 
     try {
+      // Execute reCAPTCHA Enterprise
+      // @ts-ignore
+      const token = await new Promise<string>((resolve, reject) => {
+        // @ts-ignore
+        if (!window.grecaptcha?.enterprise) {
+          reject(new Error("reCAPTCHA not loaded"));
+          return;
+        }
+        // @ts-ignore
+        window.grecaptcha.enterprise.ready(async () => {
+          try {
+            // @ts-ignore
+            const t = await window.grecaptcha.enterprise.execute(
+              "6LfKH0gsAAAAALpAx8M4VCa8y_eGpOsoQ25X4jeB",
+              { action: "submit" }
+            );
+            resolve(t);
+          } catch (err) {
+            reject(err);
+          }
+        });
+      });
+
       const cleanedPhone = phone.number
         .replaceAll(/\D/g, "")
         .replace(/^0+/, "");
@@ -47,6 +99,7 @@ const ForgetPassForm = () => {
         phone: cleanedPhone,
         phone_country: phone.code.toUpperCase(),
         reset_type: "sms",
+        recaptcha_token: token,
       });
 
       // Prepare next step state
@@ -103,6 +156,19 @@ const ForgetPassForm = () => {
             ? t("forgetPassword.submitting")
             : t("forgetPassword.submit")}
         </button>
+
+        {/* reCAPTCHA Container */}
+        <div className="mt-4 flex justify-center min-h-[60px]">
+          <div id="recaptcha-container"></div>
+        </div>
+
+        <style>{`
+          .grecaptcha-badge { 
+            box-shadow: none !important;
+            border: 1px solid #e5e7eb !important;
+            border-radius: 4px !important;
+          }
+        `}</style>
       </form>
     </div>
   );

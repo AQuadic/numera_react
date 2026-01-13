@@ -20,7 +20,7 @@ const ForgetPassPage = () => {
         <BackButton />
         <div className="w-full max-w-[684px]">
           <img
-            src="/images/header/numra_logo.png"
+            src="/images/headedfr/numra_logo.png"
             alt="numera logo"
             className="block md:hidden mx-auto mb-6 w-40"
           />
