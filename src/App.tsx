@@ -32,6 +32,7 @@ import FavPlates from "./components/my_profile/FavPlates";
 import AllAds from "./components/my_profile/AllAds";
 import Settings from "./components/my_profile/Settings";
 import SellerPlates from "./components/seller/SellerPlates";
+import NotFound from "./components/general/NotFound";
 
 function App() {
   useNotifications();
@@ -57,6 +58,7 @@ function App() {
             <Route path="sim" element={<PhoneNumberDetails />} />
             <Route path="sim/:id" element={<PhoneNumberDetails />} />
             <Route path="sim/:id/:slug" element={<PhoneNumberDetails />} />
+            <Route path="*" element={<NotFound />} />
             {/* Protected routes - require authentication */}
             <Route element={<ProtectedRoute />}>
               <Route path="sell_plates" element={<SellPlatesPage />} />
