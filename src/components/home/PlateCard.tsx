@@ -84,7 +84,7 @@ const PlateCard = ({ plate }: PlateCardProps) => {
           {user && !isOwner && (
             <button
               onClick={handleToggleFavorite}
-              className="cursor-pointer absolute top-4 end-2 z-10"
+              className="cursor-pointer absolute top-1.5 end-2 z-10"
             >
               <Heart active={isFavorited} />
             </button>
