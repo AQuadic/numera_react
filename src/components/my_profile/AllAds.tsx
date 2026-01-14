@@ -39,22 +39,21 @@ const AllAds = () => {
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["plateAds", tab, vehicleTypes, user?.id],
-    queryFn: () => {
+    queryFn: async () => {
       const isSims = vehicleTypes.includes("sims");
 
       if (isSims) {
         return getSims({
           filter_type: filterMap[tab],
           user_id: user?.id,
-          // pagination is handled inside getSims defaults or we can pass it if we were paging
-        });
+        }) as any;
       }
 
       return getPlateAds({
         filter_type: filterMap[tab],
         pagination: "normal",
         vehicle_types: vehicleTypes as any,
-      });
+      }) as any;
     },
     enabled: !!user,
   });
@@ -91,12 +90,12 @@ const AllAds = () => {
                   <Skeleton key={i} className="h-[220px] w-full rounded-lg" />
                 ))}
               </div>
-            ) : data?.data && data.data.length > 0 ? (
+            ) : data && (data as any).data && (data as any).data.length > 0 ? (
               <div
                 dir={i18n.language === "ar" ? "rtl" : "ltr"}
                 className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"
               >
-                {data.data.map((plate) => (
+                {(data as any).data.map((plate: any) => (
                   <ProfilePlates
                     key={plate.id}
                     plate={plate}
