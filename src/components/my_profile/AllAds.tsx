@@ -5,6 +5,8 @@ import {
   getPlateAds,
   type GetPlateAdsParams,
 } from "../../lib/api/plates/getPlateAds";
+import { getSims } from "../../lib/api/sims";
+import { useAuthStore } from "../../store/useAuthStore";
 import AdsStats from "./AdsStats";
 import ProfilePlates from "./ProfilePlates";
 import AdsEmptyState from "../general/AdsEmptyState";
@@ -14,19 +16,15 @@ import { useTranslation } from "react-i18next";
 
 const AllAds = () => {
   const { t, i18n } = useTranslation("profile");
+  const { user } = useAuthStore();
   const [tab, setTab] = useState<"all" | "active" | "sold" | "paused">("all");
   const [searchParams] = useSearchParams();
 
   const vehicleTypes = useMemo(() => {
     const typesFromUrl = searchParams.get("types");
     if (!typesFromUrl)
-      return [...["cars", "fun", "bikes", "classic"]] as (
-        | "cars"
-        | "fun"
-        | "bikes"
-        | "classic"
-      )[];
-    return typesFromUrl.split(",") as ("cars" | "fun" | "bikes" | "classic")[];
+      return [...["cars", "fun", "bikes", "classic"]] as string[];
+    return typesFromUrl.split(",") as string[];
   }, [searchParams]);
 
   const filterMap: Record<
@@ -40,13 +38,25 @@ const AllAds = () => {
   };
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["plateAds", tab, vehicleTypes],
-    queryFn: () =>
-      getPlateAds({
+    queryKey: ["plateAds", tab, vehicleTypes, user?.id],
+    queryFn: () => {
+      const isSims = vehicleTypes.includes("sims");
+
+      if (isSims) {
+        return getSims({
+          filter_type: filterMap[tab],
+          user_id: user?.id,
+          // pagination is handled inside getSims defaults or we can pass it if we were paging
+        });
+      }
+
+      return getPlateAds({
         filter_type: filterMap[tab],
         pagination: "normal",
-        vehicle_types: vehicleTypes,
-      }),
+        vehicle_types: vehicleTypes as any,
+      });
+    },
+    enabled: !!user,
   });
 
   return (

@@ -85,6 +85,7 @@ export interface SimFilters {
   price_to?: number;
   page?: number;
   user_id?: number;
+  filter_type?: string;
 }
 
 // API Functions
@@ -100,6 +101,7 @@ export const getSims = async (
   if (filters?.price_to) params.price_to = filters.price_to.toString();
   if (filters?.page) params.page = filters.page.toString();
   if (filters?.user_id) params.user_id = filters.user_id;
+  if (filters?.filter_type) params.filter_type = filters.filter_type;
 
   const response = await axios.get<PaginatedResponse<Sim>>("/sims", {
     params,
