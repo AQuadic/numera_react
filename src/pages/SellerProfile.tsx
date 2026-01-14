@@ -13,7 +13,8 @@ import WhyChooseNumra from "../components/home/WhyChooseNumra";
 // import Filter from "../components/icons/home/Filter"
 // import Search from "../components/icons/home/Search"
 // import Chat from "../components/icons/plates/Chat"
-import Phone from "../components/icons/plates/Phone";
+import CallIcon from "../components/icons/plates/Phone";
+import PhoneIcon from "../components/icons/home/Phone";
 import Verified from "../components/icons/plates/Verified";
 import Whatsapp from "../components/icons/plates/Whatsapp";
 import Spinner from "../components/icons/general/Spinner";
@@ -84,8 +85,8 @@ const SellerProfile = () => {
       title: t("mobile_numbers"),
       bg: "#F1FCEE",
       textColor: "#154D23",
-      icon: <Phone />,
-      query: "type=sims",
+      icon: <PhoneIcon />,
+      query: "is_sim=true",
     },
   ];
 
@@ -145,7 +146,7 @@ const SellerProfile = () => {
               href={`tel:${profile.phone}`}
               className="w-[180px] h-[102px] bg-[#192540] rounded-[10px] flex flex-col items-center justify-center gap-2 hover:opacity-90 transition"
             >
-              <Phone />
+              <CallIcon />
               <p className="text-[#FEFEFE] text-xl font-medium">{t("call")}</p>
             </a>
 

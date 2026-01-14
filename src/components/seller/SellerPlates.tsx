@@ -17,14 +17,13 @@ const SellerPlates = () => {
   const id = Number(userId);
 
   const [searchParams] = useSearchParams();
-  const type = searchParams.get("type");
+  const isSim = searchParams.get("is_sim") === "true";
   const vehicleTypes = searchParams.getAll("vehicle_types[]");
 
-  const isSim = type === "sims";
   const isRtl = i18n.language === "ar";
 
   const { data, isLoading } = useQuery({
-    queryKey: ["seller-items", id, type, vehicleTypes],
+    queryKey: ["seller-items", id, isSim, vehicleTypes],
     queryFn: async () => {
       if (isSim) {
         return getSims({
@@ -36,7 +35,7 @@ const SellerPlates = () => {
       return getUserPlates(
         id,
         1,
-        vehicleTypes.length > 0 ? vehicleTypes : type || undefined
+        vehicleTypes.length > 0 ? vehicleTypes : undefined
       );
     },
     enabled: !!id,
