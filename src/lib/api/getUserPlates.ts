@@ -73,15 +73,18 @@ export interface PaginatedResponse<T> {
 export const getUserPlates = async (
   userId: number,
   page: number = 1,
-  vehicleType?: string  // <-- new parameter
+  vehicleType?: string | string[]
 ): Promise<PaginatedResponse<Plate>> => {
   const params: any = { user_id: userId, page };
 
   if (vehicleType) {
-    params["vehicle_types[]"] = vehicleType; // <-- send to API
+    params.vehicle_types = Array.isArray(vehicleType)
+      ? vehicleType
+      : [vehicleType];
   }
 
-  const { data } = await axios.get<PaginatedResponse<Plate>>("/plates", { params });
+  const { data } = await axios.get<PaginatedResponse<Plate>>("/plates", {
+    params,
+  });
   return data;
 };
-

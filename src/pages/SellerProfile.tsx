@@ -71,21 +71,21 @@ const SellerProfile = () => {
       bg: "#ECEDEF",
       textColor: "#192540",
       icon: <Car />,
-      type: "cars",
+      query: "vehicle_types[]=cars&vehicle_types[]=classic",
     },
     {
       title: t("fun"),
       bg: "#FCF8ED",
       textColor: "#966A08",
       icon: <Bike />,
-      type: "fun",
+      query: "vehicle_types[]=fun&vehicle_types[]=bikes",
     },
     {
       title: t("mobile_numbers"),
       bg: "#F1FCEE",
       textColor: "#154D23",
       icon: <Phone />,
-      type: "sims",
+      query: "type=sims",
     },
   ];
 
@@ -199,7 +199,7 @@ const SellerProfile = () => {
           {categories.map((item) => (
             <Link
               key={item.title}
-              to={`/seller_plates/${id}?type=${item.type}`}
+              to={`/seller_plates/${id}?${item.query}`}
               className="md:w-[384px] w-full h-[134px] rounded-md flex flex-col items-center justify-center gap-3 hover:shadow-lg transition-shadow"
               style={{ backgroundColor: item.bg }}
             >
