@@ -21,36 +21,26 @@ const ForgetPassForm = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
-  // New state and ref for reCAPTCHA
-  const [captchaToken, setCaptchaToken] = React.useState<string | null>(null);
-  const widgetIdRef = React.useRef<number | null>(null);
-
   React.useEffect(() => {
     // Fresh flow each time the screen opens
     setStep("request");
     setResetToken(null);
-    setCaptchaToken(null);
 
     const loadCaptcha = () => {
       // @ts-ignore
       if (window.grecaptcha?.enterprise) {
         // @ts-ignore
         window.grecaptcha.enterprise.ready(() => {
-          const container = document.getElementById("recaptcha-container");
-          if (container && !container.hasChildNodes()) {
-            try {
-              // @ts-ignore
-              widgetIdRef.current = window.grecaptcha.enterprise.render(
-                "recaptcha-container",
-                {
-                  sitekey: "6LfKH0gsAAAAALpAx8M4VCa8y_eGpOsoQ25X4jeB",
-                  callback: (token: string) => setCaptchaToken(token),
-                  "expired-callback": () => setCaptchaToken(null),
-                }
-              );
-            } catch (e) {
-              console.error("reCAPTCHA render error:", e);
-            }
+          // Render invisible widget
+          try {
+            // @ts-ignore
+            window.grecaptcha.enterprise.render("recaptcha-container", {
+              sitekey: "6LfKH0gsAAAAALpAx8M4VCa8y_eGpOsoQ25X4jeB",
+              size: "invisible",
+              badge: "bottomright",
+            });
+          } catch (e) {
+            // Ignore re-render errors
           }
         });
       }
@@ -71,11 +61,6 @@ const ForgetPassForm = () => {
     } else {
       loadCaptcha();
     }
-
-    // Cleanup not strictly necessary for script, but could reset widget if needed
-    return () => {
-      // Optional cleanup
-    };
   }, [setResetToken, setStep]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -87,14 +72,32 @@ const ForgetPassForm = () => {
       return;
     }
 
-    if (!captchaToken) {
-      setError("Please verify you are not a robot");
-      return;
-    }
-
     setIsLoading(true);
 
     try {
+      // Execute reCAPTCHA Enterprise (Invisible)
+      // @ts-ignore
+      const token = await new Promise<string>((resolve, reject) => {
+        // @ts-ignore
+        if (!window.grecaptcha?.enterprise) {
+          reject(new Error("reCAPTCHA not loaded"));
+          return;
+        }
+        // @ts-ignore
+        window.grecaptcha.enterprise.ready(async () => {
+          try {
+            // @ts-ignore
+            const t = await window.grecaptcha.enterprise.execute(
+              "6LfKH0gsAAAAALpAx8M4VCa8y_eGpOsoQ25X4jeB",
+              { action: "submit" }
+            );
+            resolve(t);
+          } catch (err) {
+            reject(err);
+          }
+        });
+      });
+
       const cleanedPhone = phone.number
         .replaceAll(/\D/g, "")
         .replace(/^0+/, "");
@@ -103,7 +106,7 @@ const ForgetPassForm = () => {
         phone: cleanedPhone,
         phone_country: phone.code.toUpperCase(),
         reset_type: "sms",
-        recaptcha_token: captchaToken,
+        recaptcha_token: token,
       });
 
       // Prepare next step state
@@ -113,13 +116,6 @@ const ForgetPassForm = () => {
       navigate("/verify_reset");
     } catch (err) {
       setError(getErrorMessage(err));
-      // Reset captcha on error so user can try again
-      // @ts-ignore
-      if (window.grecaptcha?.enterprise && widgetIdRef.current !== null) {
-        // @ts-ignore
-        window.grecaptcha.enterprise.reset(widgetIdRef.current);
-        setCaptchaToken(null);
-      }
     } finally {
       setIsLoading(false);
     }
@@ -158,10 +154,8 @@ const ForgetPassForm = () => {
           </div>
         </div>
 
-        {/* reCAPTCHA Container */}
-        <div className="mt-6 flex justify-center min-h-[78px]">
-          <div id="recaptcha-container"></div>
-        </div>
+        {/* reCAPTCHA Container (required for invisible widget structure) */}
+        <div id="recaptcha-container"></div>
 
         <button
           type="submit"
