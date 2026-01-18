@@ -18,7 +18,7 @@ const ADsCategories = () => {
 
       <div className="mt-6 flex gap-6">
         <Link
-          to={`/profile/allAds?types=cars`}
+          to={`/profile/allAds?types[]=cars&vehicle_types[]=classic`}
           className={`w-full rounded-md flex flex-col items-center justify-center gap-3 ${categories[0].style}`}
         >
           {categories[0].icon}
